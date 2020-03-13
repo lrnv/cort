@@ -17,3 +17,5 @@ Imports:
     magrittr
 URL: https://github.com/lrnv/cort
 BugReports: https://github.com/lrnv/cort/issues
+Suggests: 
+    covr

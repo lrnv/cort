@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/lrnv/cort.svg?branch=master)](https://travis-ci.org/lrnv/cort)
+[![Codecov test coverage](https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg)](https://codecov.io/gh/lrnv/cort?branch=master)
 <!-- badges: end -->
 
 The goal of cort is to ...
