@@ -4,6 +4,8 @@ language: R
 cache: packages
 
 after_success:
+  - R CMD INSTALL .
+  - Rscript -e 'pkgdown::build_site()'
   - Rscript -e 'covr::codecov()'
 
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
