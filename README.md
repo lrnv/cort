@@ -4,6 +4,7 @@
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/lrnv/cort.svg?branch=master)](https://travis-ci.org/lrnv/cort)
 [![Codecov test coverage](https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg)](https://codecov.io/gh/lrnv/cort?branch=master)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/lrnv/cort?branch=master&svg=true)](https://ci.appveyor.com/project/lrnv/cort)
 <!-- badges: end -->
 
 The goal of cort is to ...
