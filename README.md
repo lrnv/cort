@@ -2,6 +2,7 @@
 # cort
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.org/lrnv/cort.svg?branch=master)](https://travis-ci.org/lrnv/cort)
 <!-- badges: end -->
 
 The goal of cort is to ...
