@@ -1,14 +1,19 @@
 Package: cort
-Title: What the Package Does (One Line, Title Case)
+Title: Classes and Tools For Some Empirical and Non-parametrical Copula Models.
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Oskar",
+           family = "Laverny",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "oskar.laverny@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.0.2
+Imports: 
+    magrittr
+URL: https://github.com/lrnv/cort
+BugReports: https://github.com/lrnv/cort/issues
