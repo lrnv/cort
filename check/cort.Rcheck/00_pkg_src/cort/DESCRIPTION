@@ -1,5 +1,6 @@
 Package: cort
-Title: Classes and Tools For Some Empirical and Non-parametrical Copula Models
+Title: Classes and Tools For Some Empirical and Non-parametrical Copula
+        Models
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Oskar",
@@ -13,22 +14,12 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
-Imports: 
-    magrittr,
-    copula,
-    methods
+Imports: magrittr
 URL: https://github.com/lrnv/cort
 BugReports: https://github.com/lrnv/cort/issues
-Suggests: 
-    covr,
-    testthat (>= 2.1.0),
-    spelling
+Suggests: covr, testthat (>= 2.1.0), spelling
 Language: en-US
-Collate: 
-    'generics.R'
-    'ConvexCombCopula.R'
-    'empiricalCopula.R'
-    'cbCopula.R'
-    'cbkmCopula.R'
-    'utils-pipe.R'
-    'utils.R'
+NeedsCompilation: no
+Packaged: 2020-03-13 16:22:10 UTC; U009192
+Author: Oskar Laverny [aut, cre] (<https://orcid.org/YOUR-ORCID-ID>)
+Maintainer: Oskar Laverny <oskar.laverny@gmail.com>
