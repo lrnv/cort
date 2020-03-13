@@ -1,5 +1,5 @@
 Package: cort
-Title: Classes and Tools For Some Empirical and Non-parametrical Copula Models.
+Title: Classes and Tools For Some Empirical and Non-parametrical Copula Models
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Oskar",
