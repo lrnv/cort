@@ -15,7 +15,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 Imports: 
     magrittr,
-    copula,
     methods,
     purrr,
     nloptr,
