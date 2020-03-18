@@ -1,56 +1,165 @@
 #' @import methods
-#' @import copula
 #' @importFrom stats runif
 #' @importFrom utils capture.output
+#' @include utils.R utils-pipe.R
 NULL
 
-
-
-#' Copula volume on hyper-boxes
+#' Intersection of 2 boxes
 #'
-#' u must be piecewise smaller than v, otherwise the function will return an error.
+#' Gives the intersection of two boxes
 #'
-#' A method is currently implemented for the main virtual class 'Copula', but it assumes
-#' that a pCopula method is avaliable for the given copula.
+#' @param object an object of class `Box`
+#' @param b an other object of class `Box`
 #'
-#' This function calculates the measure of the copula according to the algorythme proposed by :
-#' Umberto Cherubini & Silvia Romagnoli (2009) Computing the
-#' Volume of n-Dimensional Copulas, Applied Mathematical Finance, 16:4, 307-314, DOI:
-#'   10.1080/13504860802597311 link : \url{http://dx.doi.org/10.1080/13504860802597311}
-#'
-#'
-#' @param u numeric matrix : minimum point of the hyper-rectangles, one row per observation.
-#' @param v numeric matrix : maximum point of the hyper-rectangle, one row per observation.
-#' @param copula the copula to calcule it's measure on [u,v]
-#' @param ... other parameter to be passed to methods for this generic.
-#'
-#' @return the measure of the copula.
-#' @exportMethod vCopula
-#' @name vCopula
-#' @rdname vCopula-methods
+#' @return A box object representing the intersection of those two boxes.
+#' @exportMethod intersect
+#' @name intersect
+#' @rdname intersect-methods
 #'
 #' @examples
-#' library(empCop)
-#' # For a simple one-dimentional input :
-#' cop = copula::archmCopula('Clayton',0.7,3)
-#' vCopula(rep(0,3),rep(1,3),cop)
-#' # the function is vectorised :
-#' v=matrix(seq(0,1,length.out=12),ncol=3)
-#' u=matrix(rep(0,12),ncol=3)
-#' vCopula(u,v,cop)
-setGeneric("vCopula", function(u, v, copula, ...) {
-
-  # taken from the generic of pCopula, does mainly the same...
-
-  if (!is.matrix(u))
-    u <- rbind(u, deparse.level = 0L)
-  ## here as well, 'outside' and 'on-boundary' are equivalent:
-  u[] <- pmax(0, pmin(1, u))
-
-  if (!is.matrix(v))
-    v <- rbind(v, deparse.level = 0L)
-  ## here as well, 'outside' and 'on-boundary' are equivalent:
-  v[] <- pmax(0, pmin(1, v))
-
-  standardGeneric("vCopula")
+#' library(cort)
+#' intersect(Box(rep(0,2),rep(1/2,2)),Box(rep(1/4,2),rep(1/2,2)))
+setGeneric("intersect",function(object,b){
+  standardGeneric("intersect")
 })
+
+#' Contains method
+#'
+#' Answer the question : "Does the box contains those points ? The `type` parameter is used to say if you want the test to be strict on both side, loose on both side, or right-limited and left-continuous via the `rllc` possibility.
+#'
+#' @param object an object of class `Box`
+#' @param u a matrix object, representing points of the right dimension in each row
+#' @param type a string, one of c("strict","loose","rllc") (default : loose)
+#'
+#' @return A vector of boolean values, one for each row of the data `u`
+#' @exportMethod contains
+#' @name contains
+#' @rdname contains-methods
+#'
+#' @examples
+#' library(cort)
+#' contains(Box(rep(0,2),rep(1/2,2)),rep(2,2))
+setGeneric("contains",signature = c("object","u"),
+           function(object,u,type="loose"){
+  u <- normalise_data(u,object@dim)
+  standardGeneric("contains")
+})
+
+
+#' Measure of a point inside a box
+#'
+#' compute the formula lambda(0,u inter b) / lambda (b) for a box b and a point u
+#'
+#' @param object an object of class `Box`
+#' @param u a matrix object, representing points of the right dimension in each row
+#'
+#' @return A vector of values between 0 and 1, representing the measure of each point inside the box.
+#' @exportMethod measure_in
+#' @name measure_in
+#' @rdname measure_in-methods
+#'
+#' @examples
+#' library(cort)
+#' measure_in(Box(rep(0,2),rep(1/2,2)),matrix(runif(100),nrow=50,ncol=2))
+setGeneric("measure_in",function(object,u){
+  u <- normalise_data(u,object@dim)
+  standardGeneric("measure_in")
+})
+
+#' Simulate uniformly from a box
+#'
+#' simulate random points uniformly inside a box.
+#'
+#' @param object an object of class `Box`
+#' @param n the number of points to simulate
+#'
+#' @return a matrix with each random point in a row.
+#' @exportMethod simu_unif
+#' @name simu_unif
+#' @rdname simu_unif-methods
+#'
+#' @examples
+#' library(cort)
+#' simu_unif(Box(rep(0,2),rep(1/2,2)),10)
+setGeneric("simu_unif",function(object,n){
+  standardGeneric("simu_unif")
+})
+
+
+#' project a box onto smaller dimensions
+#'
+#' Given new dimensions, a box can be projected on these dimensions.
+#'
+#' @param object an object of class `Box`
+#' @param dimensions the dimensions to project on
+#'
+#' @return a matrix with each random point in a row.
+#' @exportMethod project
+#' @name project
+#' @rdname project-methods
+#'
+#' @examples
+#' library(cort)
+#' project(Box(rep(0,2),rep(1/2,2)),1)
+setGeneric("project",function(object,dimensions){
+  standardGeneric("project")
+})
+
+#' Check if a box is splittable
+#'
+#' To be splitted, a box needs to have at least min_node_size points and 2 splitting dimensions.
+#'
+#' @param object an object of class `Box`
+#' @return a boolean telling you if the box is splittable or not
+#' @exportMethod is_splittable
+#' @name is_splittable
+#' @rdname is_splittable-methods
+#'
+#' @examples
+#' library(cort)
+#' b = Box(rep(0,2),rep(1,2))
+#' b = WeightedBox(b,matrix(0.5,nrow=2,ncol=2),1,c(1,2))
+#' is_splittable(b)
+setGeneric("is_splittable",function(object){
+             standardGeneric("is_splittable")
+           })
+
+
+
+#' Split a box onto a given breakpoint
+#'
+#' This functions splits a box onto given dimensions and given breakpoint
+#'
+#' @param object an object of class `Box`
+#' @param breakpoint a point to split the box on, should be inside the box
+#' @param breakpoint_dim the dimensions where you want the splitting to happened.
+#' @param ... other parameters that will be passed to methods.
+#' @return a matrix with each random point in a row.
+#' @exportMethod split
+#' @name split
+#' @rdname split-methods
+#'
+#' @examples
+#' library(cort)
+#' split(Box(rep(0,2),rep(1/2,2)),rep(1/4,2),c(1,2))
+setGeneric("split",signature = c("object"),
+           function(object,...){
+  standardGeneric("split")
+})
+
+#' Fit the tree
+#'
+#' Fits the tree
+#'
+#' @param object the tree to be fitted
+#'
+#' @return nothing
+#' @exportMethod fit
+#' @name fit
+#' @rdname fit-methods
+setGeneric("fit",function(object){standardGeneric("fit")})
+
+
+
+
+

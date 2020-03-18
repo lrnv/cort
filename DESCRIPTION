@@ -16,7 +16,10 @@ RoxygenNote: 7.0.2
 Imports: 
     magrittr,
     copula,
-    methods
+    methods,
+    purrr,
+    nloptr,
+    osqp
 URL: https://github.com/lrnv/cort
 BugReports: https://github.com/lrnv/cort/issues
 Suggests: 
@@ -25,10 +28,10 @@ Suggests:
     spelling
 Language: en-US
 Collate: 
-    'generics.R'
-    'ConvexCombCopula.R'
-    'empiricalCopula.R'
-    'cbCopula.R'
-    'cbkmCopula.R'
     'utils-pipe.R'
     'utils.R'
+    'generics.R'
+    'Box.R'
+    'Model.R'
+    'Tree.R'
+    'WeightedBox.R'
