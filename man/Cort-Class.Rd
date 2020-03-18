@@ -3,8 +3,6 @@
 \name{Cort-Class}
 \alias{Cort-Class}
 \alias{Cort}
-\alias{show,Cort-method}
-\alias{fit,Cort-method}
 \title{The Cort estimator}
 \usage{
 Cort(
@@ -13,12 +11,8 @@ Cort(
   min_node_size = 1,
   pseudo_data = FALSE,
   number_max_dim = NULL,
-  verbose = FALSE
+  verbose = TRUE
 )
-
-\S4method{show}{Cort}(object)
-
-\S4method{fit}{Cort}(object)
 }
 \arguments{
 \item{data}{The data, must be provided as a matrix with each row as an observation.}
@@ -32,8 +26,6 @@ Cort(
 \item{number_max_dim}{The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.}
 
 \item{verbose}{set to TRUE for more detailed output during the fit.}
-
-\item{object}{The Cort object}
 }
 \value{
 a Cort object that can be fitted easily to produce a copula estimate.
@@ -44,13 +36,6 @@ Cort class
 \details{
 This class implements the CORT algorithm to a fit a multivariate copula using piece constant density.
 }
-\section{Functions}{
-\itemize{
-\item \code{show,Cort-method}: Prints simple dispatch of the tree
-
-\item \code{fit,Cort-method}: Fit the tree
-}}
-
 \examples{
 library(cort)
 Cort(LifeCycleSavings)

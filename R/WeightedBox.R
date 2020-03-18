@@ -18,27 +18,6 @@ NULL
                     TRUE else errors
                 })
 
-#' WeightedBox class
-#'
-#' A WeightedBox is a box but containing more things : a weight, some data, and a split dimensions mainly.
-#' To initialise it, you must provide a well-defined box. The splitting dimensions and the weights are optionals.
-#'
-#' @param box an object of class `Box`
-#' @param weight (default = 1) a weight between 0 and 1.
-#' @param split_dims (defaults : all)
-#' @param data the data that the box contains.
-#' @param min_node_size minimum number of data point in the box.
-#' @name WeightedBox-Class
-#' @title A simple Box
-#' @rdname WeightedBox-Class
-#'
-#' @return a Box object
-#' @export
-#'
-#' @examples
-#' library(cort)
-#' b = Box(rep(0,2),rep(1,2))
-#' WeightedBox(b,matrix(0.5,nrow=2,ncol=2),1,c(1,2))
 WeightedBox = function(box,data,weight=1,split_dims=1:box@dim,min_node_size = 1) {
 
 
@@ -64,32 +43,18 @@ WeightedBox = function(box,data,weight=1,split_dims=1:box@dim,min_node_size = 1)
   return(box)
 }
 
-#' @describeIn WeightedBox-Class Prints simple dispatch of the box
-#' @param object The WeightedBox
 setMethod(f = "show",
           signature = c(object = "WeightedBox"),
           definition = function(object){
             cat("WeightedBox:(w = ",object@weight,"split_dims=",object@split_dims,")[",object@a,"]-> [",object@b,"]")
           })
 
-#' @describeIn WeightedBox-Class Check if the box can be splitted
-#' @param object The WeightedBox
 setMethod(f = "is_splittable",
           signature = c(object = "WeightedBox"),
           definition = function(object){
             return((length(object@split_dims)>1) && (nrow(object@data)>object@min_node_size))
           })
 
-#' @describeIn WeightedBox-Class Splits the box and perform fitting of weights for the density part.
-#' @param object The WeightedBox
-#' @param p_val_threshold The threshold for the p_value of local dimension reduction tests
-#' @param number_max_dim allow to perform optimization only on a subset of dimensions.
-#'
-#' @examples
-#' b = Box(rep(0,5),rep(1,5))
-#' data = apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
-#' wb = WeightedBox(b,data,1,1:5)
-#' new_boxes = split(wb)
 setMethod(f="split",
           signature = c(object="WeightedBox"),
           definition = function(object,p_val_threshold = 0.75, number_max_dim=object@dim){
@@ -167,18 +132,18 @@ Optmize_breakpoint <- function(data,a=0,b=1){
     return(loss)
   }
 
-  optimizer = nloptr::slsqp(
+  optimizer = nloptr::cobyla( # slsqp cobyla, ...
     x0 = rowMeans(z),
     fn = func,
     lower = rep(0,d),
     upper = rep(1,d),
     nl.info=FALSE,
-    control=list(stopval = -Inf, # stop minimization at this value
-                 xtol_rel = 1e-6, # stop on small optimization step
-                 maxeval = 1000, # stop on this many function evaluations
-                 ftol_rel = 0.0, # stop on change times function value
-                 ftol_abs = 0.0, # stop on small change of function value
-                 check_derivatives = FALSE),
+    # control=list(stopval = -Inf, # stop minimization at this value
+    #              xtol_rel = 1e-6, # stop on small optimization step
+    #              maxeval = 1000, # stop on this many function evaluations
+    #              ftol_rel = 0.0, # stop on change times function value
+    #              ftol_abs = 0.0, # stop on small change of function value
+    #              check_derivatives = FALSE),
     # arguments to be passed ot the function :
     t_bin_repr = t(binary_repr),
     d = d,
@@ -187,9 +152,9 @@ Optmize_breakpoint <- function(data,a=0,b=1){
 
 
   bp = a + optimizer$par*(b-a)
-  cat("breakpoints :",bp,"\n")
+  cat("           breakpoints :",bp,"\n")
   p_values = compute_bootstrapped_p_values(z,bp,binary_repr,n,d)
-  cat("p_values    :",p_values,"\n\n")
+  cat("           p_values    :",p_values,"\n\n")
   return(list(bp=bp,p_values=p_values))
 }
 
@@ -229,7 +194,11 @@ compute_bootstrapped_p_values <- function(z,bp,binary_repr,n,d,N = 199){
   }, FUN.VALUE = array(0,c(d,n,N,2^d))) # d, n, N, 2^d, d
 
   f_l = colMeans(apply(cores,2:5,prod))
-  f_k = vapply(1:d,function(d_rem){colMeans(apply((cores[-d_rem,,,,,drop=FALSE])[,,,,d_rem], 2:4, prod))},array(0.,c(N,2^d))) #(N,2^d,d)
+  f_k = vapply(1:d,function(d_rem){
+    plop = cores[-d_rem,,,,d_rem,drop=FALSE]
+    dim(plop) <- dim(plop)[1:4]
+    return(colMeans(apply(plop, 2:4, prod)))
+    },array(0.,c(N,2^d))) #(N,2^d,d)
 
   samples = apply(aperm(f_l^2,c(2,3,1))/lambda_l - 2 * aperm(f_k*f_l,c(2,3,1))/vapply(1:N,function(i){lambda_k},lambda_k),c(2,3),sum)
   p_val = rowMeans(statistic < samples)

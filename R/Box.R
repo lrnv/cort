@@ -28,26 +28,6 @@ NULL
                      TRUE else errors
                  })
 
-
-#' Box class
-#'
-#' The Box class represent a box object with a dimension, a minimum and a maximum point
-#' This class is useful to produce later partitioning trees that are needed
-#' for the CORT algorithm.
-#'
-#' @param a a vector for the minimum of the box
-#' @param b a vector for the maximum of the box
-#' @name Box-Class
-#' @title A simple Box
-#' @rdname Box-Class
-#'
-#' @return a Box object
-#' @export
-#'
-#' @examples
-#' library(cort)
-#' b = Box(rep(1/4,4),rep(3/4,4))
-#' contains(b,rep(1/2,4))
 Box = function(a,b) {
   if((all(a == b) * all(a == 0)) || (any(a == b))){
     return(ZeroBox(length(a)))
@@ -59,18 +39,6 @@ Box = function(a,b) {
               middle_point = a+(b-a)/2))
 }
 
-#' ZeroBox constructor
-#'
-#' This function construct a box with 0 volume.
-#'
-#' @param dim the dimension of the box
-#' @title An empty box
-#'
-#' @return a Box object
-#' @export
-#'
-#' @examples
-#' ZeroBox(4)
 ZeroBox = function(dim){
   return(.Box(a = rep(0,dim),
               b = rep(0,dim),
@@ -79,15 +47,12 @@ ZeroBox = function(dim){
               middle_point = rep(0,dim)))
 }
 
-#' @describeIn Box-Class Prints simple dispatch of the box
-#' @param object The box
 setMethod(f = "show",
           signature = c(object = "Box"),
           definition = function(object){
   cat("Box:[",object@a,"]-> [",object@b,"]")
 })
 
-#' @describeIn intersect-methods Compute the intersection of 2 boxes
 setMethod(f = "intersect",
           signature = c(object = "Box",b="Box"),
           definition = function(object,b){
@@ -101,14 +66,12 @@ setMethod(f = "intersect",
             }
           })
 
-#' @describeIn simu_unif-methods Simulate uniformly from the box
 setMethod(f = "simu_unif",
           signature = c(object = "Box",n="numeric"),
           definition = function(object,n){
             return(t(object@a + matrix(runif(n*object@dim),nrow=object@dim) * (object@b - object@a)))
           })
 
-#' @describeIn contains-methods Check if points are contained in the box
 setMethod(f = "contains",
           signature = c(object = "Box",u="matrix"),
           definition = function(object,u,type="loose"){
@@ -124,7 +87,6 @@ setMethod(f = "contains",
             stop("type should be one of loose, strict of rllc")
           })
 
-#' @describeIn measure_in-methods Measure points in the box
 setMethod(f = "measure_in",
           signature = c(object = "Box",u="matrix"),
           definition = function(object,u){
@@ -132,7 +94,6 @@ setMethod(f = "measure_in",
             apply(pmax(pmin(t(u),object@b) - object@a,0),2,prod)/object@volume
           })
 
-#' @describeIn project-methods projects a box onto sub dimensions.
 setMethod(f = "project",
           signature = c(object = "Box",dimensions = "numeric"),
           definition = function(object,dimensions){
@@ -142,7 +103,6 @@ setMethod(f = "project",
             return(Box(object@a[dimensions],object@b[dimensions]))
           })
 
-#' @describeIn split-methods Splits a box on a given breakpoint and breakpoints dimensions.
 setMethod(f = "split",
           signature = c(object = "Box"),
           definition = function(object,breakpoint,breakpoint_dim){

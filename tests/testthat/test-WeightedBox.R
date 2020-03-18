@@ -25,5 +25,5 @@ test_that("is_splittable works properly", {
 test_that("split behave correctly", {
   testthat::expect_error(split(wb,p_val_threshold=-1,number_max_dim=NULL))
   testthat::expect_error(split(wb,p_val_threshold=-1,number_max_dim=0))
-  testthat::expect_true(length(split(wb,p_val_threshold=0,number_max_dim=7))==16)
+  testthat::expect_equal(length(split(wb,p_val_threshold=2,number_max_dim=7)),16)
 })

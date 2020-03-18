@@ -48,7 +48,7 @@ Cort = function(data,
                 min_node_size=1,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
-                verbose=FALSE) {
+                verbose=TRUE) {
 
   # coerce the data :
   data= as.matrix(data)
@@ -74,17 +74,13 @@ Cort = function(data,
   return(fit(model))
 }
 
-#' @describeIn Cort-Class Prints simple dispatch of the tree
-#' @param object The Cort object
 setMethod(f = "show",
           signature = c(object = "Cort"),
           definition = function(object){
             cat(paste0("Cort copula model: ",nrow(object@data),"x",ncol(object@data),"-dataset and ",
-                       length(object@leaves)," leaves."))
+                       length(object@leaves)," leaves"))
           })
 
-#' @describeIn Cort-Class Fit the tree
-#' @param object The Cort object
 setMethod(f="fit",
           signature = c(object="Cort"),
           definition = function(object){
@@ -94,7 +90,7 @@ setMethod(f="fit",
             continue = TRUE
             while(continue){
               are_splittables = purrr::map_lgl(object@leaves,is_splittable)
-              if(object@verbose){cat("    ",sum(are_splittables),"leaves to split...")}
+              if(object@verbose){cat("    ",sum(are_splittables),"leaves to split...\n")}
               if(any(are_splittables)){
 
                 # Split every box :
