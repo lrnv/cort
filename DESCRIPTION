@@ -14,6 +14,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 Imports: 
+    Rdpack,
     magrittr,
     methods,
     purrr,
@@ -24,13 +25,20 @@ BugReports: https://github.com/lrnv/cort/issues
 Suggests: 
     covr,
     testthat (>= 2.1.0),
-    spelling
+    spelling,
+    knitr,
+    rmarkdown
 Language: en-US
 Collate: 
     'utils-pipe.R'
     'utils.R'
     'generics.R'
     'Box.R'
-    'Model.R'
-    'Tree.R'
+    'ConvexCombCopula.R'
     'WeightedBox.R'
+    'Cort.R'
+    'empiricalCopula.R'
+    'cbCopula.R'
+    'cbkmCopula.R'
+VignetteBuilder: knitr
+RdMacros: Rdpack
