@@ -1,4 +1,4 @@
-#' @include generics.R
+#' @include generics.R Box.R
 NULL
 
 .WeightedBox = setClass(Class = "WeightedBox", contains=c("Box"),
@@ -57,7 +57,7 @@ setMethod(f = "is_splittable",
 
 setMethod(f="split",
           signature = c(object="WeightedBox"),
-          definition = function(object,p_val_threshold = 0.75, number_max_dim=object@dim){
+          definition = function(object,p_val_threshold = 0.75, number_max_dim=object@dim,verbose=FALSE){
             if(!is_splittable(object)){return(list(object))}
 
             # Randomize splitting dimensions :
@@ -76,7 +76,8 @@ setMethod(f="split",
             if (is_splittable(object)){ #if it is splittable"
               optimizer = Optmize_breakpoint(object@data[,object@split_dims],
                                              object@a[object@split_dims],
-                                             object@b[object@split_dims])
+                                             object@b[object@split_dims],
+                                             verbose=verbose)
 
 
               bp = optimizer$bp # for the moment we split in the middle.
@@ -115,7 +116,7 @@ setMethod(f="split",
             return(list(object))
           })
 
-Optmize_breakpoint <- function(data,a=0,b=1){
+Optmize_breakpoint <- function(data,a=0,b=1,verbose=FALSE){
 
   # normalise the data # it is transposed
   z = (t(data) - a)/(b-a)
@@ -152,9 +153,9 @@ Optmize_breakpoint <- function(data,a=0,b=1){
 
 
   bp = a + optimizer$par*(b-a)
-  cat("           breakpoints :",bp,"\n")
+  if(verbose) cat("           breakpoints :",bp,"\n")
   p_values = compute_bootstrapped_p_values(z,bp,binary_repr,n,d)
-  cat("           p_values    :",p_values,"\n\n")
+  if (verbose) cat("           p_values    :",p_values,"\n\n")
   return(list(bp=bp,p_values=p_values))
 }
 

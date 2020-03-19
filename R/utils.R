@@ -1,5 +1,4 @@
-
-
+#### A function to normalise the data that is imputed to methods of the package
 normalise_data <- function(u,dim=NULL){
 
   if (!is.matrix(u))
@@ -14,21 +13,19 @@ normalise_data <- function(u,dim=NULL){
   return (u)
 }
 
+# convert integrer to binary format
 number2binary = function(number, noBits) {
   binary_vector = rev(as.numeric(intToBits(number)))
   binary_vector[-(1:(length(binary_vector) - noBits))]
 }
 
-# A `sample` function more efficient (cf ?sample,
-# exemples)
+# A `sample` function more efficient (cf ?sample)
 resample <- function(x, ...) x[sample.int(length(x), ...)]
 
 
-
-
-
-
-
+boxes_from_points <- function(points,m){
+  t(floor(t(points)*m)/m)
+}
 
 
 
