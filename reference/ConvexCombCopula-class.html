@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe operator — %&gt;% • cort</title>
+<title>Convex Combination of copulas. — ConvexCombCopula-class • cort</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Pipe operator — %&gt;%" />
-<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
+<meta property="og:title" content="Convex Combination of copulas. — ConvexCombCopula-class" />
+<meta property="og:description" content="ConvexCombCopula class" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,23 +126,75 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipe operator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/utils-pipe.R'><code>R/utils-pipe.R</code></a></small>
-    <div class="hidden name"><code>pipe.Rd</code></div>
+    <h1>Convex Combination of copulas.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/ConvexCombCopula.R'><code>R/ConvexCombCopula.R</code></a></small>
+    <div class="hidden name"><code>ConvexCombCopula-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <code>magrittr::%&gt;%</code> for details.</p>
+    <p>ConvexCombCopula class</p>
     </div>
 
-    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
+    <pre class="usage"><span class='fu'>ConvexCombCopula</span>(<span class='no'>copulas</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>copulas</span>)))
 
+<span class='co'># S4 method for ConvexCombCopula</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>copulas</th>
+      <td><p>a list of copulas of same dimension</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>a vector of (positive) weights</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>ConvexCombCopula object</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a ConvexCombCopula object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The ConvexCombcopula class is used to build convex combinations of copulas,
+with given positives weights. The rCopula and pCopula functions works for
+those copulas, assuming they work for the given copulas that we combined
+in a convex way.</p>
+    <h2 class="hasAnchor" id="methods-by-generic-"><a class="anchor" href="#methods-by-generic-"></a>Methods (by generic)</h2>
+
+    
+<ul>
+<li><p><code>dim</code>: dimension</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cort</span>)
+<span class='no'>dataset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='no'>rank</span>)/(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>LifeCycleSavings</span>)+<span class='fl'>1</span>)
+<span class='no'>copulas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='fu'><a href='cbCopula.html'>cbCopula</a></span>(<span class='no'>dataset</span>[,<span class='fl'>2</span>:<span class='fl'>3</span>],<span class='kw'>m</span><span class='kw'>=</span><span class='fl'>10</span>),
+  <span class='fu'><a href='cbCopula.html'>cbCopula</a></span>(<span class='no'>dataset</span>[,<span class='fl'>2</span>:<span class='fl'>3</span>],<span class='kw'>m</span><span class='kw'>=</span><span class='fl'>5</span>)
+)
+<span class='no'>alpha</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>)
+(<span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'>ConvexCombCopula</span>(<span class='no'>copulas</span>,<span class='no'>alpha</span>))</div><div class='output co'>#&gt; This is a ConvexCombCopula , with : 
+#&gt;    dim = 2 
+#&gt;    number of copulas = 2 
+#&gt;    alpha = 0.2 0.8 
+#&gt; sub-copulas can be accessed trhough the @copulas slot</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#methods-by-generic-">Methods (by generic)</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

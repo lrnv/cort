@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe operator — %&gt;% • cort</title>
+<title>cbkmCopula contructor — cbkmCopula • cort</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="Pipe operator — %&gt;%" />
-<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
+<meta property="og:title" content="cbkmCopula contructor — cbkmCopula" />
+<meta property="og:description" content="Given some empirical data, and given some known copula estimation on a sub-vector of this data,
+the checkerboard with known margins construction consist in
+a conditional pattern where the checkerboard part is conditional on the known part of the copula." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,23 +128,80 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipe operator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/utils-pipe.R'><code>R/utils-pipe.R</code></a></small>
-    <div class="hidden name"><code>pipe.Rd</code></div>
+    <h1>cbkmCopula contructor</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/cbkmCopula.R'><code>R/cbkmCopula.R</code></a></small>
+    <div class="hidden name"><code>cbkmCopula.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <code>magrittr::%&gt;%</code> for details.</p>
+    <p>Given some empirical data, and given some known copula estimation on a sub-vector of this data,
+the checkerboard with known margins construction consist in
+a conditional pattern where the checkerboard part is conditional on the known part of the copula.</p>
     </div>
 
-    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
+    <pre class="usage"><span class='fu'>cbkmCopula</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>m</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>x</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>x</span>)),
+  <span class='kw'>pseudo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>margins_numbers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>known_cop</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>the data to be used</p></td>
+    </tr>
+    <tr>
+      <th>m</th>
+      <td><p>checkerboard parameter</p></td>
+    </tr>
+    <tr>
+      <th>pseudo</th>
+      <td><p>Boolean, defaults to <code>FALSE</code>. Set to <code>TRUE</code> if you are already providing pseudo-data into the <code>x</code> argument.</p></td>
+    </tr>
+    <tr>
+      <th>margins_numbers</th>
+      <td><p>numeric integers which determines the margins for the known copula.</p></td>
+    </tr>
+    <tr>
+      <th>known_cop</th>
+      <td><p>Copula a copula object representing the known copula for the selected margins.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>a cbCopula object</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cort</span>)
+<span class='no'>dataset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='no'>rank</span>)/(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>LifeCycleSavings</span>)+<span class='fl'>1</span>)
+<span class='no'>known_copula</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cbCopula.html'>cbCopula</a></span>(<span class='no'>dataset</span>[,<span class='fl'>2</span>:<span class='fl'>3</span>],<span class='kw'>m</span><span class='kw'>=</span><span class='fl'>10</span>)
+(<span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'>cbkmCopula</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>dataset</span>,
+                  <span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+                  <span class='kw'>pseudo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                  <span class='kw'>margins_numbers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>),
+                  <span class='kw'>known_cop</span> <span class='kw'>=</span> <span class='no'>known_copula</span>))</div><div class='output co'>#&gt; This is a cbkmCopula , with : 
+#&gt;    dim = 5 
+#&gt;    n = 50 
+#&gt;    m = 5 5 5 5 5 
+#&gt; The variables names are :  sr pop15 pop75 dpi ddpi 
+#&gt; The variables  2 3  have a known copula  given by :
+#&gt; 	This is a cbCopula , with : 
+#&gt; 	   dim = 2 
+#&gt; 	   n = 50 
+#&gt; 	   m = 10 10 
+#&gt; 	The variables names are :  pop15 pop75</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
