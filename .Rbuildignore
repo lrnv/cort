@@ -8,3 +8,6 @@
 ^codecov\.yml$
 ^tic\.R$
 ^appveyor\.yml$
+^\.ccache$
+^\.github$
+^clang-.*
