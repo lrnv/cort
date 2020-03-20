@@ -42,7 +42,7 @@ NULL
 #'
 #' @examples
 #' library(cort)
-#' \donttest{(Cort(LifeCycleSavings))}
+#' (Cort(LifeCycleSavings[,1:3]))
 Cort = function(x,
                 p_value_for_dim_red=0.75,
                 min_node_size=1,

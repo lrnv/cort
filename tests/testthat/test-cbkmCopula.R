@@ -2,18 +2,18 @@ context("Testing the class cbkmCopula...")
 library(cort)
 
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
-known_clayton <- true_copula <- cbCopula(dataset[,2:3],m=10)
+true_copula <- cbCopula(dataset[,2:3],m=5)
 
 cop <- cbkmCopula(x = dataset,
-                  m = 5,
+                  m = 2,
                   pseudo = TRUE,
                   margins_numbers = c(2,3),
-                  known_cop = known_clayton)
+                  known_cop = true_copula)
 cop2 <- cbkmCopula(x = dataset,
-                  m = 5,
+                  m = 2,
                   pseudo = TRUE,
                   margins_numbers = c(2,3),
-                  known_cop = known_clayton)
+                  known_cop = true_copula)
 
 u=matrix(rep(0,15),ncol=5)
 v=matrix(seq(0,1,length.out=15),ncol=5)

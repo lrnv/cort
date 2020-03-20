@@ -72,7 +72,6 @@ setMethod(f="split",
               non_taken_dims = numeric()
             }
 
-
             if (is_splittable(object)){ #if it is splittable"
               optimizer = Optmize_breakpoint(object@data[,object@split_dims],
                                              object@a[object@split_dims],
@@ -118,21 +117,31 @@ setMethod(f="split",
 
 Optmize_breakpoint <- function(data,a=0,b=1,verbose=FALSE){
 
-  # normalise the data # it is transposed
+  # Compute prerequisites :
+  n = nrow(data)
+  d = ncol(data)
   z = (t(data) - a)/(b-a)
-  n = ncol(z)
-  d = nrow(z)
 
-  binary_repr = t(sapply(1:(2^d),number2binary,d))
+  binary_repr = sapply(1:(2^d),number2binary,d)
+  dim(binary_repr) = c(d,2^d,1)
+  binary_repr = aperm(binary_repr,c(1,3,2))
+  binary_repr = binary_repr[,rep(1,n),,drop=FALSE]
 
-  func = function(bp,t_bin_repr,d,z){
-    min = bp*t_bin_repr
-    max = bp^(1-t_bin_repr)
-    f = purrr::map_dbl(1:2^d, ~mean(apply((min[,.x] <= z)*(z < max[,.x]),2,prod)))
-    loss = - sum( (f^2) / apply(max-min,2,prod))
+
+  z_rep = z
+  dim(z_rep) = c(d,n,1)
+  z_rep = z_rep[,,rep(1,2^d),drop=FALSE]
+
+  # The loss function :
+  func = function(bp,binary_repr,d,z_rep){
+    min = bp*binary_repr
+    max = bp^(1-binary_repr)
+    f = colMeans(colSums((min <= z_rep)&(z_rep<max))==d)
+    loss = - sum( (f^2) / apply(max[,1,]-min[,1,],2,prod) )
     return(loss)
   }
 
+  # Optimize it :
   optimizer = nloptr::cobyla( # slsqp cobyla, ...
     x0 = rowMeans(z),
     fn = func,
@@ -145,64 +154,79 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose=FALSE){
     #              ftol_rel = 0.0, # stop on change times function value
     #              ftol_abs = 0.0, # stop on small change of function value
     #              check_derivatives = FALSE),
-    # arguments to be passed ot the function :
-    t_bin_repr = t(binary_repr),
+    # arguments to be passed to the function :
+    binary_repr = binary_repr,
     d = d,
-    z = z
+    z_rep = z_rep
   )
 
-
+  # Return the breakpoint (re-normalized to the box) :
   bp = a + optimizer$par*(b-a)
   if(verbose) cat("           breakpoints :",bp,"\n")
-  p_values = compute_bootstrapped_p_values(z,bp,binary_repr,n,d)
+
+  # Compute the p_values :
+  p_values = compute_bootstrapped_p_values(z,bp)
   if (verbose) cat("           p_values    :",p_values,"\n\n")
   return(list(bp=bp,p_values=p_values))
 }
 
-compute_bootstrapped_p_values <- function(z,bp,binary_repr,n,d,N = 199){
+compute_bootstrapped_p_values <- function(z,bp,N = 999){
 
   # prerequisites :
   d = nrow(z)
   n = ncol(z)
 
+  binary_repr = t(sapply(1:(2^d),number2binary,d))
   min = bp*t(binary_repr)
   max = bp^t(1-binary_repr)
+
 
   lambda_l = apply(max-min,2,prod) # 2^d
   lambda_k = vapply(1:d,function(d_rem){lambda_l/((max-min)[d_rem,])},lambda_l) # 2^d * d
 
-  # first, we comput the empirical value of the statistic :
+  # Compute empirical value of the statistic :
   core = vapply(1:2^d,function(.x){((min[,.x]<=z)*(max[,.x]>z))==1},FUN.VALUE = z) # dims : d, n, 2^d
 
-  f_l = colMeans(apply(core,2:3,prod)) # 2^d
-  f_k = vapply(1:d,function(d_rem){ colMeans(apply(core[-d_rem,,,drop=FALSE],2:3,prod))},f_l) # 2^d, d
+  f_l = colMeans(colSums(core,dims=1)==d) # 2^d
+  f_k = vapply(1:d,function(d_rem){ colMeans(colSums(core[-d_rem,,,drop=FALSE],dims=1)==d-1)},f_l) # 2^d, d
 
   statistic <- sum(f_l^2/lambda_l) -2 * colSums(f_k * f_l / lambda_k) # d
 
-  # then we bootstrap it :
-  z_rep = vapply(1:N,function(i){z},z) # d, n, N
 
-  z_repeats = vapply(1:d,function(i){
-    z = z_rep
-    z[i,,] = runif(n*N)
-    z
-  },z_rep) # d, n, N, D=d
 
-  cores = vapply(1:d,function(d_rem){
-    vapply(1:2^d,function(.x){
-      ((min[,.x]<=z_repeats[,,,d_rem])*(max[,.x]>z_repeats[,,,d_rem]))==1
-    }, FUN.VALUE = z_repeats[,,,d_rem])
-  }, FUN.VALUE = array(0,c(d,n,N,2^d))) # d, n, N, 2^d, d
+  # Construct bootstrapped core:
+  z_boot = z
+  dim(z_boot) = c(d,n,1,1,1)
+  z_boot = z_boot[,,rep(1,N),,rep(1,d),drop=FALSE]
 
-  f_l = colMeans(apply(cores,2:5,prod))
-  f_k = vapply(1:d,function(d_rem){
-    plop = cores[-d_rem,,,,d_rem,drop=FALSE]
-    dim(plop) <- dim(plop)[1:4]
-    return(colMeans(apply(plop, 2:4, prod)))
-    },array(0.,c(N,2^d))) #(N,2^d,d)
+  index = diag(d)==1
+  dim(index) = c(d,d,1,1,1)
+  index = aperm(index,c(1,3,4,5,2))
+  z_boot[index[,rep(1,n),rep(1,N),,]] <- runif(n*N*d)
+  z_boot = z_boot[,,,rep(1,2^d),]
 
-  samples = apply(aperm(f_l^2,c(2,3,1))/lambda_l - 2 * aperm(f_k*f_l,c(2,3,1))/vapply(1:N,function(i){lambda_k},lambda_k),c(2,3),sum)
-  p_val = rowMeans(statistic < samples)
+  min_boot = min
+  dim(min_boot) = c(d,2^d,1,1,1)
+  min_boot = aperm(min_boot,c(1,3,4,2,5))
+  min_boot = min_boot[,rep(1,n),rep(1,N),,rep(1,d)]
+
+  max_boot = max
+  dim(max_boot) = c(d,2^d,1,1,1)
+  max_boot = aperm(max_boot,c(1,3,4,2,5))
+  max_boot = max_boot[,rep(1,n),rep(1,N),,rep(1,d)]
+
+  core_boot = (min_boot <= z_boot) & (max_boot > z_boot) # d, n, N, 2^d, d
+
+  # Compute bootstrapped_statistic :
+  f_l_boot = colMeans(colSums(core_boot,dims=1) == d)
+
+  f_k_boot = vapply(1:d,function(d_rem){
+    colMeans(colSums(core_boot[-d_rem,,,,d_rem,drop=FALSE],dims=1)==(d-1))
+  },array(0.,c(N,2^d))) #(N,2^d,d)
+
+  # Summarise :
+  bootstrap_samples = apply(aperm(f_l_boot^2,c(2,3,1))/lambda_l - 2 * aperm(f_k_boot*f_l_boot,c(2,3,1))/vapply(1:N,function(i){lambda_k},lambda_k),c(2,3),sum)
+  p_val = rowMeans(statistic < bootstrap_samples)
   return(p_val)
 }
 

@@ -51,5 +51,5 @@ This class implements the CORT algorithm to a fit a multivariate copula using pi
 
 \examples{
 library(cort)
-\donttest{(Cort(LifeCycleSavings))}
+(Cort(LifeCycleSavings[,1:3]))
 }
