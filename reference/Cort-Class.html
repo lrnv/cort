@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -195,64 +195,43 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cort</span>)
-(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>))</div><div class='output co'>#&gt; Splitting...
+(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Splitting...
 #&gt;      1 leaves to split...
-#&gt;            breakpoints : 0.4679535 0.4313724 0.4705358 0.3930684 0.5447669 
-#&gt;            p_values    : 0 0 0 0 0.01507538 
+#&gt;            breakpoints : 0.4550217 0.5331809 0.490196 
+#&gt;            p_values    : 0.003003003 0 0 
 #&gt; 
-#&gt;      10 leaves to split...
-#&gt;            breakpoints : 0.3344338 0.2992473 0.9476261 0.9607841 0.4726142 
-#&gt;            p_values    : 0.4773869 0.3015075 0.1708543 0.1105528 0.3768844 
+#&gt;      5 leaves to split...
+#&gt;            breakpoints : 0.2941176 0.3040362 0.9092953 
+#&gt;            p_values    : 0.7767768 0.2552553 0.1641642 
 #&gt; 
-#&gt;            breakpoints : 0.1142149 0.6702751 0.3776094 0.1218912 0.01960776 
-#&gt;            p_values    : 1 0.6582915 0.3266332 0.3567839 0.160804 
+#&gt;            breakpoints : 0.2011664 0.7173226 0.4313724 
+#&gt;            p_values    : 0.7937938 0.6166166 0.8558559 
 #&gt; 
-#&gt;            breakpoints : 0.2305007 0.9411766 0.1317509 0.1805018 0.7516609 
-#&gt;            p_values    : 0.6331658 0.1758794 0.04522613 0.4673367 0.5226131 
+#&gt;            breakpoints : 0.9803922 0.3604974 0.4405684 
+#&gt;            p_values    : 0.04704705 0.1331331 0.1771772 
 #&gt; 
-#&gt;            breakpoints : 0.1439065 0.88433 0.3921569 0.5231292 0.3472491 
-#&gt;            p_values    : 0.2914573 0.2261307 0.6331658 1 0.5276382 
+#&gt;            breakpoints : 0.6496815 0.2156862 0.7118837 
+#&gt;            p_values    : 0.8388388 0.8248248 0.9269269 
 #&gt; 
-#&gt;            breakpoints : 0.3725489 0.4704211 0.6391404 0.8717916 0.2417029 
-#&gt;            p_values    : 0.5175879 0 0.5577889 0.1356784 0.2361809 
-#&gt; 
-#&gt;            breakpoints : 0.6681163 0.3724812 0.7866212 0.8431373 0.407708 
-#&gt;            p_values    : 0.1356784 0.05527638 0.6331658 0.06030151 0.6080402 
-#&gt; 
-#&gt;            breakpoints : 0.7271346 0.1322973 0.7008493 0.6840725 0.6666667 
-#&gt;            p_values    : 0.1256281 0.8140704 0.2562814 0.2964824 0.4924623 
-#&gt; 
-#&gt;            breakpoints : 0.7331839 0.9102352 0.3229731 0.3921569 0.3963459 
-#&gt;            p_values    : 0.7638191 0.321608 1 0.8341709 1 
-#&gt; 
-#&gt;            breakpoints : 0.9607843 0.7839649 0.04412825 0.16251 0.8292015 
-#&gt;            p_values    : 1 1 0 0.1457286 1 
-#&gt; 
-#&gt;            breakpoints : 0.6364209 0.4705883 0.5332111 0.4904903 0.2087324 
-#&gt;            p_values    : 0.09045226 0 0.2361809 0 0.4020101 
+#&gt;            breakpoints : 0.9607844 0.7772614 0.1425547 
+#&gt;            p_values    : 0.2432432 0.6726727 0.6686687 
 #&gt; 
 #&gt;      4 leaves to split...
-#&gt;            breakpoints : 0.7862366 0.235294 0.2690242 0.3511927 
-#&gt;            p_values    : 0.5879397 0.6180905 0.1306533 0.5678392 
+#&gt;            breakpoints : 0.05882351 0.9673573 
+#&gt;            p_values    : 0.1151151 0.06306306 
 #&gt; 
-#&gt;            breakpoints : 0.7058823 0.595931 0.490952 0.7893786 
-#&gt;            p_values    : 0.07035176 0.07035176 0.2864322 0.5025126 
+#&gt;            breakpoints : 0.5294118 0.5955174 
+#&gt;            p_values    : 0.5985986 0.4254254 
 #&gt; 
-#&gt;            breakpoints : 0.7254902 0.7711599 0.9128584 0.6002909 
-#&gt;            p_values    : 0.2562814 0.5728643 1 0.7135678 
+#&gt;            breakpoints : 0.6671607 0.9803921 0.3375844 
+#&gt;            p_values    : 0.5425425 0.04004004 0.5545546 
 #&gt; 
-#&gt;            breakpoints : 0.9119542 0.9476338 0.8039576 0.745098 
-#&gt;            p_values    : 0.2361809 0.1005025 0.1256281 0.1256281 
+#&gt;            breakpoints : 0.7096229 0.7647059 0.07103174 
+#&gt;            p_values    : 0.5125125 0.05905906 0.1161161 
 #&gt; 
-#&gt;      3 leaves to split...
-#&gt;            breakpoints : 0.7843137 0.3391889 0.3171114 0.3843885 
-#&gt;            p_values    : 0.1507538 0.3316583 0.5175879 0.2160804 
-#&gt; 
-#&gt;            breakpoints : 0.8845439 0.3153083 0.2426719 0.3039215 
-#&gt;            p_values    : 1 0.5678392 0.4221106 0.5376884 
-#&gt; 
-#&gt;            breakpoints : 0.6583994 0.8708779 0.6666667 
-#&gt;            p_values    : 0.120603 0.2462312 0.1809045 
+#&gt;      1 leaves to split...
+#&gt;            breakpoints : 0.5294118 0.6923635 
+#&gt;            p_values    : 0.2422422 0.3573574 
 #&gt; 
 #&gt;      0 leaves to split...
 #&gt; Enforcing constraints...
@@ -261,8 +240,8 @@
 #&gt;               (c) Bartolomeo Stellato,  Goran Banjac
 #&gt;         University of Oxford  -  Stanford University 2019
 #&gt; -----------------------------------------------------------------
-#&gt; problem:  variables n = 317, constraints m = 458
-#&gt;           nnz(P) + nnz(A) = 29362
+#&gt; problem:  variables n = 49, constraints m = 98
+#&gt;           nnz(P) + nnz(A) = 1673
 #&gt; settings: linear system solver = qdldl,
 #&gt;           eps_abs = 1.0e-06, eps_rel = 1.0e-06,
 #&gt;           eps_prim_inf = 1.0e-06, eps_dual_inf = 1.0e-06,
@@ -273,23 +252,19 @@
 #&gt;           warm start: on, polish: on, time_limit: off
 #&gt; 
 #&gt; iter   objective    pri res    dua res    rho        time
-#&gt;    1  -1.4996e+02   6.64e-02   1.74e+05   1.00e-01   7.21e-03s
-#&gt;  200  -8.2113e+01   1.79e-04   7.36e-01   1.07e+00   2.66e-02s
-#&gt;  400  -7.9980e+01   1.45e-05   5.56e-02   1.07e+00   4.36e-02s
-#&gt;  600  -7.9844e+01   5.29e-06   7.78e-03   1.07e+00   6.04e-02s
-#&gt;  800  -7.9822e+01   5.54e-06   4.60e-03   1.07e+00   7.79e-02s
-#&gt; 1000  -7.9815e+01   5.53e-06   2.69e-03   1.07e+00   9.51e-02s
-#&gt; 1200  -7.9811e+01   5.51e-06   1.57e-03   1.07e+00   1.12e-01s
-#&gt; 1250  -7.9809e+01   4.06e-07   1.97e-03   1.07e+00   1.16e-01s
+#&gt;    1  -1.2705e+05   3.04e-02   1.26e+07   1.00e-01   4.21e-04s
+#&gt;  200  -1.4186e+04   1.26e-03   2.58e+03   5.67e-01   1.69e-03s
+#&gt;  400  -5.3780e+02   4.44e-06   1.11e+02   3.81e-01   2.97e-03s
+#&gt;  600  -5.3216e+01   4.40e-07   1.11e+01   3.81e-01   4.14e-03s
 #&gt; 
 #&gt; status:               solved
 #&gt; solution polish:      unsuccessful
-#&gt; number of iterations: 1250
-#&gt; optimal objective:    -79.8093
-#&gt; run time:             1.34e-01s
-#&gt; optimal rho estimate: 6.89e-01
+#&gt; number of iterations: 600
+#&gt; optimal objective:    -53.2155
+#&gt; run time:             5.19e-03s
+#&gt; optimal rho estimate: 2.02e-01
 #&gt; 
-#&gt; Done !</div><div class='output co'>#&gt; Cort copula model: 50x5-dataset and 317 leaves</div></pre>
+#&gt; Done !</div><div class='output co'>#&gt; Cort copula model: 50x3-dataset and 49 leaves</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
