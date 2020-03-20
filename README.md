@@ -11,22 +11,22 @@
 <!-- badges: end -->
 
 
-The goal of cort is to ...
+The `cort` package provides S4 classes to deal with certain non-parametrical copula models : cherckerboard constructions, plain or with known margins, convex mixtures of copula models, and the CORT algorithm. This algorithm mimics the classical CART regression estimator to estimate copula, producing a piecewise constant density estimator that is both non-parametric, convergent, and memory-efficient. It includes a localised dimension reduction procedure. Last but not least, we provide a way of baggin copula models that is quite convenient with the CORT algorithm, producing a copula forest. 
 
 ## Installation
 
-You can install the released version of cort from [CRAN](https://CRAN.R-project.org) with:
+In the future, you we be able to install the released version of cort from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("cort")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+but for now, only the upstream version is avaliable. it can be installed with : 
 
 ``` r
-library(cort)
-## basic example code
+devtools::install_github("lrnv/cort")
 ```
+
+
+To see exemples of what can be done with this package, see the vignettes. 
 
