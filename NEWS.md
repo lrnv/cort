@@ -1,4 +1,9 @@
-# cort (development version)
+# cort 0.0.0.9002
+
+* Added the CortForest model
+* Added many methods to Cort and CortForest
+* Lightened the Cort objects. 
+* Fasten the p-values computations
 
 # cort 0.0.0.9001
 
@@ -9,5 +14,5 @@
 # cort 0.0.0.9000
 
 * Added a `NEWS.md` file to track changes to the package.
-* Making the developpements settings : travis, appveyor, github actions, pkgdowm, ...
+* Making the workspace settings : travis, appveyor, github actions, pkgdowm, ...
 * We will target CRAN with this package. 
