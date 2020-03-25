@@ -31,6 +31,11 @@ testthat::test_that("dimention of cbCopula is equal dimention of data", {
 })
 
 testthat::test_that("pCopula values are OK",{
+  testthat::expect_true(all(pCopula(matrix(seq(0.3,1,length.out = 10),nrow=2),cop) >= c(0,0)))
+  testthat::expect_true(all(pCopula(matrix(seq(0.3,1,length.out = 10),nrow=2),cop) <= c(1,1)))
+  testthat::expect_equal(pCopula(matrix(seq(0,0,length.out = 10),nrow=2),cop),c(0,0))
+  testthat::expect_error(pCopula(matrix(seq(0.3,1,length.out = 8),nrow=2),cop))
+
   testthat::expect_equal(round(pCopula(matrix(seq(0.3,1,length.out = 10),nrow=2),cop),3),c(0,0.024))
   testthat::expect_equal(pCopula(matrix(seq(1,1,length.out = 10),nrow=2),cop),c(1,1))
   testthat::expect_equal(pCopula(matrix(seq(0,0,length.out = 10),nrow=2),cop),c(0,0))
@@ -54,10 +59,11 @@ testthat::test_that("rCopula output is ok",{
 
 testthat::test_that("dCopula is ok",{
   testthat::expect_equal(dCopula(u,cop),rep(0.02,3))
+  testthat::expect_error(dCopula(matrix(seq(0.3,1,length.out = 8),nrow=2),cop))
 })
 
 
-testthat::test_that("rCopula output is ok ofr COnvexCombCopula",{
+testthat::test_that("rCopula output is ok for cbCopula",{
   testthat::expect_equivalent(rCopula(0,cop),matrix(ncol=4,nrow=0))
   testthat::expect_is(rCopula(10,cop),"matrix")
   testthat::expect_equal(ncol(rCopula(10,cop)),dim(cop))

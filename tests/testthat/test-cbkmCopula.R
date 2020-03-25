@@ -75,7 +75,9 @@ testthat::test_that("rCopula output is ok for cbkmCopula",{
 })
 
 
-
+testthat::test_that("dCopula is not defined for cbkm copula",{
+  testthat::expect_error(dCopula(rCopula(10,cop),cop))
+})
 
 
 
