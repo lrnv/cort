@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "oskar.laverny@gmail.com",
            comment = c(ORCID = "0000-0002-7508-999X"))
-Description: Provides S4 classes and functions to fit several copula models, mainly empirical ones or non-parametrical. The classical Checkerboard copula are implemented, with a possiiblity the make the checkerboard parameter vary by dimension. A version of this checkerboard allows for prior knowledge of several multivariate margins of the model, and construct the rest of the copula with a special type of checkerboards. Furthermore, we provide an efficient way to produce mixture of copula classes. We also implemented a generic way of measuring d-dimensional boxes with a copula. Finaly, we provide an implementation of the full CORT estimator (including the localised dimension redution procedure), and we propose a bagging machanisme for this model.
+Description: Provides S4 classes and functions to fit several copula models, mainly empirical ones or non-parametrical. The classical Checkerboard copula are implemented, with an option to make the checkerboard parameter vary by dimension. A version of this checkerboard allows for prior knowledge of several multivariate margins of the model, and construct the rest of the copula with a special type of checkerboards. Furthermore, we provide an efficient way to produce mixture of copula classes. We also implemented a generic way of measuring d-dimensional boxes with a copula. Finaly, we provide an implementation of the full CORT estimator (including the localised dimension reduction procedure), and we propose a bagging mechanisme for this model.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -37,6 +37,7 @@ Collate:
     'ConvexCombCopula.R'
     'WeightedBox.R'
     'Cort.R'
+    'CortForest.R'
     'empiricalCopula.R'
     'cbCopula.R'
     'cbkmCopula.R'
