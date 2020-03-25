@@ -170,3 +170,168 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
+
+
+#' Spearman's rho matrix of a copula
+#'
+#' Computes the bivariate Spearmann's rho matrix for a copula.
+#'
+#'
+#' @param copula the copula object
+#'
+#' @return the density of the copula on each observation
+#' @exportMethod biv_rho
+#' @name biv_rho
+#' @rdname biv_rho-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
+
+#' Kendall's tau matrix of a copula
+#'
+#' Computes the bivariate Kendall's tau matrix for a copula.
+#'
+#'
+#' @param copula the copula object
+#'
+#' @return the density of the copula on each observation
+#' @exportMethod biv_tau
+#' @name biv_tau
+#' @rdname biv_tau-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
+
+
+
+
+#' Loss of the model
+#'
+#' Compute the loss of the model
+#'
+#'
+#' @param object the copula object
+#'
+#' @return the ISE loss of the model
+#' @exportMethod loss
+#' @name loss
+#' @rdname loss-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("loss", function(object) standardGeneric("loss"))
+
+
+#' Constriant influence of the model
+#'
+#' Compute the constriant influence of the model
+#'
+#'
+#' @param object the copula object
+#'
+#' @return The constriant influence statistic of the model
+#' @exportMethod constraint_infl
+#' @name constraint_infl
+#' @rdname constraint_infl-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
+
+#' Quadratic norm of the model
+#'
+#' Compute the L2 norm of the model
+#'
+#'
+#' @param object the copula object
+#'
+#' @return the ISE quad_norm of the model
+#' @exportMethod quad_norm
+#' @name quad_norm
+#' @rdname quad_norm-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
+
+#' Quadratic product wiht data of the model
+#'
+#' Compute the quadratic product with the empirical denisty from the data
+#'
+#'
+#' @param object the copula object
+#'
+#' @return the quad_prod_with_data of the model
+#' @exportMethod quad_prod_with_data
+#' @name quad_prod_with_data
+#' @rdname quad_prod_with_data-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_with_data"))
+
+#' Quadratic product of 2 trees
+#'
+#' Compute the L2 quandratic product of 2 trees
+#'
+#'
+#' @param object : the tree
+#' @param other_tree : the other tree
+#'
+#' @return the quadratic product between the trees
+#' @exportMethod quad_prod
+#' @name quad_prod
+#' @rdname quad_prod-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod"))
+
+
+#' Kendall function
+#'
+#' Compute the kendall cdf from the model in a point t
+#'
+#'
+#' @param object : the tree
+#' @param t : the value where to compute the kendall function, may be a vector of evaluation values;
+#'
+#' @return the quadratic product between the trees
+#' @exportMethod kendall_func
+#' @name kendall_func
+#' @rdname kendall_func-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("kendall_func", function(object,t) standardGeneric("kendall_func"))
+
+
+#' Projection on smaller dimensions
+#'
+#' Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree.
+#'
+#'
+#' @param object : the tree
+#' @param dims the set of dimensions
+#'
+#' @return nother cort object
+#' @exportMethod project_on_dims
+#' @name project_on_dims
+#' @rdname project_on_dims-methods
+#'
+#' @examples
+#' library(cort)
+#' # The exemples needs to be re-done.
+setGeneric("project_on_dims", function(object,dims) standardGeneric("project_on_dims"))
+
+
