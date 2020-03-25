@@ -11,6 +11,8 @@ alpha <- c(1,4)
 
 cop <- ConvexCombCopula(copulas,alpha)
 
+quiet(show(cop))
+
 testthat::test_that("inputed argument for copulas is handeld in the right way.", {
   testthat::expect_warning(ConvexCombCopula(copulas = "abc"))
   testthat::expect_equal(suppressWarnings(ConvexCombCopula(copulas[[1]])),copulas[[1]])

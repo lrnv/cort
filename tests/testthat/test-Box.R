@@ -6,6 +6,8 @@ b2 = Box(rep(0,4),rep(1/2,4))
 b3 = Box(rep(0,3),rep(1/2,3))
 b4 = Box(rep(9/10,4),rep(1,4))
 
+quiet(show(b))
+
 b0 = Box(0,0)
 zb = ZeroBox(1)
 

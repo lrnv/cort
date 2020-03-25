@@ -15,6 +15,9 @@ cop2 <- cbkmCopula(x = dataset,
                   margins_numbers = c(2,3),
                   known_cop = true_copula)
 
+
+quiet(show(cop))
+
 u=matrix(rep(0,15),ncol=5)
 v=matrix(seq(0,1,length.out=15),ncol=5)
 w=matrix(rep(1,15),ncol=5)

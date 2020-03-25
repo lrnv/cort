@@ -6,6 +6,8 @@ wb = WeightedBox(b,matrix(0.5,nrow=10,ncol=4),1,split_dims = 1:4,min_node_size=1
 wb2 = WeightedBox(b,matrix(0.5,nrow=10,ncol=4),1,split_dims = 1:4,min_node_size=11)
 wb3 = WeightedBox(b,matrix(0.5,nrow=10,ncol=4),1,split_dims = 1:2,min_node_size=1)
 
+quiet(show(wb))
+
 testthat::test_that("initialisation check of WeightedBox are ok", {
   testthat::expect_error(WeightedBox(b,0,1,split_dims = 1:4,min_node_size=1))
   testthat::expect_error(WeightedBox(b,matrix(0.5,nrow=4,ncol=3),1,split_dims = 1:4,min_node_size=1))

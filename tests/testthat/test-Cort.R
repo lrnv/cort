@@ -6,6 +6,8 @@ u=matrix(rep(0,15),ncol=5)
 v=matrix(seq(0,1,length.out=15),ncol=5)
 w=matrix(rep(1,15),ncol=5)
 
+quiet(show(model))
+
 rho = biv_rho(model)
 tau = biv_tau(model)
 

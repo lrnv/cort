@@ -5,6 +5,8 @@ library(cort)
 data("LifeCycleSavings")
 cop <- cbCopula(LifeCycleSavings)
 
+quiet(show(cop))
+
 cop_wrong <- cop
 cop_wrong@pseudo_data <- data.frame("plop")
 class(cop_wrong) <- "empiricalCopula"

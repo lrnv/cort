@@ -1,6 +1,9 @@
 context("Testing the class CortForest...")
 library(cort)
 model = CortForest(LifeCycleSavings[,1:2],verbose_lvl = 0,n_trees=3)
+
+quiet(show(model))
+
 model2 = quiet(CortForest(LifeCycleSavings[,1:3],verbose_lvl = 10,number_max_dim = 2,n_trees=2))
 u=matrix(rep(0,9),ncol=3)
 v=matrix(seq(0,1,length.out=9),ncol=3)
