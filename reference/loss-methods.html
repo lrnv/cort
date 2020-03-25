@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Copula volume on hyper-boxes — vCopula • cort</title>
+<title>Loss of the model — loss • cort</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Copula volume on hyper-boxes — vCopula" />
-<meta property="og:description" content="u must be piecewise smaller than v, otherwise the function will return an error." />
+<meta property="og:title" content="Loss of the model — loss" />
+<meta property="og:description" content="Compute the loss of the model" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,67 +126,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Copula volume on hyper-boxes</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a></small>
-    <div class="hidden name"><code>vCopula-methods.Rd</code></div>
+    <h1>Loss of the model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
+    <div class="hidden name"><code>loss-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>u must be piecewise smaller than v, otherwise the function will return an error.</p>
+    <p>Compute the loss of the model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>vCopula</span>(<span class='no'>u</span>, <span class='no'>v</span>, <span class='no'>copula</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>loss</span>(<span class='no'>object</span>)
 
-<span class='co'># S4 method for matrix,matrix</span>
-<span class='fu'>vCopula</span>(<span class='no'>u</span>, <span class='no'>v</span>, <span class='no'>copula</span>)</pre>
+<span class='co'># S4 method for Cort</span>
+<span class='fu'>loss</span>(<span class='no'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>u</th>
-      <td><p>numeric matrix : minimum point of the hyper-rectangles, one row per observation.</p></td>
-    </tr>
-    <tr>
-      <th>v</th>
-      <td><p>numeric matrix : maximum point of the hyper-rectangle, one row per observation.</p></td>
-    </tr>
-    <tr>
-      <th>copula</th>
-      <td><p>the copula that we compute the measure on the box (u,v)</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other parameter to be passed to methods for this generic.</p></td>
+      <th>object</th>
+      <td><p>the copula object</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the measure of the copula.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>the Integrated square error loss of the model</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
-    <p>A method is currently implemented for the main virtual class 'Copula', but it assumes
-that a pCopula method is avaliable for the given copula.</p>
-<p>This function computes the measure of the copula according to the algorithm proposed by the referenced paper.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Cherubini U, Romagnoli S (2009).
-&#8220;Computing the Volume of <em>n</em> -Dimensional Copulas.&#8221;
-<em>Applied Mathematical Finance</em>, <b>16</b>(4), 307--314.
-ISSN 1350-486X, 1466-4313.</p>
+    
+<ul>
+<li><p><code>loss,Cort-method</code>: Method for the class Cort</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cort</span>)
-<span class='co'># The exmeple needs to be re-done.</span></div></pre>
+<span class='co'># The exemples needs to be re-done.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
+      <li><a href="#functions">Functions</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

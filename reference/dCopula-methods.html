@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Copula density</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/ConvexCombCopula.R'><code>R/ConvexCombCopula.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/cbCopula.R'><code>R/cbCopula.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/ConvexCombCopula.R'><code>R/ConvexCombCopula.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a>, and 3 more</small>
     <div class="hidden name"><code>dCopula-methods.Rd</code></div>
     </div>
 
@@ -139,6 +139,12 @@
 
 <span class='co'># S4 method for matrix,ConvexCombCopula</span>
 <span class='fu'><a href='pCopula-methods.html'>pCopula</a></span>(<span class='no'>u</span>, <span class='no'>copula</span>)
+
+<span class='co'># S4 method for matrix,Cort</span>
+<span class='fu'>dCopula</span>(<span class='no'>u</span>, <span class='no'>copula</span>)
+
+<span class='co'># S4 method for matrix,CortForest</span>
+<span class='fu'>dCopula</span>(<span class='no'>u</span>, <span class='no'>copula</span>)
 
 <span class='co'># S4 method for matrix,cbCopula</span>
 <span class='fu'>dCopula</span>(<span class='no'>u</span>, <span class='no'>copula</span>)</pre>
@@ -168,6 +174,8 @@
     
 <ul>
 <li><p><code>pCopula,matrix,ConvexCombCopula-method</code>: Method for the cbCopula</p></li>
+<li><p><code>dCopula,matrix,Cort-method</code>: Method for the class Cort</p></li>
+<li><p><code>dCopula,matrix,CortForest-method</code>: Method for the class CortForest</p></li>
 <li><p><code>dCopula,matrix,cbCopula-method</code>: Method for the cbCopula</p></li>
 </ul>
 
