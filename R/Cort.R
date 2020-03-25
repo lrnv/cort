@@ -448,6 +448,8 @@ setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   d
 
 })
 
+#' @param M the number of simulations
+#'
 #' @describeIn kendall_func-methods Method for the class Cort
 setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = function(object,t,M=1000) {
 

@@ -304,6 +304,7 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #'
 #' @param object : the tree
 #' @param t : the value where to compute the kendall function, may be a vector of evaluation values;
+#' @param ... other parameters passed to methods
 #'
 #' @return the quadratic product between the trees
 #' @exportMethod kendall_func

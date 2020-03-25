@@ -13,6 +13,10 @@ kendall_func(object, t, ...)
 \item{object}{: the tree}
 
 \item{t}{: the value where to compute the kendall function, may be a vector of evaluation values;}
+
+\item{...}{other parameters passed to methods}
+
+\item{M}{the number of simulations}
 }
 \value{
 the quadratic product between the trees
