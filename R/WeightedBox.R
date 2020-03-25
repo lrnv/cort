@@ -62,6 +62,8 @@ setMethod(f="split",
             # Randomize splitting dimensions :
             if(number_max_dim < 2){stop("Splits cannot be done in dimensions smaller than 2...")}
             if(length(object@split_dims) > number_max_dim){
+
+              if(verbose_lvl>3){cat("we reduce the number of split dims !")}
               random_dims = sample(x =object@split_dims,
                                    size=number_max_dim,
                                    replace=FALSE)
@@ -188,65 +190,6 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0){
 }
 
 compute_bootstrapped_p_values <- function(z,bp,N = 499){
-
-  # prerequisites :
-  d = nrow(z)
-  n = ncol(z)
-
-  binary_repr = t(sapply(1:(2^d),number2binary,d))
-  min = bp*t(binary_repr)
-  max = bp^t(1-binary_repr)
-
-  lambda_l = apply(max-min,2,prod) # 2^d
-  lambda_k = vapply(1:d,function(d_rem){lambda_l/((max-min)[d_rem,])},lambda_l) # 2^d * d
-
-  # Compute empirical value of the statistic :
-  core = vapply(1:2^d,function(.x){((min[,.x]<=z)*(max[,.x]>z))==1},FUN.VALUE = z) # dims : d, n, 2^d
-
-  f_l = colMeans(colSums(core,dims=1)==d) # 2^d
-  f_k = vapply(1:d,function(d_rem){ colMeans(colSums(core[-d_rem,,,drop=FALSE],dims=1)==d-1)},f_l) # 2^d, d
-
-  statistic <- sum(f_l^2/lambda_l) -2 * colSums(f_k * f_l / lambda_k) # d
-
-  # NOW BOOTRAP THE SAME THING by first augmenting the dimensionality of z, min, max. The issue is that it eats a bunch of memory an calls GC a lot.
-  # maybe this should go in C.
-  index = (diag(d)==1)
-  dim(index) = c(d,d,1,1,1)
-  index = aperm(index,c(1,3,4,5,2))
-
-  dim(z) = c(d,n,1,1,1)
-  z = z[,,rep(1,N),,rep(1,d),drop=FALSE]
-  z[index[,rep(1,n),rep(1,N),,]] <- runif(n*N*d) # the bootstrap is here.
-  z = z[,,,rep(1,2^d),] # TAKES TIME 5
-
-  dim(min) = c(d,2^d,1,1,1)
-  min = aperm(min,c(1,3,4,2,5))
-  min = min[,rep(1,n),rep(1,N),,rep(1,d)] # TAKES TIME 5
-
-  dim(max) = c(d,2^d,1,1,1)
-  max = aperm(max,c(1,3,4,2,5))
-  max = max[,rep(1,n),rep(1,N),,rep(1,d)] # TAKES TIME 5
-
-  core_boot = (min <= z) & (max > z) # d, n, N, 2^d, d # TAKES TIME 5
-
-  # Compute bootstrapped_statistic :
-  f_l_boot = colMeans(colSums(core_boot,dims=1) == d) # TAKES TIME 1
-
-  f_k_boot = vapply(1:d,function(d_rem){
-    colMeans(colSums(core_boot[-d_rem,,,,d_rem,drop=FALSE],dims=1)==(d-1)) # TAKES TIME 5
-  },array(0.,c(N,2^d))) #(N,2^d,d)
-
-  # Summarise :
-  bootstrap_samples = apply(aperm(f_l_boot^2,c(2,3,1))/lambda_l - 2 * aperm(f_k_boot*f_l_boot,c(2,3,1))/vapply(1:N,function(i){lambda_k},lambda_k),c(2,3),sum) # TAKES TIME 1
-  p_val = rowMeans(statistic < bootstrap_samples)
-  return(p_val)
-}
-
-
-
-
-
-compute_bootstrapped_p_values_with_rray <- function(z,bp,N = 499){
 
   # prerequisites :
   d = nrow(z)

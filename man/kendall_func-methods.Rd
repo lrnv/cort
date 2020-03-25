@@ -5,9 +5,9 @@
 \alias{kendall_func,Cort-method}
 \title{Kendall function}
 \usage{
-kendall_func(object, t)
+kendall_func(object, t, ...)
 
-\S4method{kendall_func}{Cort}(object, t)
+\S4method{kendall_func}{Cort}(object, t, M = 1000)
 }
 \arguments{
 \item{object}{: the tree}

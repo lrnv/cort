@@ -27,6 +27,11 @@ boxes_from_points <- function(points,m){
   t(floor(t(points)*m)/m)
 }
 
+quiet <- function(x) {
+  sink(tempfile())
+  on.exit(sink())
+  invisible(force(x))
+}
 
 
 

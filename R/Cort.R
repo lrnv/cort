@@ -72,7 +72,7 @@ Cort = function(x,
   model = .Cort(
     data = data,
     p_value_for_dim_red = p_value_for_dim_red,
-    number_max_dim = max(number_max_dim,d),
+    number_max_dim = min(number_max_dim,d),
     min_node_size = min_node_size,
     #leaves=list(root),
     verbose_lvl=verbose_lvl,
@@ -311,9 +311,9 @@ setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(c
   a = copula@a
   b = copula@b
 
-  for (p in 1:d){
-    for (q in 1:(p-1)){
-      rho[q,p] <- rho[p,q] <- 12*sum(apply((- b[,c(p,q)] - a[,c(p,d)]+2)/2,1,prod)*p)-3
+  for (i in 2:d){
+    for (j in 1:(i-1)){
+      rho[j,i] <- rho[i,j] <- 12*sum(apply((2-b[,c(i,j)] - a[,c(i,j)])/2,1,prod)*p)-3
     }
   }
 
@@ -347,12 +347,11 @@ B <- function(a,b,n_leaves,d_dim){
 
 #' @describeIn biv_tau-methods Method for the class Cort
 setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(copula) {
-
   # dimensions :
   d = ncol(copula@data)
   n = nrow(copula@a)
   dims = cbind(rep(1:d,d),rep(1:d,each=d))
-  dims = dims[dims[,1]>dims[,2],]
+  dims = dims[dims[,1]>dims[,2],,drop=FALSE]
   K = nrow(dims)
 
   # Extract info from the model :
@@ -375,7 +374,7 @@ setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(c
   dim(kernel2) = c(1,n,K)
 
   # finaly :
-  cross_kernel = aperm(kernel[,rep(1,n),]*kernel2[rep(1,n),,]*cross_B,c(3,1,2)) # K, n, n
+  cross_kernel = aperm(kernel[,rep(1,n),,drop=FALSE]*kernel2[rep(1,n),,,drop=FALSE]*cross_B,c(3,1,2)) # K, n, n
   kappa = 4 * rowSums(cross_kernel) - 1
 
   # just put them back in a 2*2 matrix :
@@ -450,10 +449,9 @@ setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   d
 })
 
 #' @describeIn kendall_func-methods Method for the class Cort
-setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = function(object,t) {
+setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = function(object,t,M=1000) {
 
   # Simulate a bunch of random variables :
-  M = 1000
   m = length(t)
   rng = pCopula(rCopula(M,object),object)
   dim(rng) = c(M,1)
@@ -464,7 +462,6 @@ setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = funct
 
 #' @describeIn project_on_dims-methods Method for the class Cort
 setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = function(object,dims) {
-
 
   # this function should project the tree on a smaller subset of dimensions.
   # for the moment only sets of 2 dimensions are supported, although bigger sets might be used;
@@ -519,8 +516,10 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   #
   #   })
 
-  object@p = purrr::map(1:new_n,~Box(a = new_a[.x,],b=new_b[.x,])) %>%
-    purrr::map(function(l){
+  leaves = purrr::map(1:new_n,~Box(a = new_a[.x,],b=new_b[.x,]))
+
+
+  object@p = purrr::map_dbl(leaves,function(l){
       a_complete[dims] <- l@a
       b_complete[dims] <- l@b
       return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*p_over_vol))
@@ -533,8 +532,7 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   object@a = new_a
   object@b = new_b
   object@vols = apply((new_b - new_a),1,prod)
-  object@f = purrr::map_dbl(object@leaves,~nrow(.x@data))/nrow(object@data)
-  #object@p = purrr::map(object@leaves,"weight")
+  object@f = purrr::map_dbl(leaves,function(l){sum(contains(l,object@data))})/nrow(object@data)
 
 
   return(object)

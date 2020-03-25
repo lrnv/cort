@@ -171,6 +171,9 @@ setMethod(f = "show", signature = c(object = "CortForest"), definition = functio
 
 #' @describeIn rCopula-methods Method for the class CortForest
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "CortForest"), definition = function(n, copula) {
+  if(n==0){
+    return(matrix(0,nrow=0,ncol=copula@dim))
+  }
   sampled_indexes = sample(1:length(copula@trees),size=n,prob = copula@weights,replace=TRUE)
   return(do.call(rbind,purrr::map(unique(sampled_indexes),~rCopula(sum(sampled_indexes==.x),copula@trees[[.x]]))))
 
@@ -179,7 +182,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "CortForest"), de
 #' @describeIn pCopula-methods Method for the class CortForest
 setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "CortForest"), definition = function(u, copula) {
   if (ncol(u) != dim(copula)) {stop("the input value must be coercible to a matrix with dim(copula) columns.")}
-  return(vapply(copula@trees,function(t){pCopula(u,t)},rep(0.5,nrow(u))) %*% copula@weights)
+  return(as.vector(vapply(copula@trees,function(t){pCopula(u,t)},rep(0.5,nrow(u))) %*% copula@weights))
 })
 
 #' @describeIn dCopula-methods Method for the class CortForest

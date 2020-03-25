@@ -313,7 +313,7 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' @examples
 #' library(cort)
 #' # The exemples needs to be re-done.
-setGeneric("kendall_func", function(object,t) standardGeneric("kendall_func"))
+setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"))
 
 
 #' Projection on smaller dimensions
