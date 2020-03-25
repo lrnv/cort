@@ -135,10 +135,10 @@
     <p>Compute the kendall cdf from the model in a point t</p>
     </div>
 
-    <pre class="usage"><span class='fu'>kendall_func</span>(<span class='no'>object</span>, <span class='no'>t</span>)
+    <pre class="usage"><span class='fu'>kendall_func</span>(<span class='no'>object</span>, <span class='no'>t</span>, <span class='no'>...</span>)
 
 <span class='co'># S4 method for Cort</span>
-<span class='fu'>kendall_func</span>(<span class='no'>object</span>, <span class='no'>t</span>)</pre>
+<span class='fu'>kendall_func</span>(<span class='no'>object</span>, <span class='no'>t</span>, <span class='kw'>M</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +150,14 @@
     <tr>
       <th>t</th>
       <td><p>: the value where to compute the kendall function, may be a vector of evaluation values;</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters passed to methods</p></td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td><p>the number of simulations</p></td>
     </tr>
     </table>
 
