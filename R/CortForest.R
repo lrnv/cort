@@ -39,13 +39,13 @@
 #' @param compte_loo_weights Defaults to FALSE. Allows to use an automatic re-weighting of the trees in the forest, based on leave-one-out considerations.
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param n_trees Number of trees
-#' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the interger bigger the ouput level.
+#' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
 #'
-#' @name Cort-Class
+#' @name CortForest-Class
 #' @title The Cort estimator
-#' @rdname Cort-Class
+#' @rdname CortForest-Class
 #'
-#' @return a Cort object that can be fitted easily to produce a copula estimate.
+#' @return a CortForest object that can be fitted easily to produce a copula estimate.
 #' @export
 #'
 #' @examples
@@ -172,7 +172,7 @@ setMethod(f = "show", signature = c(object = "CortForest"), definition = functio
 #' @describeIn rCopula-methods Method for the class CortForest
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "CortForest"), definition = function(n, copula) {
   sampled_indexes = sample(1:length(copula@trees),size=n,prob = copula@weights,replace=TRUE)
-  purrr::map(unique(sampled_indexes),~rCopula(sum(sampled_indexes==.x),copula@trees[[.x]])) %>% {do.call(rbind,.)} %>% return
+  return(do.call(rbind,purrr::map(unique(sampled_indexes),~rCopula(sum(sampled_indexes==.x),copula@trees[[.x]]))))
 
 })
 

@@ -18,7 +18,7 @@ quad_prod(object, other_tree)
 the quadratic product between the trees
 }
 \description{
-Compute the L2 quandratic product of 2 trees
+Compute the L2 quadratic product of 2 trees
 }
 \section{Functions}{
 \itemize{

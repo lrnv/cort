@@ -4,7 +4,7 @@
 \alias{constraint_infl}
 \alias{constraint_infl,Cort-method}
 \alias{constraint_infl,CortForest-method}
-\title{Constriant influence of the model}
+\title{Constraint influence of the model}
 \usage{
 constraint_infl(object)
 
@@ -16,10 +16,10 @@ constraint_infl(object)
 \item{object}{the copula object}
 }
 \value{
-The constriant influence statistic of the model
+The constraint influence statistic of the model
 }
 \description{
-Compute the constriant influence of the model
+Compute the constraint influence of the model
 }
 \section{Functions}{
 \itemize{

@@ -16,7 +16,7 @@ quad_norm(object)
 \item{object}{the copula object}
 }
 \value{
-the ISE quad_norm of the model
+the Integrated square error quad_norm of the model
 }
 \description{
 Compute the L2 norm of the model

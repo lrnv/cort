@@ -13,7 +13,7 @@ loss(object)
 \item{object}{the copula object}
 }
 \value{
-the ISE loss of the model
+the Integrated square error loss of the model
 }
 \description{
 Compute the loss of the model

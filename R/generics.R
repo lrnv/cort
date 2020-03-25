@@ -216,7 +216,7 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #'
 #' @param object the copula object
 #'
-#' @return the ISE loss of the model
+#' @return the Integrated square error loss of the model
 #' @exportMethod loss
 #' @name loss
 #' @rdname loss-methods
@@ -227,14 +227,14 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 setGeneric("loss", function(object) standardGeneric("loss"))
 
 
-#' Constriant influence of the model
+#' Constraint influence of the model
 #'
-#' Compute the constriant influence of the model
+#' Compute the constraint influence of the model
 #'
 #'
 #' @param object the copula object
 #'
-#' @return The constriant influence statistic of the model
+#' @return The constraint influence statistic of the model
 #' @exportMethod constraint_infl
 #' @name constraint_infl
 #' @rdname constraint_infl-methods
@@ -251,7 +251,7 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #'
 #' @param object the copula object
 #'
-#' @return the ISE quad_norm of the model
+#' @return the Integrated square error quad_norm of the model
 #' @exportMethod quad_norm
 #' @name quad_norm
 #' @rdname quad_norm-methods
@@ -261,9 +261,9 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #' # The exemples needs to be re-done.
 setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 
-#' Quadratic product wiht data of the model
+#' Quadratic product with data of the model
 #'
-#' Compute the quadratic product with the empirical denisty from the data
+#' Compute the quadratic product with the empirical density from the data
 #'
 #'
 #' @param object the copula object
@@ -280,7 +280,7 @@ setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_wi
 
 #' Quadratic product of 2 trees
 #'
-#' Compute the L2 quandratic product of 2 trees
+#' Compute the L2 quadratic product of 2 trees
 #'
 #'
 #' @param object : the tree
@@ -324,7 +324,7 @@ setGeneric("kendall_func", function(object,t) standardGeneric("kendall_func"))
 #' @param object : the tree
 #' @param dims the set of dimensions
 #'
-#' @return nother cort object
+#' @return other cort object
 #' @exportMethod project_on_dims
 #' @name project_on_dims
 #' @rdname project_on_dims-methods

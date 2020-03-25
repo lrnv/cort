@@ -15,7 +15,7 @@ project_on_dims(object, dims)
 \item{dims}{the set of dimensions}
 }
 \value{
-nother cort object
+other cort object
 }
 \description{
 Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree.

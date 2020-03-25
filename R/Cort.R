@@ -39,7 +39,7 @@ NULL
 #' @param min_node_size The minimum number of observation avaliable in a leaf to initialise a split.
 #' @param pseudo_data set to True if you are already providing data on the copula space.
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
-#' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most ouput you get.
+#' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
 #' @name Cort-Class
 #' @title The Cort estimator
 #' @rdname Cort-Class

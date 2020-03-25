@@ -1,3 +1,4 @@
+appveyor
 AppVeyor
 assymptotics
 Assymptotics
@@ -6,11 +7,13 @@ avaliables
 bruno
 cbCopula
 cbkmCopula
+cdf
 cherubini
 Codecov
 contructor
 ConvexCombcopula
 ConvexCombCopula
+CortForest
 cuberos
 Cuberos
 Deheuvel
@@ -26,8 +29,10 @@ forall
 frac
 genest
 Genest
+github
 Github
 initialise
+kendall
 le
 lebesgue
 LifeCycleSavings
@@ -37,11 +42,16 @@ mathbb
 mathbf
 mathcal
 Maume
+minimisation
 neq
 Neslehova
 notin
+oob
+ouptut
+ouput
 parametrical
 pCopula
+pkgdowm
 priori
 Quesada
 rCopula
@@ -49,6 +59,7 @@ repesenting
 rmse
 Sánchez
 Sempi
+Spearmann's
 thoose
 travis
 Ubeda
