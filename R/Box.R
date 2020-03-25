@@ -69,6 +69,9 @@ setMethod(f = "intersect",
 setMethod(f = "simu_unif",
           signature = c(object = "Box",n="numeric"),
           definition = function(object,n){
+            if(n==0){
+              return(matrix(0,nrow=0,ncol=object@dim))
+            }
             return(t(object@a + matrix(runif(n*object@dim),nrow=object@dim) * (object@b - object@a)))
           })
 
@@ -121,8 +124,8 @@ setMethod(f = "split",
             }
 
             projection = project(object,breakpoint_dim)
-            if(!contains(projection,breakpoint,type="strict")){stop("The brekapoint should be inside the projected box")}
-            if(!contains(projection,breakpoint,type="loose")){
+            if(!contains(projection,breakpoint,type="loose")){stop("The breakpoint should be inside the projected box")}
+            if(!contains(projection,breakpoint,type="strict")){
               cat("be carrefull, we are removing a dimensions because the breakpoint touches the boundary")
               dims_to_split = (breakpoint != object@a[breakpoint_dim]) * (breakpoint != object@b[breakpoint_dim])
               breakpoint = breakpoint[dims_to_split]
