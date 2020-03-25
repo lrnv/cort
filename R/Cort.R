@@ -307,9 +307,9 @@ setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(c
   d = ncol(copula@data)
   n = nrow(copula@a)
   rho = diag(d)
-  p = object@p
-  a = object@a
-  b = object@b
+  p = copula@p
+  a = copula@a
+  b = copula@b
 
   for (p in 1:d){
     for (q in 1:(p-1)){
@@ -356,9 +356,9 @@ setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(c
   K = nrow(dims)
 
   # Extract info from the model :
-  weights = object@p
-  a = object@a
-  b = object@b
+  weights = copula@p
+  a = copula@a
+  b = copula@b
 
   # comput ethe cross_kernel :
   cross_B = B(a,b,n,d) # n, n, d
@@ -397,7 +397,7 @@ setMethod(f = "constraint_infl", signature = c(object="Cort"),   definition = fu
   # n = length(object@leaves)
   # return(sum(((object@p - object@f*n)/object@vols)^2)/2)
 
-  return(sum(((object@p - object@f)/object@vols)^2)/2)
+  return(sum(((object@p - object@f)^2/object@vols)))
 
 })
 
@@ -449,38 +449,18 @@ setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   d
 
 })
 
-
 #' @describeIn kendall_func-methods Method for the class Cort
 setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = function(object,t) {
 
-  # computes the kendall function from the tree, for a single value t
-  z = (t - pCopula(object@a,object))/object@p
-
-  indic = (z>0)*(z < 1)
-  n = nrow(object@data)
-  m= length(z)
-
-
-  ks = 1:n
-  fact_ks = factorial(ks)
-  sums = rep(0,m)
-
-
-
-  dim(z) = c(m,1)
-  dim(ks) =
-  dim(fact_ks) = c(1,n)
-
-  broswer()
-
-
-  sums[indic] = rowSums(z[indic,rep(1,n)]*(-log(z[indic,rep(1,n)]))^(ks[rep(1,m),])/factorial(ks)[rep(1,m),])
-  sums[z>=1] = 1
-
-  return(sum(object@p*sums/object@vols))
+  # Simulate a bunch of random variables :
+  M = 1000
+  m = length(t)
+  rng = pCopula(rCopula(M,object),object)
+  dim(rng) = c(M,1)
+  dim(t) = c(1,m)
+  colMeans(rng[,rep(1,m)]<=t[rep(1,M),])
 
 })
-
 
 #' @describeIn project_on_dims-methods Method for the class Cort
 setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = function(object,dims) {
@@ -578,6 +558,11 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
 # Also the projection !!
 #
 #
+
+
+
+# TODO : Build tests for every method of Cort and CortForest...
+# shuld not be too dificult to do...
 
 
 
