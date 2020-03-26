@@ -1,0 +1,115 @@
+---
+title: "Cort Exemple on clayton-based simulation"
+bibliography: ../inst/REFERENCES.bib
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Cort Exemple on clayton-based simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+```{r setup, include = FALSE}
+library(cort)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+
+First, let's create and visualise the dataset we will work with. For that, we'll use the gamma frailty model for the Clayton copula (but it'll work for any other completely monotonous archimedean generator), as it is done in the `copula` package, see [there](https://github.com/cran/copula/blob/6e0a5f0332776c24b2f53a81b11a8c66cc3f996d/R/claytonCopula.R#L82)
+
+```{r clayton-frailty-model}
+psi <- function(t,alpha) (1 + sign(alpha)*t) ^ (-1/alpha) # generator
+rClayton <- function(n,dim,alpha){
+    val <- matrix(runif(n * dim), nrow = n)
+  if (abs(alpha) <= 100 * .Machine$double.eps)
+    return (val)  ## the limit is independence
+  ## gam <- rgamma(n, shape = 1/alpha, rate = 1/alpha) ## fixed from rate = 1
+  gam <- rgamma(n, shape = 1/alpha, rate = 1) ## fixed from rate = 1
+  gam <- matrix(gam, nrow = n, ncol = dim)
+  psi(- log(val) / gam,alpha)
+}
+```
+
+We can now simulate our dataset and visualise it. Note that, for reproducibility reasons, we setted the random number generator.
+
+
+```{r dataset} 
+set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
+
+n = 200
+d = 4
+
+data <- matrix(nrow=n,ncol=d)
+data[,c(1,4,3)] = rClayton(n=n,dim=d-1,alpha=7)
+data[,2] = runif(n)
+data[,3] <- 1 - data[,3]
+
+
+pairs(data,cex=0.6)
+  
+```
+
+Now that we have our dataset, we could for exemple run a Cort model on it : 
+
+```{r run_cort} 
+(model = Cort(data,verbose_lvl = 3,p_value_for_dim_red = 0.75))
+```
+
+
+
+Now we can for exemple simulate from it : 
+
+
+```{r simulation}
+pairs(rCopula(n,model),cex=0.8)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

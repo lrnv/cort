@@ -146,7 +146,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
 
             # fitting the model :
             model = build_model(P_mat = diag(1/object@vols),
-                                q_vec = object@f/object@vols,
+                                q_vec = -object@f/object@vols,
                                 A_mat = rbind(lambdas,rep(1,n),diag(n)),
                                 l_vec = c(F_vec,1,rep(0,n)),
                                 u_vec = c(F_vec,1,rep(Inf,n)),
@@ -502,44 +502,22 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   a_complete = rep(0,d)
   b_complete = rep(1,d)
 
-  # object@leaves = purrr::map(1:new_n,~Box(a = new_a[.x,],b=new_b[.x,])) %>%
-  #   purrr::map(function(l){
-  #
-  #     a_complete[dims] <- l@a
-  #     b_complete[dims] <- l@b
-  #     dat = object@data[contains(l,object@data[,dims]),dims,drop=FALSE]
-  #     w = sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*p_over_vol)
-  #
-  #     WeightedBox(box = l,
-  #                 data = dat,
-  #                 weight = w,
-  #                 split_dims = numeric(), # theese boxes are NOT splittable !
-  #                 min_node_size = object@leaves[[1]]@min_node_size)
-  #
-  #   })
-
   leaves = purrr::map(1:new_n,~Box(a = new_a[.x,],b=new_b[.x,]))
 
-
+  # set things :
+  object@data = object@data[,dims]
+  object@f = purrr::map_dbl(leaves,function(l){sum(contains(l,object@data))})/nrow(object@data)
   object@p = purrr::map_dbl(leaves,function(l){
       a_complete[dims] <- l@a
       b_complete[dims] <- l@b
       return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*p_over_vol))
-
     })
-
-  # set things :
-  object@data = object@data[,dims]
   object@dim = 2
   object@a = new_a
   object@b = new_b
   object@vols = apply((new_b - new_a),1,prod)
-  object@f = purrr::map_dbl(leaves,function(l){sum(contains(l,object@data))})/nrow(object@data)
-
 
   return(object)
-
-
 })
 
 

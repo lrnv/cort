@@ -160,24 +160,68 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0){
     return(loss)
   }
 
+  optimize_with = "mlsl"
+
+  if(optimize_with == "slsqp"){ optimizer = nloptr::slsqp(
+      x0 = rowMeans(z),
+      fn = func,
+      lower = rep(0,d),
+      upper = rep(1,d),
+      nl.info=verbose_lvl>1,
+      control=list(stopval = -Inf, # stop minimization at this value
+                   xtol_rel = 1e-4, # stop on small optimization step
+                   maxeval = 100000, # stop on this many function evaluations
+                   ftol_rel = 1e-6, # stop on change times function value
+                   ftol_abs = 1e-6, # stop on small change of function value
+                   check_derivatives = FALSE),
+      binary_repr = binary_repr,
+      d = d,
+      z_rep = z_rep
+    )}
+  if(optimize_with == "crs2lm"){ optimizer = nloptr::crs2lm(
+      x0 = rowMeans(z),
+      fn = func,
+      lower = rep(0,d),
+      upper = rep(1,d),
+      maxeval = 100000,
+      pop.size = 10 *(d + 1),
+      ranseed = NULL,
+      xtol_rel = 1e-04,
+      nl.info = FALSE,
+      binary_repr = binary_repr,
+      d = d,
+      z_rep = z_rep
+  )}
+  if(optimize_with == "mlsl"){ optimizer = nloptr::mlsl(
+      x0 = rowMeans(z),
+      fn = func,
+      lower = rep(0,d),
+      upper = rep(1,d),
+      local.method = "LBFGS",
+      low.discrepancy = TRUE,
+      nl.info = FALSE,
+      control=list(stopval = -Inf, # stop minimization at this value
+                   xtol_rel = 1e-4, # stop on small optimization step
+                   maxeval = 100000, # stop on this many function evaluations
+                   ftol_rel = 0.0, # stop on change times function value
+                   ftol_abs = 0.0, # stop on small change of function value
+                   check_derivatives = FALSE,
+                   population = 2*ncol(z)),
+      binary_repr = binary_repr,
+      d = d,
+      z_rep = z_rep
+  )}
+
+
+
   # Optimize it :
-  optimizer = nloptr::cobyla( # slsqp cobyla, ...
-    x0 = rowMeans(z),
-    fn = func,
-    lower = rep(0,d),
-    upper = rep(1,d),
-    nl.info=FALSE,
-    # control=list(stopval = -Inf, # stop minimization at this value
-    #              xtol_rel = 1e-6, # stop on small optimization step
-    #              maxeval = 1000, # stop on this many function evaluations
-    #              ftol_rel = 0.0, # stop on change times function value
-    #              ftol_abs = 0.0, # stop on small change of function value
-    #              check_derivatives = FALSE),
-    # arguments to be passed to the function :
-    binary_repr = binary_repr,
-    d = d,
-    z_rep = z_rep
-  )
+
+
+
+
+
+
+
 
   # Return the breakpoint (re-normalized to the box) :
   bp = a + optimizer$par*(b-a)
@@ -241,6 +285,11 @@ compute_bootstrapped_p_values <- function(z,bp,N = 499){
   # Summarise :
   bootstrap_samples = apply(aperm(f_l_boot^2,c(2,3,1))/lambda_l - 2 * aperm(f_k_boot*f_l_boot,c(2,3,1))/vapply(1:N,function(i){lambda_k},lambda_k),c(2,3),sum) # TAKES TIME 1
   p_val = rowMeans(statistic < bootstrap_samples)
+
+  if(any(is.na(p_val))){
+    p_val[is.na(p_val)] = 0
+  }
+
   return(p_val)
 }
 
