@@ -6,19 +6,19 @@ NULL
   slots = c(m = "numeric", margins = "numeric", known_cop = "ANY"),
   validity = function(object) {
    errors <- c()
-   if (any(sapply(object@m,function(m){(nrow(object@pseudo_data)%%m) != 0}))) {
+   if (any(sapply(object@m,function(m){(nrow(object@data)%%m) != 0}))) {
      errors <- c(errors, "m should divide the number of row")
    }
    if (length(object@margins) != dim(object@known_cop)) {
      errors <- c(errors, "number of known margins hsuld be equal to dimention of known copula")
    }
-   if(length(object@m) != ncol(object@pseudo_data)){
-     errors <- c(errors, "lengths of m parameter shoudl be the same as the number of columns of pseudo_data")
+   if(length(object@m) != ncol(object@data)){
+     errors <- c(errors, "lengths of m parameter shoudl be the same as the number of columns of data")
    }
-   if (length(object@margins) > ncol(object@pseudo_data)) {
+   if (length(object@margins) > ncol(object@data)) {
      errors <- c(errors, "the number of known margins should be smaller than the number of total margins in the empirical data !!")
    }
-   if (!all(object@margins %in% 1:ncol(object@pseudo_data))) {
+   if (!all(object@margins %in% 1:ncol(object@data))) {
      errors <- c(errors, "provided margins number should be smaller than the number of dimention of empirical data")
    }
    if (length(errors) == 0)
@@ -41,7 +41,6 @@ NULL
 #' @export
 #'
 #' @examples
-#' library(cort)
 #' dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 #' known_copula <- cbCopula(dataset[,2:3],m=10)
 #' (cop <- cbkmCopula(x = dataset,
@@ -53,18 +52,18 @@ cbkmCopula = function(x, m = rep(nrow(x),ncol(x)), pseudo = FALSE, margins_numbe
 
   # Some error handlers :
   if(missing(x))   { stop("The argument x must be provided") }
-  if(ncol(x) == 0) { stop("you are providing a data.frame equal to NULL") }
+  if(ncol(x) == 0) { stop("you are providing a matrix equal to NULL") }
   if(nrow(x) == 0) { stop("you should provide data...") }
   if((is.null(known_cop) && (!is.null(margins_numbers))) || (is.null(known_cop) && (!is.null(margins_numbers)))) { stop("known_cop argument and margins argument must both be provided.") }
   if(!pseudo) { x <- apply(x, 2, rank, na.last = "keep")/(nrow(x) + 1) }
   if(length(m) == 1){m = rep(m,ncol(x))}
   if(length(m) != ncol(x)){stop("You should provide m values same lengths as the number of columns in data.")}
-  if(all(is.null(known_cop), is.null(margins_numbers))) { return(.cbCopula(pseudo_data = as.data.frame(x), m = m)) }
+  if(all(is.null(known_cop), is.null(margins_numbers))) { return(.cbCopula(data = as.matrix(x), m = m)) }
   if(!all(margins_numbers %in% 1:ncol(x))){ stop("Margins number should be inside 1:ncol(x), or NULL.") }
 
 
   ######## Returning the object :
-  .cbkmCopula(pseudo_data = as.data.frame(x),
+  .cbkmCopula(data = as.matrix(x),
               dim = ncol(x),
               m = m,
               margins = margins_numbers,
@@ -72,8 +71,8 @@ cbkmCopula = function(x, m = rep(nrow(x),ncol(x)), pseudo = FALSE, margins_numbe
 }
 setMethod(f = "show",    signature = c(object = "cbkmCopula"),                definition = function(object)    {
   cat("This is a cbkmCopula , with : \n", "  dim =", dim(object), "\n   n =",
-      nrow(object@pseudo_data), "\n   m =", object@m, "\n")
-  cat("The variables names are : ", colnames(object@pseudo_data), "\n")
+      nrow(object@data), "\n   m =", object@m, "\n")
+  cat("The variables names are : ", colnames(object@data), "\n")
   cat("The variables ", object@margins, " have a known copula  given by :\n")
   writeLines(paste("\t", capture.output(show(object@known_cop)), sep = ""))
 })
@@ -91,7 +90,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbkmCopula"), de
   d = dim(copula)
   p = length(J)
   m = copula@m
-  seuil_inf <- boxes_from_points(copula@pseudo_data,m)
+  seuil_inf <- boxes_from_points(copula@data,m)
 
   # First step : simulate the known copula model.
   rez <- matrix(NA,nrow=n,ncol=d)
@@ -141,7 +140,7 @@ setMethod(f = "pCopula", signature = c(u = "matrix", copula = "cbkmCopula"),  de
   boxes           <- as.matrix(do.call(function(...){expand.grid(...,KEEP.OUT.ATTRS = FALSE)}, lapply(m,function(x){seq(0,1-1/x,length=x)})))
   colnames(boxes) <- NULL
   rez_frame <- rep(0,nrow(boxes))
-  seuil_inf <- boxes_from_points(copula@pseudo_data,m)
+  seuil_inf <- boxes_from_points(copula@data,m)
   almost_0  <- 1/(10*max(m))
 
   ######## Calculations :
