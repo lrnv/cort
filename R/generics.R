@@ -14,7 +14,7 @@ setGeneric("is_splittable",function(object){standardGeneric("is_splittable")})
 
 setGeneric("split",signature = c("object"),function(object,...){standardGeneric("split")})
 
-setGeneric("fit",function(object){standardGeneric("fit")})
+setGeneric("fit",function(object,...){standardGeneric("fit")})
 
 setGeneric("contains",signature = c("object","u"),function(object,u,type="loose"){
   u <- normalise_data(u,object@dim)
@@ -57,7 +57,6 @@ setGeneric("project",function(object,dimensions){
 #' @rdname vCopula-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exmeple needs to be re-done.
 #'
 #' @references
@@ -88,7 +87,6 @@ setGeneric("vCopula", function(u, v, copula, ...) {
 #' @rdname dCopula-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exmeple needs to be re-done.
 setGeneric("dCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
@@ -110,7 +108,6 @@ setGeneric("dCopula", function(u, copula, ...) {
 #' @rdname pCopula-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exmeple needs to be re-done.
 setGeneric("pCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
@@ -167,7 +164,6 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' @rdname rCopula-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
 
@@ -185,7 +181,6 @@ setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
 #' @rdname biv_rho-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 
@@ -202,7 +197,6 @@ setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 #' @rdname biv_tau-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 
@@ -222,7 +216,6 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' @rdname loss-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("loss", function(object) standardGeneric("loss"))
 
@@ -240,7 +233,6 @@ setGeneric("loss", function(object) standardGeneric("loss"))
 #' @rdname constraint_infl-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
 
@@ -257,7 +249,6 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #' @rdname quad_norm-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 
@@ -274,7 +265,6 @@ setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 #' @rdname quad_prod_with_data-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_with_data"))
 
@@ -292,7 +282,6 @@ setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_wi
 #' @rdname quad_prod-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod"))
 
@@ -312,7 +301,6 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' @rdname kendall_func-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"))
 
@@ -331,7 +319,6 @@ setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"
 #' @rdname project_on_dims-methods
 #'
 #' @examples
-#' library(cort)
 #' # The exemples needs to be re-done.
 setGeneric("project_on_dims", function(object,dims) standardGeneric("project_on_dims"))
 
