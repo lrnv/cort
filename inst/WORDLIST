@@ -1,5 +1,6 @@
 appveyor
 AppVeyor
+archimedean
 assymptotics
 Assymptotics
 avaliable
@@ -9,6 +10,7 @@ cbCopula
 cbkmCopula
 cdf
 cherubini
+clayton
 Codecov
 contructor
 ConvexCombcopula
@@ -45,10 +47,10 @@ Maume
 minimisation
 neq
 Neslehova
+nloptr
 notin
 oob
 ouptut
-ouput
 parametrical
 pCopula
 pkgdowm
@@ -56,10 +58,13 @@ priori
 Quesada
 rCopula
 repesenting
+reproducibility
 rmse
 Sánchez
 Sempi
+slsqp
 Spearmann's
 thoose
 travis
 Ubeda
+visualise
