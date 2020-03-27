@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empirical Checkerboard Copula • cort</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Empirical Checkerboard Copula">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="cort">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lrnv/cort">
+  <a href="https://github.com/lrnv/cort/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -88,10 +88,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Empirical Checkerboard Copula</h1>
+      <h1 data-toc-skip>Empirical Checkerboard Copula</h1>
                         <h4 class="author">Oskar Laverny</h4>
             
-            <h4 class="date">2020-03-25</h4>
+            <h4 class="date">2020-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/ecb.Rmd"><code>vignettes/ecb.Rmd</code></a></small>
       <div class="hidden name"><code>ecb.Rmd</code></div>
@@ -130,28 +130,28 @@
 <p>In this package, this empirical checkerboard copula is implemented in the <code>cbCopula</code> class. This class is a little more general as it allows for a vector <span class="math inline">\(m = (m_1,...,m_d)\)</span> instead of a single value. Each of the <span class="math inline">\(m_i\)</span>’s must divide <span class="math inline">\(n\)</span> for this to be a proper copula. With the same train of thoughts as before, we have the following expression for this model :</p>
 <p><span class="math display">\[\forall x \in [0,1]^d, \hat{C}(x) = \sum\limits_{\mathbf{i}\in\mathcal{I}} { \hat{\mu}(B_{\mathbf{i}}) \lambda([0,\mathbf{x}]\cap B_{\mathbf{i}})\prod\limits_{p=1}^{d}m_p}\]</span></p>
 <p>You need to provide a dataset, defining <span class="math inline">\(\hat{\mu}\)</span>, to construct the model. For the matter of this vignette, we will use the <code>LifeCycleSavings</code> dataset, which has following pairs dependencies plot :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"LifeCycleSavings"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>pseudo_data &lt;-<span class="st"> </span>(<span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(LifeCycleSavings,<span class="dv">2</span>,rank,<span class="dt">ties.method=</span><span class="st">"max"</span>)<span class="op">/</span>(<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(LifeCycleSavings)<span class="op">+</span><span class="dv">1</span>))</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="kw"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(pseudo_data,<span class="dt">col=</span><span class="st">"2"</span>,<span class="dt">lower.panel=</span><span class="ot">NULL</span>,<span class="dt">gap=</span><span class="dv">0</span>,<span class="dt">cex=</span><span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"LifeCycleSavings"</span>)
+<span class="no">pseudo_data</span> <span class="kw">&lt;-</span> (<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="no">rank</span>,<span class="kw">ties.method</span><span class="kw">=</span><span class="st">"max"</span>)/(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">LifeCycleSavings</span>)+<span class="fl">1</span>))
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="no">pseudo_data</span>,<span class="kw">col</span><span class="kw">=</span><span class="st">"2"</span>,<span class="kw">lower.panel</span><span class="kw">=</span><span class="kw">NULL</span>,<span class="kw">gap</span><span class="kw">=</span><span class="fl">0</span>,<span class="kw">cex</span><span class="kw">=</span><span class="fl">0.5</span>)</pre></body></html></div>
 <div class="figure">
 <img src="ecb_files/figure-html/unnamed-chunk-1-1.png" alt="Pairs-plot of original peusdo-observation from the data" width="672"><p class="caption">
 Pairs-plot of original peusdo-observation from the data
 </p>
 </div>
 <p>You can see that the variable 2 to 4 have dependencies, while the first and fifth variable seems to be (marginally) independent. The dataset having <span class="math inline">\(n=50\)</span> rows, we will pick a value of <span class="math inline">\(m\)</span> dividing <span class="math inline">\(50\)</span>, e.g <span class="math inline">\(m=5\)</span>, and use the function <code>cbCopula</code> to build our copula model. Since we are already providing the pseudo observations, we will set <code>pseudo = TRUE</code>. Providing a single value for the <span class="math inline">\(m\)</span> parameter will set all <span class="math inline">\(m_i\)</span>’s equal to that value (the default is the proper checkerboard copula).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>(cop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cbCopula.html">cbCopula</a></span>(<span class="dt">x =</span> pseudo_data,<span class="dt">m =</span> <span class="dv">5</span>,<span class="dt">pseudo =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; This is a cbCopula , with : </span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;    dim = 5 </span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;    n = 50 </span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;    m = 5 5 5 5 5 </span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; The variables names are :  sr pop15 pop75 dpi ddpi</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r">(<span class="no">cop</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cbCopula.html">cbCopula</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">pseudo_data</span>,<span class="kw">m</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">pseudo</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<span class="co">#&gt; This is a cbCopula , with : </span>
+<span class="co">#&gt;    dim = 5 </span>
+<span class="co">#&gt;    n = 50 </span>
+<span class="co">#&gt;    m = 5 5 5 5 5 </span>
+<span class="co">#&gt; The variables names are :  sr pop15 pop75 dpi ddpi</span></pre></body></html></div>
 <p>For the moment, only some methods exist for this copula. We can calculate it’s values via the <code>pCopula</code> method, or simulate from it via the <code>rCopula</code> method. the <code>dCopula</code> methods gives it’s density. Here is an example of simulation from this model :</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>simu &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rCopula-methods.html">rCopula</a></span>(<span class="dt">n =</span> <span class="dv">1000</span>,<span class="dt">copula =</span> cop)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(simu,pseudo_data),</span>
-<span id="cb3-3"><a href="#cb3-3"></a>      <span class="dt">col=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"black"</span>,<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(simu)),<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"red"</span>,<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(pseudo_data))),</span>
-<span id="cb3-4"><a href="#cb3-4"></a>      <span class="dt">gap=</span><span class="dv">0</span>,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>      <span class="dt">lower.panel=</span><span class="ot">NULL</span>,<span class="dt">cex=</span><span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">simu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/rCopula-methods.html">rCopula</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fl">1000</span>,<span class="kw">copula</span> <span class="kw">=</span> <span class="no">cop</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">simu</span>,<span class="no">pseudo_data</span>),
+      <span class="kw">col</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">simu</span>)),<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">pseudo_data</span>))),
+      <span class="kw">gap</span><span class="kw">=</span><span class="fl">0</span>,
+      <span class="kw">lower.panel</span><span class="kw">=</span><span class="kw">NULL</span>,<span class="kw">cex</span><span class="kw">=</span><span class="fl">0.5</span>)</pre></body></html></div>
 <div class="figure">
 <img src="ecb_files/figure-html/unnamed-chunk-3-1.png" alt="Pairs-plot of original peusdo-observation from the data (red) with simulated pseudo_observation (black)" width="672"><p class="caption">
 Pairs-plot of original peusdo-observation from the data (red) with simulated pseudo_observation (black)
@@ -171,18 +171,11 @@ Pairs-plot of original peusdo-observation from the data (red) with simulated pse
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#definition-of-the-empirical-checkerboard-copula">Definition of the empirical checkerboard copula</a></li>
-      <li><a href="#implementation">Implementation</a></li>
-      <li><a href="#about-the-value-of-m">About the value of <span class="math inline">\(m\)</span></a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -193,7 +186,7 @@ Pairs-plot of original peusdo-observation from the data (red) with simulated pse
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
