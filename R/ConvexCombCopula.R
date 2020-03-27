@@ -2,18 +2,13 @@
 NULL
 
 
-############################### ConvexComCopula class #######
+############################### ConvexComCopula class ####### it is really a mixture of copulas.
 .ConvexCombCopula = setClass(Class = "ConvexCombCopula",
   slots = c(copulas = "list", alpha = "numeric",dim="numeric"), validity = function(object) {
     errors <- c()
     if (length(object@copulas) != length(object@alpha)) {
       errors <- c(errors, "the weights parameter alpha must have same length as the copulas list")
     }
-    # if (!all(sapply(object@copulas, function(x) {
-    #   is(x, "Copula")
-    # }))) {
-    #   errors <- c(errors, "parameter copulas should contains a list of copulas")
-    # }
     if (!all(object@alpha >= 0)) {
       errors <- c(errors, "weights should be positives")
     }
@@ -43,7 +38,6 @@ NULL
 #' @export
 #'
 #' @examples
-#' library(cort)
 #' dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 #' copulas <- list(
 #'   cbCopula(dataset[,2:3],m=10),
