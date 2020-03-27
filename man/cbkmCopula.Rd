@@ -32,7 +32,6 @@ the checkerboard with known margins construction consist in
 a conditional pattern where the checkerboard part is conditional on the known part of the copula.
 }
 \examples{
-library(cort)
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 known_copula <- cbCopula(dataset[,2:3],m=10)
 (cop <- cbkmCopula(x = dataset,

@@ -30,6 +30,5 @@ Compute the kendall cdf from the model in a point t
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

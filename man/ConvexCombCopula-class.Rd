@@ -35,7 +35,6 @@ in a convex way.
 }}
 
 \examples{
-library(cort)
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 copulas <- list(
   cbCopula(dataset[,2:3],m=10),

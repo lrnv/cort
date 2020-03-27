@@ -43,6 +43,5 @@ CortForest class
 This class implements the bagging of CORT models, with an oob error minimisation in the weights.
 }
 \examples{
-library(cort)
-(CortForest(LifeCycleSavings[,1:3]))
+(CortForest(LifeCycleSavings[,1:3],number_max_dim=2,n_trees=2))
 }

@@ -49,6 +49,5 @@ This function returns the value of the copula itself on given points.
 }}
 
 \examples{
-library(cort)
 # The exmeple needs to be re-done.
 }

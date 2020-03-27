@@ -29,6 +29,5 @@ Compute the L2 norm of the model
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

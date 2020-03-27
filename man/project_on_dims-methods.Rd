@@ -26,6 +26,5 @@ Compute, as a cort tree, the projection on a smaller set of dimensions of a cort
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

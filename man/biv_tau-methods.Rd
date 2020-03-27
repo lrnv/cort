@@ -24,6 +24,5 @@ Computes the bivariate Kendall's tau matrix for a copula.
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

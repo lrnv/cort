@@ -49,6 +49,5 @@ This function simulate random variables from a copula.
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

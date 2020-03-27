@@ -29,6 +29,5 @@ Compute the constraint influence of the model
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

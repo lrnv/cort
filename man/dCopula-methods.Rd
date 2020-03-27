@@ -44,6 +44,5 @@ This function returns the density of a given copula on given observations.
 }}
 
 \examples{
-library(cort)
 # The exmeple needs to be re-done.
 }

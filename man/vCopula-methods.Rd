@@ -32,7 +32,6 @@ that a pCopula method is avaliable for the given copula.
 This function computes the measure of the copula according to the algorithm proposed by the referenced paper.
 }
 \examples{
-library(cort)
 # The exmeple needs to be re-done.
 
 }

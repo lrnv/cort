@@ -26,6 +26,5 @@ Compute the L2 quadratic product of 2 trees
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }

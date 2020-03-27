@@ -24,6 +24,5 @@ Compute the loss of the model
 }}
 
 \examples{
-library(cort)
 # The exemples needs to be re-done.
 }
