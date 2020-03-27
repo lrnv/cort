@@ -35,10 +35,10 @@ Collate:
     'generics.R'
     'Box.R'
     'ConvexCombCopula.R'
+    'empiricalCopula.R'
     'WeightedBox.R'
     'Cort.R'
     'CortForest.R'
-    'empiricalCopula.R'
     'cbCopula.R'
     'cbkmCopula.R'
 VignetteBuilder: knitr

@@ -1,14 +1,12 @@
-#' @include generics.R Box.R WeightedBox.R
+#' @include generics.R Box.R WeightedBox.R empiricalCopula.R
 NULL
 
-.Cort = setClass(Class = "Cort",
-                        slots = c(data = "matrix",
-                                  p_value_for_dim_red = "numeric",
+.Cort = setClass(Class = "Cort", contains = "empiricalCopula",
+                        slots = c(p_value_for_dim_red = "numeric",
                                   number_max_dim = "numeric",
                                   min_node_size = "numeric",
                                   verbose_lvl="numeric",
                                   #leaves = "list",
-                                  dim = "numeric",
                                   vols = "numeric",
                                   f = "numeric",
                                   p = "numeric",
@@ -39,7 +37,9 @@ NULL
 #' @param min_node_size The minimum number of observation avaliable in a leaf to initialise a split.
 #' @param pseudo_data set to True if you are already providing data on the copula space.
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
+#' @param slsqp_options options for nloptr::slsqp to find breakpoints : you can change defaults.
 #' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
+#'
 #' @name Cort-Class
 #' @title The Cort estimator
 #' @rdname Cort-Class
@@ -48,14 +48,14 @@ NULL
 #' @export
 #'
 #' @examples
-#' library(cort)
 #' (Cort(LifeCycleSavings[,1:3]))
 Cort = function(x,
                 p_value_for_dim_red=0.75,
                 min_node_size=1,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
-                verbose_lvl=1) {
+                verbose_lvl=1,
+                slsqp_options = NULL) {
 
   # coerce the data :
   data= as.matrix(x)
@@ -85,7 +85,7 @@ Cort = function(x,
   )
 
   # then fit and return it :
-  return(fit(model))
+  return(fit(model,slsqp_options))
 }
 
 #' @describeIn Cort-Class dimension of the copula
@@ -96,7 +96,7 @@ setMethod(f = "show", signature = c(object = "Cort"), definition = function(obje
                        nrow(object@a)," leaves."))
           })
 
-setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
+setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL){
 
             # Splitting the domain into small boxes :
             if(object@verbose_lvl>0) {cat("Splitting...\n")}
@@ -107,7 +107,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
             while(continue){
               are_splittables = purrr::map_lgl(leaves,is_splittable)
 
-              if(object@verbose_lvl>0){cat("    ",sum(are_splittables),"leaves to split...\n")}
+              if(object@verbose_lvl>0){cat("\n    ",sum(are_splittables),"leaves to split...\n")}
 
               if(any(are_splittables)){
 
@@ -115,7 +115,8 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
                 leaves = purrr::map(leaves, ~split(.x,
                                   p_val_threshold = object@p_value_for_dim_red,
                                   number_max_dim=object@number_max_dim,
-                                  verbose_lvl=object@verbose_lvl-1
+                                  verbose_lvl=object@verbose_lvl-1,
+                                  slsqp_options = slsqp_options
                   )) %>%
                   unlist(recursive = FALSE)
 
@@ -139,9 +140,10 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
             d = ncol(object@data)
 
             middle_points =  # d,n
-            evaluation_points = purrr::map(1:d,~sort(unique((object@b+object@a)[,.x]/2)))
-            dims = purrr::map2(evaluation_points,1:ncol(object@data),function(x,y){rep(y,length(x))}) %>% unlist()
+            evaluation_points = purrr::map(1:d,~unique((object@b+object@a)[,.x]/2))
+            dims = purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}) %>% unlist()
             F_vec = unlist(evaluation_points)
+
             lambdas = pmin(pmax((F_vec - t(object@a[,dims]))/(t(object@b[,dims] - object@a[,dims])),0),1)
 
             # fitting the model :
@@ -152,7 +154,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
                                 u_vec = c(F_vec,1,rep(Inf,n)),
                                 verbose_lvl = object@verbose_lvl-1)
 
-            model$WarmStart(x=purrr::map_dbl(leaves,"weight"))
+            model$WarmStart(x=object@f)
             rez = model$Solve()
 
             # saving weights, in the model and in the leaves :
@@ -167,7 +169,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object){
 
 build_model <- function(P_mat,q_vec,A_mat,l_vec,u_vec,verbose_lvl=1){
 
-  if(verbose_lvl>0){
+  if (verbose_lvl>0) {
     return(osqp::osqp(P=P_mat,
                       q=q_vec,
                       A=A_mat,
@@ -194,8 +196,7 @@ build_model <- function(P_mat,q_vec,A_mat,l_vec,u_vec,verbose_lvl=1){
                                               adaptive_rho_interval = 0L,
                                               adaptive_rho_tolerance = 5,
                                               adaptive_rho_fraction = 0.4)))
-  }
-  else{
+  } else {
     return(osqp::osqp(P=P_mat,
                       q=q_vec,
                       A=A_mat,
@@ -223,6 +224,8 @@ build_model <- function(P_mat,q_vec,A_mat,l_vec,u_vec,verbose_lvl=1){
                                               adaptive_rho_tolerance = 5,
                                               adaptive_rho_fraction = 0.4)))
   }
+
+
 }
 
 #' @describeIn rCopula-methods Method for the class Cort
@@ -392,12 +395,7 @@ setMethod(f = "loss", signature = c(object="Cort"),   definition = function(obje
 
 #' @describeIn constraint_infl-methods Method for the class Cort
 setMethod(f = "constraint_infl", signature = c(object="Cort"),   definition = function(object) {
-
-  # n = length(object@leaves)
-  # return(sum(((object@p - object@f*n)/object@vols)^2)/2)
-
   return(sum(((object@p - object@f)^2/object@vols)))
-
 })
 
 #' @describeIn quad_norm-methods Method for the class Cort
@@ -541,6 +539,64 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
 
 # TODO : Build tests for every method of Cort and CortForest...
 # shuld not be too dificult to do...
+# requires ggplot2 !!
+
+#' @export
+plot.Cort <- function(x,...){
+
+  d = ncol(x@data)
+  dd = do.call(rbind,unlist(purrr::map(1:(d-1),function(i){
+    purrr::map((i+1):(d),function(j){
+      proj = project_on_dims(x,c(i,j))
+      rbind(
+        data.frame(xmin = proj@a[,1],
+                   ymin = proj@a[,2],
+                   xmax = proj@b[,1],
+                   ymax = proj@b[,2],
+                   weight = proj@p,
+                   volume = proj@vols,
+                   dim_x = rep(i,nrow(proj@a)),
+                   dim_y = rep(j,nrow(proj@a))),
+        data.frame(ymin = proj@a[,1],
+                   xmin = proj@a[,2],
+                   ymax = proj@b[,1],
+                   xmax = proj@b[,2],
+                   weight = proj@p,
+                   volume = proj@vols,
+                   dim_y = rep(i,nrow(proj@a)),
+                   dim_x = rep(j,nrow(proj@a)))
+      )
+    })}),recursive=FALSE))
+    dd$col = log(1+dd$weight/dd$volume)
+    dd$col = dd$col/max(dd$col)
+
+    graphics::par(mfrow=c(d,d),
+      mai = c(0,0,0,0),
+      oma = c(3,3,5,3))
+
+  for (i in 1:d){
+    for (j in 1:d){
+      graphics::plot(c(0,1),c(0,1),type="n",xlab="",ylab="",xaxt='n',yaxt='n')
+      if(i != j){
+        xx = dd[(dd$dim_x == i)&(dd$dim_y==j),]
+        graphics::rect(xx$ymin,xx$xmin,xx$ymax,xx$xmax,col=grDevices::gray(1-xx$col),border=NA,density=NA)
+        graphics::points(x@data[,i],x@data[,j],cex=0.7,col="red")
+      }
+    }
+  }
+
+  graphics::par(mfrow = c(1,1))
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

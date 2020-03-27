@@ -56,50 +56,63 @@ setMethod(f = "is_splittable",
 
 setMethod(f="split",
           signature = c(object="WeightedBox"),
-          definition = function(object,p_val_threshold = 0.75, number_max_dim=object@dim,verbose_lvl=1){
+          definition = function(object,p_val_threshold = 0.75, number_max_dim=object@dim,verbose_lvl=1,slsqp_options=NULL){
+
             if(!is_splittable(object)){return(list(object))}
+
+            # prepare the verbosity d.f :
+            verb_df = data.frame(min = object@a, max = object@b)
+            verb_df$bp      = rep(NaN,ncol(object@data))
+            verb_df$p_value = rep(NaN,ncol(object@data))
+            verb_df$action  = rep("",ncol(object@data))
+            verb_df$reason  = rep("",ncol(object@data))
+            row.names(verb_df) = paste0("             ",1:nrow(verb_df))
+
+            n = nrow(object@data)
+
+            if(verbose_lvl>1){cat(paste0("        Leaf with ",n," points.\n"))}
 
             # Randomize splitting dimensions :
             if(number_max_dim < 2){stop("Splits cannot be done in dimensions smaller than 2...")}
             if(length(object@split_dims) > number_max_dim){
-
-              if(verbose_lvl>3){cat("we reduce the number of split dims !")}
-              random_dims = sample(x =object@split_dims,
-                                   size=number_max_dim,
-                                   replace=FALSE)
-              non_taken_dims = object@split_dims[!(object@split_dims %in% random_dims)]
+              random_dims       = sample(x =object@split_dims, size=number_max_dim, replace=FALSE)
+              non_taken_dims    = object@split_dims[!(object@split_dims %in% random_dims)]
               object@split_dims = random_dims
             } else{
               non_taken_dims = numeric()
             }
 
+            verb_df$action[non_taken_dims] = "Dissmissed"
+            verb_df$reason[non_taken_dims] = "Randomly"
 
+            if (is_splittable(object)){
 
-            if (is_splittable(object)){ #if it is splittable"
               optimizer = Optmize_breakpoint(object@data[,object@split_dims],
                                              object@a[object@split_dims],
                                              object@b[object@split_dims],
-                                             verbose_lvl=verbose_lvl-1)
+                                             verbose_lvl=verbose_lvl-1,
+                                             slsqp_options = slsqp_options)
+
+              verb_df$bp[object@split_dims]      <- bp       <- optimizer$bp
+              verb_df$p_value[object@split_dims] <- p_values <- optimizer$p_values
+
+              # if any of the breakpoints are too close to boundary, we remove the dimensions :
+              normed_bp      = (bp - object@a[object@split_dims])/(object@b[object@split_dims] - object@a[object@split_dims])
+              seuil          = 1/min((n+1)^2,2*n+1,1000)
+              close_to_bound = (normed_bp< seuil) + (normed_bp > 1-seuil) > 0
+              p_val_too_big  = p_values > p_val_threshold
 
 
-              bp = optimizer$bp # for the moment we split in the middle.
-              p_values = optimizer$p_values
+              verb_df$action[object@split_dims[close_to_bound]] = "Removed"
+              verb_df$reason[object@split_dims[close_to_bound]] = "Close to boundary"
+              verb_df$action[object@split_dims[p_val_too_big]] = "Removed"
+              verb_df$reason[object@split_dims[p_val_too_big]] = "Independence test"
 
-              # if any of the breakpoints are touching the boundary, we remove the dimensions :
-              touches_boundary = (((bp <= object@a[object@split_dims])+(bp >= object@b[object@split_dims])))>0
-              if(any(touches_boundary)){
-                if(verbose_lvl>0){print("Be carrefull, we are removing a splitting dimensions because breakpoint touches the boundary. ")}
-                p_values[which(touches_boundary)] = p_val_threshold+1
-              }
+              to_be_removed = p_val_too_big+close_to_bound>0
 
-
-
-
-              # try to remove some pslitting dimensions :
-              to_be_removed = p_values > p_val_threshold
               if(all(to_be_removed)){
                 object@split_dims = non_taken_dims
-                return(list(object))
+                result = list(object)
               } else {
 
                 if(any(to_be_removed)){
@@ -108,32 +121,42 @@ setMethod(f="split",
                 }
 
                 if(length(object@split_dims) == 1){
+
+                  verb_df$action[object@split_dims] = "Dissmissed"
+                  verb_df$reason[object@split_dims] = "No one-dim split" # NOW the df is full.
                   object@split_dims = c(object@split_dims,non_taken_dims)
-                  return(list(object))
+                  result = list(object)
+                } else {
+                  # Compute new boxes and assign the data to each box :
+                  verb_df$action[object@split_dims] = "Splitted"
+
+                  new_boxes          = split(as(object,"Box"),bp,object@split_dims)
+                  are_the_breakpoint = apply((t(object@data[,object@split_dims]) == bp),2,prod)
+                  data_without_bp    = object@data[!are_the_breakpoint,]
+
+                  result = purrr::map(new_boxes,function(b){
+                    dat = data_without_bp[contains(b,data_without_bp,type="rllc"),,drop=FALSE]
+                    WeightedBox(box = b, data = dat,
+                                weight =object@weight * nrow(dat)/n,
+                                split_dims = c(object@split_dims,non_taken_dims),
+                                min_node_size = object@min_node_size)
+                  })
                 }
-
-
-                # Compute new boxes and assign the data to each box :
-                new_boxes = split(as(object,"Box"),bp,object@split_dims)
-                are_the_breakpoint = apply((t(object@data[,object@split_dims]) == bp),2,prod)
-                data_without_bp = object@data[!are_the_breakpoint,]
-
-                new_boxes = purrr::map(new_boxes,function(b){
-                  dat = object@data[contains(b,data_without_bp,type="rllc"),,drop=FALSE]
-                  WeightedBox(box = b, data = dat,
-                              weight =object@weight * nrow(dat)/nrow(object@data),
-                              split_dims = c(object@split_dims,non_taken_dims),
-                              min_node_size = object@min_node_size)
-                })
-                return(new_boxes)
               }
-
+            } else{
+              object@split_dims = c(object@split_dims,non_taken_dims)
+              result = list(object)
             }
-            object@split_dims = c(object@split_dims,non_taken_dims)
-            return(list(object))
+
+            if(verbose_lvl>2) {
+              cat(toString.data.frame(verb_df,digits=8))
+              cat("\n")
+            }
+            if(verbose_lvl>1){cat("\n")}
+            return(result) #################################### RETURN
           })
 
-Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0){
+Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL){
 
   # Compute prerequisites :
   n = nrow(data)
@@ -160,76 +183,44 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0){
     return(loss)
   }
 
-  optimize_with = "mlsl"
+  DEFAULT_SLQP_OPTIONS = list(
+    stopval = -Inf,
+    xtol_rel = 1e-4,
+    maxeval = 100000,
+    ftol_rel = 1e-6,
+    ftol_abs = 1e-6
+  )
 
-  if(optimize_with == "slsqp"){ optimizer = nloptr::slsqp(
+  # get setted options :
+  if(is.null(slsqp_options)){
+    slsqp_options = DEFAULT_SLQP_OPTIONS
+  }
+  if(!is.null(slsqp_options)){
+    if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
+    if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
+    if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
+    if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
+    if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
+  }
+
+  optimizer = nloptr::slsqp(
       x0 = rowMeans(z),
       fn = func,
       lower = rep(0,d),
       upper = rep(1,d),
-      nl.info=verbose_lvl>1,
-      control=list(stopval = -Inf, # stop minimization at this value
-                   xtol_rel = 1e-4, # stop on small optimization step
-                   maxeval = 100000, # stop on this many function evaluations
-                   ftol_rel = 1e-6, # stop on change times function value
-                   ftol_abs = 1e-6, # stop on small change of function value
-                   check_derivatives = FALSE),
+      nl.info=verbose_lvl>2,
+      control=slsqp_options,
       binary_repr = binary_repr,
       d = d,
-      z_rep = z_rep
-    )}
-  if(optimize_with == "crs2lm"){ optimizer = nloptr::crs2lm(
-      x0 = rowMeans(z),
-      fn = func,
-      lower = rep(0,d),
-      upper = rep(1,d),
-      maxeval = 100000,
-      pop.size = 10 *(d + 1),
-      ranseed = NULL,
-      xtol_rel = 1e-04,
-      nl.info = FALSE,
-      binary_repr = binary_repr,
-      d = d,
-      z_rep = z_rep
-  )}
-  if(optimize_with == "mlsl"){ optimizer = nloptr::mlsl(
-      x0 = rowMeans(z),
-      fn = func,
-      lower = rep(0,d),
-      upper = rep(1,d),
-      local.method = "LBFGS",
-      low.discrepancy = TRUE,
-      nl.info = FALSE,
-      control=list(stopval = -Inf, # stop minimization at this value
-                   xtol_rel = 1e-4, # stop on small optimization step
-                   maxeval = 100000, # stop on this many function evaluations
-                   ftol_rel = 0.0, # stop on change times function value
-                   ftol_abs = 0.0, # stop on small change of function value
-                   check_derivatives = FALSE,
-                   population = 2*ncol(z)),
-      binary_repr = binary_repr,
-      d = d,
-      z_rep = z_rep
-  )}
-
-
-
-  # Optimize it :
-
-
-
-
-
-
-
+      z_rep = z_rep)
 
   # Return the breakpoint (re-normalized to the box) :
   bp = a + optimizer$par*(b-a)
-  if(verbose_lvl>0) cat("           breakpoints :",bp,"\n")
+  # if(verbose_lvl>0) cat("           breakpoints :",bp,"\n")
 
   # Compute the p_values :
   p_values = compute_bootstrapped_p_values(z,bp)
-  if (verbose_lvl>0) cat("           p_values    :",p_values,"\n\n")
+  # if (verbose_lvl>0) cat("           p_values    :",p_values,"\n")
   return(list(bp=bp,p_values=p_values))
 }
 
@@ -292,16 +283,6 @@ compute_bootstrapped_p_values <- function(z,bp,N = 499){
 
   return(p_val)
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
