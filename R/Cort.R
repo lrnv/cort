@@ -88,9 +88,6 @@ Cort = function(x,
   return(fit(model,slsqp_options))
 }
 
-#' @describeIn Cort-Class dimension of the copula
-setMethod(f = "dim", signature = (x = "Cort"), definition = function(x){return(ncol(x@data))})
-
 setMethod(f = "show", signature = c(object = "Cort"), definition = function(object){
             cat(paste0("Cort copula model: ",nrow(object@data),"x",ncol(object@data),"-dataset and ",
                        nrow(object@a)," leaves."))

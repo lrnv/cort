@@ -3,19 +3,14 @@
 \name{ConvexCombCopula-class}
 \alias{ConvexCombCopula-class}
 \alias{ConvexCombCopula}
-\alias{dim,ConvexCombCopula-method}
 \title{Convex Combination of copulas.}
 \usage{
 ConvexCombCopula(copulas, alpha = rep(1, length(copulas)))
-
-\S4method{dim}{ConvexCombCopula}(x)
 }
 \arguments{
 \item{copulas}{a list of copulas of same dimension}
 
 \item{alpha}{a vector of (positive) weights}
-
-\item{x}{ConvexCombCopula object}
 }
 \value{
 a ConvexCombCopula object
@@ -29,11 +24,6 @@ with given positives weights. The rCopula and pCopula functions works for
 those copulas, assuming they work for the given copulas that we combined
 in a convex way.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{dim}: dimension
-}}
-
 \examples{
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 copulas <- list(

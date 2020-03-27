@@ -64,11 +64,6 @@ ConvexCombCopula = function(copulas, alpha = rep(1, length(copulas))) {
   .ConvexCombCopula(copulas = copulas, alpha = alpha/sum(alpha),dim=copulas[[1]]@dim)
 }
 
-#' @describeIn ConvexCombCopula dimension
-#' @param x ConvexCombCopula object
-setMethod(f = "dim",     signature = (x = "ConvexCombCopula"),                      definition = function(x)         {
-  return(dim(x@copulas[[1]]))
-})
 setMethod(f = "show",    signature = c(object = "ConvexCombCopula"),                definition = function(object)    {
   cat("This is a ConvexCombCopula , with : \n", "  dim =", dim(object@copulas[[1]]),
       "\n   number of copulas =", length(object@copulas), "\n   alpha =",

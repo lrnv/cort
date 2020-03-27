@@ -4,7 +4,6 @@
 \alias{dim,empiricalCopula-method}
 \alias{Cort-Class}
 \alias{Cort}
-\alias{dim,Cort-method}
 \title{The Cort estimator}
 \usage{
 \S4method{dim}{empiricalCopula}(x)
@@ -18,8 +17,6 @@ Cort(
   verbose_lvl = 1,
   slsqp_options = NULL
 )
-
-\S4method{dim}{Cort}(x)
 }
 \arguments{
 \item{x}{The data, must be provided as a matrix with each row as an observation.}
@@ -48,8 +45,6 @@ This class implements the CORT algorithm to a fit a multivariate copula using pi
 \section{Functions}{
 \itemize{
 \item \code{dim,empiricalCopula-method}: dimension of the copula
-
-\item \code{dim,Cort-method}: dimension of the copula
 }}
 
 \examples{
