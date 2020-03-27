@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Cort estimator — Cort-Class • cort</title>
+<title>The Cort estimator — dim,empiricalCopula-method • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="The Cort estimator — Cort-Class" />
+<meta property="og:title" content="The Cort estimator — dim,empiricalCopula-method" />
 <meta property="og:description" content="Cort class" />
 
 
@@ -98,6 +98,9 @@
       <a href="../articles/bootstrap_varying_m.html">Convex mixture of m-randomized checkerboards</a>
     </li>
     <li>
+      <a href="../articles/cort_clayton.html">Cort &amp; CortForest Example on clayton-based simulation</a>
+    </li>
+    <li>
       <a href="../articles/ecb.html">Empirical Checkerboard Copula</a>
     </li>
     <li>
@@ -130,7 +133,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>The Cort estimator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/empiricalCopula.R'><code>R/empiricalCopula.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/empiricalCopula.R'><code>R/empiricalCopula.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
     <div class="hidden name"><code>Cort-Class.Rd</code></div>
     </div>
 
@@ -138,19 +141,20 @@
     <p>Cort class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Cort</span>(
+    <pre class="usage"><span class='co'># S4 method for empiricalCopula</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)
+
+<span class='fu'>Cort</span>(
   <span class='no'>x</span>,
   <span class='kw'>p_value_for_dim_red</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
   <span class='kw'>min_node_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>pseudo_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>number_max_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose_lvl</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>verbose_lvl</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>slsqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
 
 <span class='co'># S4 method for Cort</span>
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)
-
-<span class='co'># S4 method for empiricalCopula</span>
 <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,6 +184,10 @@
       <th>verbose_lvl</th>
       <td><p>numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.</p></td>
     </tr>
+    <tr>
+      <th>slsqp_options</th>
+      <td><p>options for nloptr::slsqp to find breakpoints : you can change defaults.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -192,21 +200,26 @@
 
     
 <ul>
-<li><p><code>dim,Cort-method</code>: dimension of the copula</p></li>
 <li><p><code>dim,empiricalCopula-method</code>: dimension of the copula</p></li>
+<li><p><code>dim,Cort-method</code>: dimension of the copula</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cort</span>)
-(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Splitting...
+    <pre class="examples"><div class='input'>(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Splitting...
+#&gt; 
 #&gt;      1 leaves to split...
+#&gt; 
 #&gt;      5 leaves to split...
-#&gt;      2 leaves to split...
+#&gt; 
+#&gt;      8 leaves to split...
+#&gt; 
+#&gt;      4 leaves to split...
+#&gt; 
 #&gt;      1 leaves to split...
-#&gt;      1 leaves to split...
+#&gt; 
 #&gt;      0 leaves to split...
 #&gt; Enforcing constraints...
-#&gt; Done !</div><div class='output co'>#&gt; Cort copula model: 50x3-dataset and 30 leaves.</div></pre>
+#&gt; Done !</div><div class='output co'>#&gt; Cort copula model: 50x3-dataset and 48 leaves.</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
