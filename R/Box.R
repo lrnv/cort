@@ -124,7 +124,7 @@ setMethod(f = "split",
             }
 
             projection = project(object,breakpoint_dim)
-            if(!contains(projection,breakpoint,type="loose")){stop("The breakpoint should be inside the projected box")}
+            if(!contains(projection,breakpoint,type="loose")){stop("The box should loosely contain the breakpoint")}
             if(!contains(projection,breakpoint,type="strict")){
               cat("be carrefull, we are removing a dimensions because the breakpoint touches the boundary")
               dims_to_split = (breakpoint != object@a[breakpoint_dim]) * (breakpoint != object@b[breakpoint_dim])
