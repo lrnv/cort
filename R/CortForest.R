@@ -1,10 +1,8 @@
-.CortForest = setClass(Class = "CortForest",
-                 slots = c(data = "matrix",
-                           p_value_for_dim_red = "numeric",
+.CortForest = setClass(Class = "CortForest", contains = "empiricalCopula",
+                 slots = c(p_value_for_dim_red = "numeric",
                            number_max_dim = "numeric",
                            verbose_lvl="numeric",
                            trees = "list",
-                           dim = "numeric",
                            weights = "numeric",
                            indexes = "matrix",
                            pmf = "matrix",
@@ -49,8 +47,7 @@
 #' @export
 #'
 #' @examples
-#' library(cort)
-#' (CortForest(LifeCycleSavings[,1:3]))
+#' (CortForest(LifeCycleSavings[,1:3],number_max_dim=2,n_trees=2))
 CortForest = function(x,
                 p_value_for_dim_red=0.75,
                 n_trees = 10,
@@ -86,7 +83,7 @@ CortForest = function(x,
     return(Cort(data[indexes[i,],],
          p_value_for_dim_red=p_value_for_dim_red,
           min_node_size=min_node_size,
-          pseudo_data=FALSE,
+          pseudo_data=TRUE,
           number_max_dim=number_max_dim,
           verbose_lvl=verbose_lvl-1))
   })
@@ -130,7 +127,7 @@ CortForest = function(x,
   oob_ise = numeric(n_trees - 1)
 
   for (j in 2:n_trees){
-    if(verbose_lvl>3){cat("          ------tree",i,"/",n_trees,"\n")}
+    if(verbose_lvl>1){cat("          ------tree",i,"/",n_trees,"\n")}
     weights = rep(1/j,j) # weights computed from only theese trees
 
     oob_wts = weights
