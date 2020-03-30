@@ -127,7 +127,7 @@ CortForest = function(x,
   oob_ise = numeric(n_trees - 1)
 
   for (j in 2:n_trees){
-    if(verbose_lvl>1){cat("          ------tree",i,"/",n_trees,"\n")}
+    if(verbose_lvl>3){cat("          ------tree",i,"/",n_trees,"\n")}
     weights = rep(1/j,j) # weights computed from only theese trees
 
     oob_wts = weights

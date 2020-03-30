@@ -104,7 +104,8 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
             while(continue){
               are_splittables = purrr::map_lgl(leaves,is_splittable)
 
-              if(object@verbose_lvl>0){cat("\n    ",sum(are_splittables),"leaves to split...\n")}
+              if(object@verbose_lvl>0){cat("\n    ",sum(are_splittables),"leaves to split...")}
+              if(object@verbose_lvl>1){cat("\n")}
 
               if(any(are_splittables)){
 
