@@ -325,8 +325,10 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' cop <- Cort(LifeCycleSavings[,1:3])
 #' kendall_func(cop,0.5)
 #'
-setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"))
-
+setGeneric("kendall_func", function(object,t,...) {
+  t <- normalise_data(t,object@dim)
+  standardGeneric("kendall_func")
+})
 
 #' Projection on smaller dimensions
 #'
