@@ -24,5 +24,7 @@ Compute the quadratic product with the empirical density from the data
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- Cort(LifeCycleSavings[,1:3])
+quad_prod_with_data(cop)
+
 }

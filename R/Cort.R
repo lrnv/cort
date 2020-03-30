@@ -454,7 +454,7 @@ setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = funct
   rng = pCopula(rCopula(M,object),object)
   dim(rng) = c(M,1)
   dim(t) = c(1,m)
-  colMeans(rng[,rep(1,m)]<=t[rep(1,M),])
+  colMeans(rng[,rep(1,m),drop=FALSE]<=t[rep(1,M),,drop=FALSE])
 
 })
 

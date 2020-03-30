@@ -1,7 +1,9 @@
+# cort (development version)
+
 # cort 0.0.0.9003
 
-* Moved the bootstrap to C++ : huge gain in perf
-* Added a vignette with a clayton exemple.
+* Moved the bootstrap to C++ : huge gain in performance
+* Added a vignette with a clayton example.
 
 # cort 0.0.0.9002
 

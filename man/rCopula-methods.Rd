@@ -49,5 +49,7 @@ This function simulate random variables from a copula.
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- cbCopula(LifeCycleSavings,m = 5)
+pairs(rCopula(1000,cop))
+
 }

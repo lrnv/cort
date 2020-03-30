@@ -29,5 +29,7 @@ Compute the L2 norm of the model
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- Cort(LifeCycleSavings[,1:3])
+quad_norm(cop)
+
 }

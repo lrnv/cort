@@ -30,5 +30,7 @@ Compute the kendall cdf from the model in a point t
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- Cort(LifeCycleSavings[,1:3])
+kendall_func(cop,0.5)
+
 }

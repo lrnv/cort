@@ -21,12 +21,12 @@ In the future, you we be able to install the released version of cort from [CRAN
 install.packages("cort")
 ```
 
-but for now, only the upstream version is avaliable. it can be installed with : 
+but for now, only the upstream version is avaliable. It can be installed with : 
 
 ``` r
 devtools::install_github("lrnv/cort")
 ```
 
 
-To see examples of what can be done with this package, see the vignettes. 
+The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is usefull. Please read them for more details. 
 

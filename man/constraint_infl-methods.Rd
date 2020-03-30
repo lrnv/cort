@@ -29,5 +29,7 @@ Compute the constraint influence of the model
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- Cort(LifeCycleSavings[,1:3])
+constraint_infl(cop)
+
 }

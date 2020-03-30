@@ -7,7 +7,6 @@
 \alias{pCopula,matrix,CortForest-method}
 \alias{pCopula,matrix,cbCopula-method}
 \alias{pCopula,matrix,cbkmCopula-method}
-\alias{dCopula,matrix,cbkmCopula-method}
 \title{Copula density}
 \usage{
 pCopula(u, copula, ...)
@@ -19,8 +18,6 @@ pCopula(u, copula, ...)
 \S4method{pCopula}{matrix,cbCopula}(u, copula)
 
 \S4method{pCopula}{matrix,cbkmCopula}(u, copula)
-
-\S4method{dCopula}{matrix,cbkmCopula}(u, copula)
 }
 \arguments{
 \item{u}{numeric matrix : one row per observation}
@@ -44,10 +41,12 @@ This function returns the value of the copula itself on given points.
 \item \code{pCopula,matrix,cbCopula-method}: Method for the cbCopula
 
 \item \code{pCopula,matrix,cbkmCopula-method}: Method for the cbCopula
-
-\item \code{dCopula,matrix,cbkmCopula-method}: Method for the cbCopula
 }}
 
 \examples{
-# The exmeple needs to be re-done.
+cop <- cbCopula(LifeCycleSavings,m = 5)
+pCopula(rep(0,5),cop) == 0
+pCopula(rep(0.5,5),cop)
+pCopula(rep(1,5),cop) == 1
+
 }

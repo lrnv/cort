@@ -24,5 +24,7 @@ Computes the bivariate Spearmann's rho matrix for a copula.
 }}
 
 \examples{
-# The exemples needs to be re-done.
+cop <- Cort(LifeCycleSavings[,1:3])
+biv_rho(cop)
+
 }

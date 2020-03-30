@@ -32,7 +32,9 @@ that a pCopula method is avaliable for the given copula.
 This function computes the measure of the copula according to the algorithm proposed by the referenced paper.
 }
 \examples{
-# The exmeple needs to be re-done.
+cop <- cbCopula(LifeCycleSavings,m = 5)
+vCopula(rep(0,5),rep(1,5),cop) == 1
+vCopula(rep(0,5),rep(0.5,5),cop)
 
 }
 \references{

@@ -326,7 +326,6 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' kendall_func(cop,0.5)
 #'
 setGeneric("kendall_func", function(object,t,...) {
-  t <- normalise_data(t,object@dim)
   standardGeneric("kendall_func")
 })
 
@@ -345,7 +344,7 @@ setGeneric("kendall_func", function(object,t,...) {
 #'
 #' @examples
 #' cop <- Cort(LifeCycleSavings[,1:3])
-#' rCopula(project_on_dims(cop,c(1,2)))
+#' plot(rCopula(100,project_on_dims(cop,c(1,2))))
 #'
 setGeneric("project_on_dims", function(object,dims) standardGeneric("project_on_dims"))
 
