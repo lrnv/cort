@@ -1,12 +1,12 @@
 ---
-title: "Empirical Checkerboard Copula with known margins"
+title: "3. Empirical Checkerboard Copula with known margins"
 author: "Oskar Laverny"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Empirical Checkerboard Copula with known margins}
+  %\VignetteIndexEntry{3. Empirical Checkerboard Copula with known margins}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -106,7 +106,7 @@ for example, let's take the LifeCycleSavings data :
 set.seed(1)
 data("LifeCycleSavings")
 dataset <- (apply(LifeCycleSavings,2,rank,ties.method="max")/(nrow(LifeCycleSavings)+1))
-pairs(dataset,col="2",lower.panel=NULL,gap=0,cex=0.5)
+pairs(dataset,col="2",lower.panel=NULL)
 
 ```
 

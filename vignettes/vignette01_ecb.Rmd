@@ -1,5 +1,5 @@
 ---
-title: "Empirical Checkerboard Copula"
+title: "1. Empirical Checkerboard Copula"
 author: "Oskar Laverny"
 date: "`r Sys.Date()`"
 bibliography: ../inst/REFERENCES.bib
@@ -7,7 +7,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Empirical Checkerboard Copula}
+  %\VignetteIndexEntry{1. Empirical Checkerboard Copula}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -73,7 +73,7 @@ You need to provide a dataset, defining $\hat{\mu}$, to construct the model. For
 set.seed(1)
 data("LifeCycleSavings")
 pseudo_data <- (apply(LifeCycleSavings,2,rank,ties.method="max")/(nrow(LifeCycleSavings)+1))
-pairs(pseudo_data,col="2",lower.panel=NULL,gap=0,cex=0.5)
+pairs(pseudo_data,lower.panel=NULL)
 ```
 
 
