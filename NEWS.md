@@ -1,3 +1,8 @@
+# cort 0.0.0.9003
+
+* Moved the bootstrap to C++ : huge gain in perf
+* Added a vignette with a clayton exemple.
+
 # cort 0.0.0.9002
 
 * Added the CortForest model
