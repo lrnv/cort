@@ -31,8 +31,11 @@ NULL
 #'
 #' @param copulas a list of copulas of same dimension
 #' @param alpha a vector of (positive) weights
-#' @name ConvexCombCopula-class
 #' @title Convex Combination of copulas.
+#'
+#' @name ConvexCombCopula-Class
+#' @title The Cort estimator
+#' @rdname ConvexCombCopula-Class
 #'
 #' @return a ConvexCombCopula object
 #' @export

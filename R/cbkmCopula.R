@@ -37,7 +37,11 @@ NULL
 #' @param margins_numbers numeric integers which determines the margins for the known copula.
 #' @param known_cop Copula a copula object representing the known copula for the selected margins.
 #'
-#' @return a cbCopula object
+#' @name cbkmCopula-Class
+#' @title The Cort estimator
+#' @rdname cbkmCopula-Class
+#'
+#' @return a cbkmCopula object
 #' @export
 #'
 #' @examples
@@ -171,13 +175,6 @@ setMethod(f = "pCopula", signature = c(u = "matrix", copula = "cbkmCopula"),  de
   return(colSums(result))
 
 })
-
-#' @describeIn pCopula-methods Method for the cbCopula
-setMethod(f = "dCopula", signature = c(u = "matrix", copula = "cbkmCopula"),  definition = function(u, copula) {
-    stop("Density is not clear for cbkmCopula class yet..")
-})
-
-
 
 
 

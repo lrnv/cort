@@ -516,29 +516,6 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   return(object)
 })
 
-
-# the object@leaves could be removed...
-
-
-# Still to be implemented :
-# it's restriction to the box [a,b] and rescaling to I -> might not be needed finaly !!
-
-
-# for the forest :
-# the main fit function, including oob metrics (ISE and Kl), mean constraint influence,
-# for that, the out of bag pmd must be claculated.
-# also, implement (c,d,p) functions.
-# Also include the eventual weighting of the forest... Still things to be done there !!
-# Also the projection !!
-#
-#
-
-
-
-# TODO : Build tests for every method of Cort and CortForest...
-# shuld not be too dificult to do...
-# requires ggplot2 !!
-
 #' @export
 plot.Cort <- function(x,...){
 

@@ -21,11 +21,6 @@ setClass(Class = "empiricalCopula", contains = c("VIRTUAL"),
        TRUE else errors
    })
 
-#' @describeIn Cort-Class dimension of the copula
-setMethod(f = "dim", signature = (x = "empiricalCopula"), definition = function(x) {
-  return(x@dim)
-})
-
 #' @export
 pairs.empiricalCopula <- function(x,...){
    N = nrow(x@data)

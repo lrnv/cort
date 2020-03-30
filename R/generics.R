@@ -7,7 +7,6 @@ NULL
 
 ########## Non-exported generics :
 
-
 setGeneric("intersect",function(object,b){standardGeneric("intersect")})
 
 setGeneric("is_splittable",function(object){standardGeneric("is_splittable")})
@@ -15,6 +14,10 @@ setGeneric("is_splittable",function(object){standardGeneric("is_splittable")})
 setGeneric("split",signature = c("object"),function(object,...){standardGeneric("split")})
 
 setGeneric("fit",function(object,...){standardGeneric("fit")})
+
+setGeneric("simu_unif",function(object,n){standardGeneric("simu_unif")})
+
+setGeneric("project",function(object,dimensions){standardGeneric("project")})
 
 setGeneric("contains",signature = c("object","u"),function(object,u,type="loose"){
   u <- normalise_data(u,object@dim)
@@ -24,14 +27,6 @@ setGeneric("contains",signature = c("object","u"),function(object,u,type="loose"
 setGeneric("measure_in",function(object,u){
   u <- normalise_data(u,object@dim)
   standardGeneric("measure_in")
-})
-
-setGeneric("simu_unif",function(object,n){
-  standardGeneric("simu_unif")
-})
-
-setGeneric("project",function(object,dimensions){
-  standardGeneric("project")
 })
 
 ##########" Exported generics :
@@ -57,7 +52,9 @@ setGeneric("project",function(object,dimensions){
 #' @rdname vCopula-methods
 #'
 #' @examples
-#' # The exmeple needs to be re-done.
+#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' vCopula(rep(0,5),rep(1,5),cop) == 1
+#' vCopula(rep(0,5),rep(0.5,5),cop)
 #'
 #' @references
 #' \insertRef{cherubini2009}{cort}
@@ -87,7 +84,11 @@ setGeneric("vCopula", function(u, v, copula, ...) {
 #' @rdname dCopula-methods
 #'
 #' @examples
-#' # The exmeple needs to be re-done.
+#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' dCopula(rep(0,5),cop)
+#' dCopula(rep(0.5,5),cop)
+#' dCopula(rep(1,5),cop)
+#'
 setGeneric("dCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
   standardGeneric("dCopula")
@@ -108,7 +109,11 @@ setGeneric("dCopula", function(u, copula, ...) {
 #' @rdname pCopula-methods
 #'
 #' @examples
-#' # The exmeple needs to be re-done.
+#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' pCopula(rep(0,5),cop) == 0
+#' pCopula(rep(0.5,5),cop)
+#' pCopula(rep(1,5),cop) == 1
+#'
 setGeneric("pCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
   standardGeneric("pCopula")
@@ -164,7 +169,9 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' @rdname rCopula-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' pairs(rCopula(1000,cop))
+#'
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
 
 
@@ -181,7 +188,9 @@ setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
 #' @rdname biv_rho-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' biv_rho(cop)
+#'
 setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 
 #' Kendall's tau matrix of a copula
@@ -197,7 +206,9 @@ setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 #' @rdname biv_tau-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' biv_tau(cop)
+#'
 setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 
 
@@ -216,7 +227,9 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' @rdname loss-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' loss(cop)
+#'
 setGeneric("loss", function(object) standardGeneric("loss"))
 
 
@@ -233,7 +246,9 @@ setGeneric("loss", function(object) standardGeneric("loss"))
 #' @rdname constraint_infl-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' constraint_infl(cop)
+#'
 setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
 
 #' Quadratic norm of the model
@@ -249,7 +264,9 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #' @rdname quad_norm-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' quad_norm(cop)
+#'
 setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 
 #' Quadratic product with data of the model
@@ -265,7 +282,9 @@ setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 #' @rdname quad_prod_with_data-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' quad_prod_with_data(cop)
+#'
 setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_with_data"))
 
 #' Quadratic product of 2 trees
@@ -282,7 +301,9 @@ setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_wi
 #' @rdname quad_prod-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' quad_prod(cop,cop) == quad_norm(cop)
+#'
 setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod"))
 
 
@@ -301,7 +322,9 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' @rdname kendall_func-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' kendall_func(cop,0.5)
+#'
 setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"))
 
 
@@ -319,7 +342,9 @@ setGeneric("kendall_func", function(object,t,...) standardGeneric("kendall_func"
 #' @rdname project_on_dims-methods
 #'
 #' @examples
-#' # The exemples needs to be re-done.
+#' cop <- Cort(LifeCycleSavings[,1:3])
+#' rCopula(project_on_dims(cop,c(1,2)))
+#'
 setGeneric("project_on_dims", function(object,dims) standardGeneric("project_on_dims"))
 
 

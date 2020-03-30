@@ -1,7 +1,6 @@
 #' @include generics.R empiricalCopula.R
 NULL
 
-############################### Checkerboard copula class #######
 .cbCopula = setClass(Class = "cbCopula", contains = "empiricalCopula",
   slots = c(m = "numeric"), validity = function(object) {
    errors <- c()
@@ -14,6 +13,7 @@ NULL
    if (length(errors) == 0)
      TRUE else errors
   })
+
 #' cbCopula contructor
 #'
 #' The cbCopula class computes a checkerboard copula with a given checkerboard parameter \eqn{m}, as described by A. Cuberos, E. Masiello and V. Maume-Deschamps (2019).
@@ -53,6 +53,10 @@ NULL
 #'
 #' @details The checkerboard copula is a kind of patchwork copula that only uses independent copula as fill-in, only where there are values on the empirical data provided.
 #' To create such a copula, you should provide data and checkerboard parameters (depending on the dimension of the data).
+#'
+#' @name cbCopula-Class
+#' @title The Cort estimator
+#' @rdname cbCopula-Class
 #'
 #' @return a cbCopula object
 #' @export
