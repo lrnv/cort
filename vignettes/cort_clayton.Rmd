@@ -40,7 +40,13 @@ We can now simulate our dataset and visualise it. Note that, for reproducibility
 
 
 ```{r dataset} 
-set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
+if(as.numeric(version$minor)<6){
+  # the way of specifying the random number generation changed. 
+  set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion")
+} else {
+  set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
+}
+
 
 n = 200 # taken small to reduce runtime of the vignette.
 d = 4
@@ -91,10 +97,6 @@ The same plot is avaliable for the forest :
 ```{r print_cortforest} 
 pairs(bagged_model)
 ```
-
-
-
-
 
 
 
