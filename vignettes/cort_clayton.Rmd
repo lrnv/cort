@@ -42,7 +42,7 @@ We can now simulate our dataset and visualise it. Note that, for reproducibility
 ```{r dataset} 
 set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
 
-n = 30 # taken small to reduce runtime of the vignette.
+n = 200 # taken small to reduce runtime of the vignette.
 d = 4
 n_trees = 2 # taken small to reduce runtime of the vignette.
 number_max_dim_tree = 4
@@ -61,7 +61,7 @@ pairs(data,cex=0.6)
 Now that we have our dataset, we could for example run a Cort model on it. Note that the verbosity level is quite progressive. We will here put it on 4 to have debug-level info to see what's the algorithm is doing, without having the `nloptr::slsqp` routine outputs.
 
 ```{r run_cort} 
-(model = Cort(data,verbose_lvl=4,number_max_dim = number_max_dim_tree))
+(model = Cort(data,verbose_lvl=4,number_max_dim = number_max_dim_tree,p_value_for_dim_red = 0.75))
 ```
 
 

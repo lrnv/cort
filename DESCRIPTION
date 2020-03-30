@@ -19,7 +19,8 @@ Imports:
     methods,
     purrr,
     nloptr,
-    osqp
+    osqp,
+    Rcpp
 URL: https://github.com/lrnv/cort
 BugReports: https://github.com/lrnv/cort/issues
 Suggests: 
@@ -39,7 +40,11 @@ Collate:
     'WeightedBox.R'
     'Cort.R'
     'CortForest.R'
+    'RcppExports.R'
     'cbCopula.R'
     'cbkmCopula.R'
+    'cort-package.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack
+LinkingTo: 
+    Rcpp
