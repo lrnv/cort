@@ -34,12 +34,12 @@ NULL
 #' Let furthermore \eqn{\mu} and \eqn{\hat{\mu}} be respectively the true copula measure of the sample at hand and the classical Deheuvels empirical copula, that is :
 #'
 #' - For \eqn{n} i.i.d observation of the copula of dimension \eqn{d}, let \eqn{\forall i \in \{1,...,d\}, \, R_i^1,...,R_i^d} be the marginal ranks for the variable \eqn{i}.
-#' - \eqn{\forall x \in I^d, \text{ let } \hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n I_{R_1^k\le x_1,...,R_d^k\le x_d}}
+#' - \eqn{\forall x \in I^d} let \eqn{\hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n I_{R_1^k\le x_1,...,R_d^k\le x_d}}
 #'
 #'
 #' The checkerboard copula, \eqn{C}, and the empirical checkerboard copula, \eqn{\hat{C}}, are then defined by the following :
 #'
-#' \deqn{\forall x \in (0,1)^d, C(x) = \sum\limits_{i\inI} {m^d \mu(B_{i}) \lambda((0,x)\cap B_{i})}}
+#' \deqn{\forall x \in (0,1)^d, C(x) = \sum\limits_{i\in I} {m^d \mu(B_{i}) \lambda((0,x)\cap B_{i})}}
 #'
 #' Where \eqn{m^d = \lambda(B_{i})}.
 #'
@@ -55,7 +55,7 @@ NULL
 #' To create such a copula, you should provide data and checkerboard parameters (depending on the dimension of the data).
 #'
 #' @name cbCopula-Class
-#' @title The Cort estimator
+#' @title Checkerboard copulas
 #' @rdname cbCopula-Class
 #'
 #' @return a cbCopula object

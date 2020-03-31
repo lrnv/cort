@@ -170,7 +170,7 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #'
 #' @examples
 #' cop <- cbCopula(LifeCycleSavings,m = 5)
-#' pairs(rCopula(1000,cop))
+#' xx <- rCopula(1000,cop)
 #'
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
 
@@ -344,7 +344,7 @@ setGeneric("kendall_func", function(object,t,...) {
 #'
 #' @examples
 #' cop <- Cort(LifeCycleSavings[,1:3])
-#' plot(rCopula(100,project_on_dims(cop,c(1,2))))
+#' projection = project_on_dims(cop,c(1,2))
 #'
 setGeneric("project_on_dims", function(object,dims) standardGeneric("project_on_dims"))
 

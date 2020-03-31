@@ -40,7 +40,7 @@
 #' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
 #'
 #' @name CortForest-Class
-#' @title The Cort estimator
+#' @title Bagged Cort estimates
 #' @rdname CortForest-Class
 #'
 #' @return a CortForest object that can be fitted easily to produce a copula estimate.

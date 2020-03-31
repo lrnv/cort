@@ -3,7 +3,7 @@
 \name{CortForest-Class}
 \alias{CortForest-Class}
 \alias{CortForest}
-\title{The Cort estimator}
+\title{Bagged Cort estimates}
 \usage{
 CortForest(
   x,

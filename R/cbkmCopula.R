@@ -38,7 +38,7 @@ NULL
 #' @param known_cop Copula a copula object representing the known copula for the selected margins.
 #'
 #' @name cbkmCopula-Class
-#' @title The Cort estimator
+#' @title Checkerboard with known margins
 #' @rdname cbkmCopula-Class
 #'
 #' @return a cbkmCopula object

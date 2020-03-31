@@ -24,5 +24,5 @@ devtools::install_github("lrnv/cort")
 ```
 
 
-The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is usefull. Please read them for more details. 
+The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is useful. Please read them for more details. 
 

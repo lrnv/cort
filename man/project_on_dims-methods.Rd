@@ -27,6 +27,6 @@ Compute, as a cort tree, the projection on a smaller set of dimensions of a cort
 
 \examples{
 cop <- Cort(LifeCycleSavings[,1:3])
-plot(rCopula(100,project_on_dims(cop,c(1,2))))
+projection = project_on_dims(cop,c(1,2))
 
 }

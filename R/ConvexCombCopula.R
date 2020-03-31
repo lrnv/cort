@@ -34,7 +34,7 @@ NULL
 #' @title Convex Combination of copulas.
 #'
 #' @name ConvexCombCopula-Class
-#' @title The Cort estimator
+#' @title Convex combination of copulas
 #' @rdname ConvexCombCopula-Class
 #'
 #' @return a ConvexCombCopula object
@@ -100,7 +100,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "ConvexCombCopula
   return(samples)
 })
 
-#' @describeIn dCopula-methods Method for the cbCopula
+#' @describeIn pCopula-methods Method for the cbCopula
 setMethod(f = "pCopula", signature = c(u = "matrix", copula = "ConvexCombCopula"),  definition = function(u, copula) {
 
   # remind that pCopula and dCopula generics already transform inputs into matrices...
