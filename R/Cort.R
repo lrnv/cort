@@ -110,7 +110,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
               if(any(are_splittables)){
 
                 # Split every box :
-                leaves = purrr::map(leaves, ~split(.x,
+                leaves = furrr::future_map(leaves, ~split(.x,
                                   p_val_threshold = object@p_value_for_dim_red,
                                   number_max_dim=object@number_max_dim,
                                   verbose_lvl=object@verbose_lvl-1,

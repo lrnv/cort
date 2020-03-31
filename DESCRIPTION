@@ -20,7 +20,8 @@ Imports:
     purrr,
     nloptr,
     osqp,
-    Rcpp
+    Rcpp,
+    furrr
 URL: https://github.com/lrnv/cort
 BugReports: https://github.com/lrnv/cort/issues
 Suggests: 

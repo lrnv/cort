@@ -78,7 +78,7 @@ CortForest = function(x,
   } else { if (verbose_lvl >= 3){ affichage = "====================================================================================="
   }}}
 
-  trees = purrr::map(1:n_trees,function(i){
+  trees = furrr::future_map(1:n_trees,function(i){
     if(verbose_lvl>0){cat(affichage, "Tree",i,"over",n_trees,"\n")}
     return(Cort(data[indexes[i,],],
          p_value_for_dim_red=p_value_for_dim_red,
