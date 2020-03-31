@@ -1,3 +1,13 @@
+## Resubmission
+This is a resubmission. In this version i have : 
+
+* Removed "Classes and Tools for" from the title as requested.
+* Added a citation in the description file with <doi:...> as requested.
+* Correct the fact that i was changing user's par() settings in my functions. 
+
+
+
+
 ## Test environments
 * local R installation (Windows 10 x64), R 3.6.0
 * Ubuntu 16.04.6 LTS (on travis-ci), R 3.5.3
