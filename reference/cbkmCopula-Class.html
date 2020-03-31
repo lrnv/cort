@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cbkmCopula contructor — cbkmCopula • cort</title>
+<title>Checkerboard with known margins — cbkmCopula-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="cbkmCopula contructor — cbkmCopula" />
-<meta property="og:description" content="Given some empirical data, and given some known copula estimation on a sub-vector of this data,
-the checkerboard with known margins construction consist in
-a conditional pattern where the checkerboard part is conditional on the known part of the copula." />
+<meta property="og:title" content="Checkerboard with known margins — cbkmCopula-Class" />
+<meta property="og:description" content="cbkmCopula contructor" />
 
 
 
@@ -74,7 +72,7 @@ a conditional pattern where the checkerboard part is conditional on the known pa
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -97,16 +95,16 @@ a conditional pattern where the checkerboard part is conditional on the known pa
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bootstrap_varying_m.html">Convex mixture of m-randomized checkerboards</a>
+      <a href="../articles/vignette01_ecb.html">1. Empirical Checkerboard Copula</a>
     </li>
     <li>
-      <a href="../articles/cort_clayton.html">Cort &amp; CortForest Example on clayton-based simulation</a>
+      <a href="../articles/vignette02_cort_clayton.html">2. The Copula Recursive Tree</a>
     </li>
     <li>
-      <a href="../articles/ecb.html">Empirical Checkerboard Copula</a>
+      <a href="../articles/vignette03_ecbkm.html">3. Empirical Checkerboard Copula with known margins</a>
     </li>
     <li>
-      <a href="../articles/ecbkm.html">Empirical Checkerboard Copula with known margins</a>
+      <a href="../articles/vignette04_bootstrap_varying_m.html">4. Convex mixture of m-randomized checkerboards</a>
     </li>
   </ul>
 </li>
@@ -134,15 +132,13 @@ a conditional pattern where the checkerboard part is conditional on the known pa
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cbkmCopula contructor</h1>
+    <h1>Checkerboard with known margins</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/cbkmCopula.R'><code>R/cbkmCopula.R</code></a></small>
-    <div class="hidden name"><code>cbkmCopula.Rd</code></div>
+    <div class="hidden name"><code>cbkmCopula-Class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Given some empirical data, and given some known copula estimation on a sub-vector of this data,
-the checkerboard with known margins construction consist in
-a conditional pattern where the checkerboard part is conditional on the known part of the copula.</p>
+    <p>cbkmCopula contructor</p>
     </div>
 
     <pre class="usage"><span class='fu'>cbkmCopula</span>(
@@ -180,11 +176,16 @@ a conditional pattern where the checkerboard part is conditional on the known pa
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a cbCopula object</p>
+    <p>a cbkmCopula object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Given some empirical data, and given some known copula estimation on a sub-vector of this data,
+the checkerboard with known margins construction consist in
+a conditional pattern where the checkerboard part is conditional on the known part of the copula.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dataset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='no'>rank</span>)/(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>LifeCycleSavings</span>)+<span class='fl'>1</span>)
-<span class='no'>known_copula</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cbCopula.html'>cbCopula</a></span>(<span class='no'>dataset</span>[,<span class='fl'>2</span>:<span class='fl'>3</span>],<span class='kw'>m</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>known_copula</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span>(<span class='no'>dataset</span>[,<span class='fl'>2</span>:<span class='fl'>3</span>],<span class='kw'>m</span><span class='kw'>=</span><span class='fl'>10</span>)
 (<span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'>cbkmCopula</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>dataset</span>,
                   <span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>5</span>,
                   <span class='kw'>pseudo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,

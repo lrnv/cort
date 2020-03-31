@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Cort estimator — dim,empiricalCopula-method • cort</title>
+<title>The Cort estimator — Cort-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="The Cort estimator — dim,empiricalCopula-method" />
+<meta property="og:title" content="The Cort estimator — Cort-Class" />
 <meta property="og:description" content="Cort class" />
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -95,16 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bootstrap_varying_m.html">Convex mixture of m-randomized checkerboards</a>
+      <a href="../articles/vignette01_ecb.html">1. Empirical Checkerboard Copula</a>
     </li>
     <li>
-      <a href="../articles/cort_clayton.html">Cort &amp; CortForest Example on clayton-based simulation</a>
+      <a href="../articles/vignette02_cort_clayton.html">2. The Copula Recursive Tree</a>
     </li>
     <li>
-      <a href="../articles/ecb.html">Empirical Checkerboard Copula</a>
+      <a href="../articles/vignette03_ecbkm.html">3. Empirical Checkerboard Copula with known margins</a>
     </li>
     <li>
-      <a href="../articles/ecbkm.html">Empirical Checkerboard Copula with known margins</a>
+      <a href="../articles/vignette04_bootstrap_varying_m.html">4. Convex mixture of m-randomized checkerboards</a>
     </li>
   </ul>
 </li>
@@ -133,7 +133,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>The Cort estimator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/empiricalCopula.R'><code>R/empiricalCopula.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
     <div class="hidden name"><code>Cort-Class.Rd</code></div>
     </div>
 
@@ -141,10 +141,7 @@
     <p>Cort class</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for empiricalCopula</span>
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>x</span>)
-
-<span class='fu'>Cort</span>(
+    <pre class="usage"><span class='fu'>Cort</span>(
   <span class='no'>x</span>,
   <span class='kw'>p_value_for_dim_red</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
   <span class='kw'>min_node_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -193,12 +190,6 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This class implements the CORT algorithm to a fit a multivariate copula using piece constant density.</p>
-    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
-
-    
-<ul>
-<li><p><code>dim,empiricalCopula-method</code>: dimension of the copula</p></li>
-</ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Splitting...

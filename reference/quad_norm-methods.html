@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -95,16 +95,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bootstrap_varying_m.html">Convex mixture of m-randomized checkerboards</a>
+      <a href="../articles/vignette01_ecb.html">1. Empirical Checkerboard Copula</a>
     </li>
     <li>
-      <a href="../articles/cort_clayton.html">Cort &amp; CortForest Example on clayton-based simulation</a>
+      <a href="../articles/vignette02_cort_clayton.html">2. The Copula Recursive Tree</a>
     </li>
     <li>
-      <a href="../articles/ecb.html">Empirical Checkerboard Copula</a>
+      <a href="../articles/vignette03_ecbkm.html">3. Empirical Checkerboard Copula with known margins</a>
     </li>
     <li>
-      <a href="../articles/ecbkm.html">Empirical Checkerboard Copula with known margins</a>
+      <a href="../articles/vignette04_bootstrap_varying_m.html">4. Convex mixture of m-randomized checkerboards</a>
     </li>
   </ul>
 </li>
@@ -170,7 +170,14 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># The exemples needs to be re-done.
+    <pre class="examples"><div class='input'><span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='output co'>#&gt; Splitting...
+#&gt; 
+#&gt;      1 leaves to split...
+#&gt;      5 leaves to split...
+#&gt;      8 leaves to split...
+#&gt;      4 leaves to split...
+#&gt;      0 leaves to split...Enforcing constraints...
+#&gt; Done !</div><div class='input'><span class='fu'>quad_norm</span>(<span class='no'>cop</span>)</div><div class='output co'>#&gt; [1] 3.798939</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

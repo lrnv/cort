@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cbCopula contructor — cbCopula • cort</title>
+<title>Checkerboard copulas — cbCopula-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="cbCopula contructor — cbCopula" />
-<meta property="og:description" content="The cbCopula class computes a checkerboard copula with a given checkerboard parameter \(m\), as described by A. Cuberos, E. Masiello and V. Maume-Deschamps (2019).
-Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2017). The construction of this copula model is as follows :" />
+<meta property="og:title" content="Checkerboard copulas — cbCopula-Class" />
+<meta property="og:description" content="cbCopula contructor" />
 
 
 
@@ -73,7 +72,7 @@ Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -96,16 +95,16 @@ Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bootstrap_varying_m.html">Convex mixture of m-randomized checkerboards</a>
+      <a href="../articles/vignette01_ecb.html">1. Empirical Checkerboard Copula</a>
     </li>
     <li>
-      <a href="../articles/cort_clayton.html">Cort &amp; CortForest Example on clayton-based simulation</a>
+      <a href="../articles/vignette02_cort_clayton.html">2. The Copula Recursive Tree</a>
     </li>
     <li>
-      <a href="../articles/ecb.html">Empirical Checkerboard Copula</a>
+      <a href="../articles/vignette03_ecbkm.html">3. Empirical Checkerboard Copula with known margins</a>
     </li>
     <li>
-      <a href="../articles/ecbkm.html">Empirical Checkerboard Copula with known margins</a>
+      <a href="../articles/vignette04_bootstrap_varying_m.html">4. Convex mixture of m-randomized checkerboards</a>
     </li>
   </ul>
 </li>
@@ -133,14 +132,13 @@ Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cbCopula contructor</h1>
+    <h1>Checkerboard copulas</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/cbCopula.R'><code>R/cbCopula.R</code></a></small>
-    <div class="hidden name"><code>cbCopula.Rd</code></div>
+    <div class="hidden name"><code>cbCopula-Class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The cbCopula class computes a checkerboard copula with a given checkerboard parameter \(m\), as described by A. Cuberos, E. Masiello and V. Maume-Deschamps (2019).
-Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2017). The construction of this copula model is as follows :</p>
+    <p>cbCopula contructor</p>
     </div>
 
     <pre class="usage"><span class='fu'>cbCopula</span>(<span class='no'>x</span>, <span class='kw'>m</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>x</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>x</span>)), <span class='kw'>pseudo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -168,19 +166,21 @@ providing pseudo data into the <code>x</code> argument.</p></td>
     <p>a cbCopula object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Start from a dataset with \(n\) i.i.d observation of a \(d\)-dimensional copula (or pseudo-observations), and a checkerboard parameter \(m\),dividing \(n\).</p>
-<p>Consider the ensemble of multi-indexes \(\mathcal{I} = \{\mathbf{i} = (i_1,..,i_d) \subset \{1,...,m \}^d\}\) which indexes the boxes :</p>
-<p>$$B_{\mathbf{i}} = \left]\frac{\mathbf{i}-1}{m},\frac{\mathbf{i}}{m}\right]$$</p>
-<p>Let now \(\lambda\) be the dimension-unspecific lebesgue measure on any power of \(\mathbb{R}\), that is :</p>
-<p>$$\forall d \in \mathbb{N}, \forall x,y \in \mathbb{R}^p, \lambda(\left(x,y\right)) = \prod\limits_{p=1}^{d} (y_i - x_i)$$</p>
+    <p>The cbCopula class computes a checkerboard copula with a given checkerboard parameter \(m\), as described by A. Cuberos, E. Masiello and V. Maume-Deschamps (2019).
+Assymptotics for this model are given by C. Genest, J. Neslehova and R. bruno (2017). The construction of this copula model is as follows :</p>
+<p>Start from a dataset with \(n\) i.i.d observation of a \(d\)-dimensional copula (or pseudo-observations), and a checkerboard parameter \(m\),dividing \(n\).</p>
+<p>Consider the ensemble of multi-indexes \(I = \{i = (i_1,..,i_d) \subset \{1,...,m \}^d\}\) which indexes the boxes :</p>
+<p>$$B_{i} = \left]\frac{i-1}{m},\frac{i}{m}\right]$$</p>
+<p>Let now \(\lambda\) be the dimension-unspecific lebesgue measure on any power of \(R\), that is :</p>
+<p>$$\forall d \in N, \forall x,y \in R^p, \lambda(\left(x,y\right)) = \prod\limits_{p=1}^{d} (y_i - x_i)$$</p>
 <p>Let furthermore \(\mu\) and \(\hat{\mu}\) be respectively the true copula measure of the sample at hand and the classical Deheuvels empirical copula, that is :</p><ul>
 <li><p>For \(n\) i.i.d observation of the copula of dimension \(d\), let \(\forall i \in \{1,...,d\}, \, R_i^1,...,R_i^d\) be the marginal ranks for the variable \(i\).</p></li>
-<li><p>\(\forall x \in \mathcal{I}^d, \text{ let } \hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n \mathbb{1}_{R_1^k\le x_1,...,R_d^k\le x_d}\)</p></li>
+<li><p>\(\forall x \in I^d\) let \(\hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n I_{R_1^k\le x_1,...,R_d^k\le x_d}\)</p></li>
 </ul>
 
 <p>The checkerboard copula, \(C\), and the empirical checkerboard copula, \(\hat{C}\), are then defined by the following :</p>
-<p>$$\forall x \in (0,1)^d, C(x) = \sum\limits_{\mathbf{i}\in\mathcal{I}} {m^d \mu(B_{\mathbf{i}}) \lambda((0,\mathbf{x})\cap B_{\mathbf{i}})}$$</p>
-<p>Where \(m^d = \lambda(B_{\mathbf{i}})\).</p>
+<p>$$\forall x \in (0,1)^d, C(x) = \sum\limits_{i\in I} {m^d \mu(B_{i}) \lambda((0,x)\cap B_{i})}$$</p>
+<p>Where \(m^d = \lambda(B_{i})\).</p>
 <p>This copula is a special form of patchwork copulas, see F. Durante, J. Fernández Sánchez and C. Sempi (2013) and F. Durante, J. Fernández Sánchez, J. Quesada-Molina and M. Ubeda-Flores (2015).
 The estimator has the good property of always being a copula.</p>
 <p>The checkerboard copula is a kind of patchwork copula that only uses independent copula as fill-in, only where there are values on the empirical data provided.
