@@ -12,3 +12,4 @@
 ^\.github$
 ^clang-.*
 ^cran-comments\.md$
+^CRAN-RELEASE$

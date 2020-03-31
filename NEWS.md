@@ -1,6 +1,11 @@
 # cort 0.2.0
 
+* Pass checks on every plateform : some corrections to descriptions
+* some corrections to documentations.
+
 # cort 0.1.0
+
+* Finalised the API
 
 # cort 0.0.0.9003
 
