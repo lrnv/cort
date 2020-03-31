@@ -21,27 +21,27 @@ NULL
 #'
 #' Start from a dataset with \eqn{n} i.i.d observation of a \eqn{d}-dimensional copula (or pseudo-observations), and a checkerboard parameter \eqn{m},dividing \eqn{n}.
 #'
-#' Consider the ensemble of multi-indexes \eqn{\mathcal{I} = \{\mathbf{i} = (i_1,..,i_d) \subset \{1,...,m \}^d\}} which indexes the boxes :
+#' Consider the ensemble of multi-indexes \eqn{I = \{i = (i_1,..,i_d) \subset \{1,...,m \}^d\}} which indexes the boxes :
 #'
-#' \deqn{B_{\mathbf{i}} = \left]\frac{\mathbf{i}-1}{m},\frac{\mathbf{i}}{m}\right]}
+#' \deqn{B_{i} = \left]\frac{i-1}{m},\frac{i}{m}\right]}
 #'
-# 'partitioning the space \eqn{\mathbb{I}^d = (0,1)^d}.
+# 'partitioning the space \eqn{I^d = (0,1)^d}.
 #'
-#' Let now \eqn{\lambda} be the dimension-unspecific lebesgue measure on any power of \eqn{\mathbb{R}}, that is :
+#' Let now \eqn{\lambda} be the dimension-unspecific lebesgue measure on any power of \eqn{R}, that is :
 #'
-#' \deqn{\forall d \in \mathbb{N}, \forall x,y \in \mathbb{R}^p, \lambda(\left(x,y\right)) = \prod\limits_{p=1}^{d} (y_i - x_i)}
+#' \deqn{\forall d \in N, \forall x,y \in R^p, \lambda(\left(x,y\right)) = \prod\limits_{p=1}^{d} (y_i - x_i)}
 #'
 #' Let furthermore \eqn{\mu} and \eqn{\hat{\mu}} be respectively the true copula measure of the sample at hand and the classical Deheuvels empirical copula, that is :
 #'
 #' - For \eqn{n} i.i.d observation of the copula of dimension \eqn{d}, let \eqn{\forall i \in \{1,...,d\}, \, R_i^1,...,R_i^d} be the marginal ranks for the variable \eqn{i}.
-#' - \eqn{\forall x \in \mathcal{I}^d, \text{ let } \hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n \mathbb{1}_{R_1^k\le x_1,...,R_d^k\le x_d}}
+#' - \eqn{\forall x \in I^d, \text{ let } \hat{\mu}((0,x)) = \frac{1}{n} \sum\limits_{k=1}^n I_{R_1^k\le x_1,...,R_d^k\le x_d}}
 #'
 #'
 #' The checkerboard copula, \eqn{C}, and the empirical checkerboard copula, \eqn{\hat{C}}, are then defined by the following :
 #'
-#' \deqn{\forall x \in (0,1)^d, C(x) = \sum\limits_{\mathbf{i}\in\mathcal{I}} {m^d \mu(B_{\mathbf{i}}) \lambda((0,\mathbf{x})\cap B_{\mathbf{i}})}}
+#' \deqn{\forall x \in (0,1)^d, C(x) = \sum\limits_{i\inI} {m^d \mu(B_{i}) \lambda((0,x)\cap B_{i})}}
 #'
-#' Where \eqn{m^d = \lambda(B_{\mathbf{i}})}.
+#' Where \eqn{m^d = \lambda(B_{i})}.
 #'
 #' This copula is a special form of patchwork copulas, see F. Durante, J. Fernández Sánchez and C. Sempi (2013) and F. Durante, J. Fernández Sánchez, J. Quesada-Molina and M. Ubeda-Flores (2015).
 #' The estimator has the good property of always being a copula.

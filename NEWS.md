@@ -1,4 +1,4 @@
-# cort (development version)
+# cort 0.1.0
 
 # cort 0.0.0.9003
 
