@@ -1,5 +1,5 @@
 Package: cort
-Title: Classes and Tools for Some Empiric and Nonparametric Copula Models
+Title: Some Empiric and Nonparametric Copula Models
 Version: 0.2.0
 Authors@R: 
     person(given = "Oskar",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "oskar.laverny@gmail.com",
            comment = c(ORCID = "0000-0002-7508-999X"))
-Description: Provides S4 classes and methods to fit several copula models: The classic empirical checkerboard copula and the empirical checkerboard copula with known margins are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. The last model consist of the implementation of the Copula Recursive Tree algorithm, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. We also provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a copula.
+Description: Provides S4 classes and methods to fit several copula models: The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) <doi:10.1080/03610926.2019.1586936> are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. The last model consist of the implementation of the Copula Recursive Tree algorithm, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. We also provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a copula.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

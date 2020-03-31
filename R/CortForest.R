@@ -85,7 +85,7 @@ CortForest = function(x,
           min_node_size=min_node_size,
           pseudo_data=TRUE,
           number_max_dim=number_max_dim,
-          verbose_lvl=verbose_lvl-1))},.progress=TRUE)
+          verbose_lvl=0))},.progress=TRUE)
 
     if(verbose_lvl>0){cat(affichage,"Computing statistics...\n")}
   # now compute the masked pmf :

@@ -545,6 +545,8 @@ plot.Cort <- function(x,...){
     dd$col = log(1+dd$weight/dd$volume)
     dd$col = dd$col/max(dd$col)
 
+    opar <- graphics::par(no.readonly = TRUE)
+    on.exit(graphics::par(opar))
     graphics::par(mfrow=c(d,d),
       mai = c(0,0,0,0),
       oma = c(3,3,5,3))
@@ -559,8 +561,6 @@ plot.Cort <- function(x,...){
       }
     }
   }
-
-  graphics::par(mfrow = c(1,1))
 }
 
 
