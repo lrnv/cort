@@ -1,3 +1,8 @@
+# cort 0.3.0
+
+* Changes to conform to CRAN submissions recomendations
+* Added a multiprocess option via furrr
+
 # cort 0.2.0
 
 * Pass checks on every plateform : some corrections to descriptions

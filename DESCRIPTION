@@ -1,6 +1,6 @@
 Package: cort
 Title: Some Empiric and Nonparametric Copula Models
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person(given = "Oskar",
            family = "Laverny",
