@@ -135,16 +135,14 @@ setMethod(f = "split",
             }
             d_split=length(breakpoint_dim)
 
-            1:(2^d_split) %>%
-              purrr::map(number2binary,d_split) %>%
-              purrr::map(function(bin){
-                new_a = object@a
-                new_b = object@b
-                new_a[breakpoint_dim] = breakpoint^bin * object@a[breakpoint_dim] ^ (1-bin)
-                new_b[breakpoint_dim] = breakpoint^(1-bin) * object@b[breakpoint_dim] ^ bin
-                return(Box(a = new_a, b = new_b))
-              }) %>%
-              return
+            return(purrr::map(1:(2^d_split),function(i){
+              bin = number2binary(i,d_split)
+              new_a = object@a
+              new_b = object@b
+              new_a[breakpoint_dim] = breakpoint^bin * object@a[breakpoint_dim] ^ (1-bin)
+              new_b[breakpoint_dim] = breakpoint^(1-bin) * object@b[breakpoint_dim] ^ bin
+              return(Box(a = new_a, b = new_b))
+            }))
           })
 
 
