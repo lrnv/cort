@@ -73,13 +73,14 @@ CortForest = function(x,
   indexes = matrix(sample(1:n,size=n*n_trees,replace = TRUE),nrow=n_trees,ncol=n) # n_trees, n
 
 
-  if(verbose_lvl <= 1){affichage = ""
-  } else { if(verbose_lvl == 2){ affichage = "========================"
-  } else { if (verbose_lvl >= 3){ affichage = "====================================================================================="
-  }}}
+  if(verbose_lvl <= 1){
+    affichage = ""
+  } else {
+    affichage = "========================"
+  }
 
+  if(verbose_lvl>0){cat(affichage,"Computing trees...\n")}
   trees = furrr::future_map(1:n_trees,function(i){
-    if(verbose_lvl>0){cat(affichage, "Tree",i,"over",n_trees,"\n")}
     return(Cort(data[indexes[i,],],
          p_value_for_dim_red=p_value_for_dim_red,
           min_node_size=min_node_size,
