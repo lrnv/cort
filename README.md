@@ -6,8 +6,13 @@
 [![Codecov test coverage](https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg)](https://codecov.io/gh/lrnv/cort?branch=master)
 <!-- badges: end -->
 
+The `cort` package provides S4 classes and methods to fit several copula models: 
 
-The `cort` package provides S4 classes and methods to fit several copula models: The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) <doi:10.1080/03610926.2019.1586936> are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. The last model consist of the implementation of the Copula Recursive Tree algorithm, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. We also provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a copula.
+* The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) <doi:10.1080/03610926.2019.1586936> are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. 
+
+* The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. 
+
+* We finaly provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.
 
 ## Installation
 
