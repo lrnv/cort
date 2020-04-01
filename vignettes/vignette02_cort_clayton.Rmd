@@ -80,7 +80,6 @@ We can clearly see that the second marginal is independent form the rest. In the
 Now that we have a dataset, we can run the Cort algorithm on it. In the implementation proposed here, this is done via the `cort::Cort()` function, passing first the dataset, and then various parameters. See `?Cort` for a detailed list of parameters. Note that the verbosity level is quite progressive: We will here put it on 4 to see the splitting decisions that the algorithm is making.
 
 ```{r run_cort} 
-set_seed(12)
 (model = Cort(data,verbose_lvl=4,p_value_for_dim_red = 0.75))
 ```
 
