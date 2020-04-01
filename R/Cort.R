@@ -142,7 +142,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
             dims = purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}) %>% unlist()
             F_vec = unlist(evaluation_points)
 
-            lambdas = pmin(pmax((F_vec - t(object@a[,dims]))/(t(object@b[,dims] - object@a[,dims])),0),1)
+            lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)
 
             # fitting the model :
             model = build_model(P_mat = diag(1/object@vols),
