@@ -13,3 +13,7 @@ normMatrix <- function(as, bs, kernels) {
     .Call(`_cort_normMatrix`, as, bs, kernels)
 }
 
+lossFunc <- function(bp, bin_repr, z) {
+    .Call(`_cort_lossFunc`, bp, bin_repr, z)
+}
+

@@ -22,7 +22,6 @@ WeightedBox = function(box,data,weight=1,split_dims=1:box@dim,min_node_size = 1)
 
   # checks :
   if(ncol(data) != box@dim){ stop ("The data shuold have the same umber of colums as the dimension of the box.")}
-  if(!all(contains(box,data))){ stop("The box should contain the data")}
   if(!all(split_dims<=box@dim)) {stop("splitting dimensions should be smaller than the box dimensions")}
   if(weight > 1) { stop("The weight should be smaller than 1")}
   if(length(min_node_size) != 1){ stop("The min_node_size should be an integer")}
@@ -38,7 +37,6 @@ WeightedBox = function(box,data,weight=1,split_dims=1:box@dim,min_node_size = 1)
   box@split_dims = split_dims
   box@data = data
   box@min_node_size = min_node_size
-  validObject(box)
   return(box)
 }
 
@@ -131,6 +129,11 @@ setMethod(f="split",
                   verb_df$action[object@split_dims] = "Splitted"
 
                   new_boxes          = split(as(object,"Box"),bp,object@split_dims)
+
+
+
+
+
                   are_the_breakpoint = apply((t(object@data[,object@split_dims]) == bp),2,prod)
                   data_without_bp    = object@data[!are_the_breakpoint,]
 
@@ -156,45 +159,18 @@ setMethod(f="split",
             return(result) #################################### RETURN
           })
 
-Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL){
+Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL, N = 999){
 
   # Compute prerequisites :
   n = nrow(data)
   d = ncol(data)
-  z = (t(data) - a)/(b-a)
+  z = (t(data) - a)/(b-a) # d*n
+  bin_repr = sapply(1:(2^d),number2binary,d)
 
-  binary_repr = sapply(1:(2^d),number2binary,d)
-  dim(binary_repr) = c(d,2^d,1)
-  binary_repr = aperm(binary_repr,c(1,3,2))
-  binary_repr = binary_repr[,rep(1,n),,drop=FALSE]
-
-
-  z_rep = z
-  dim(z_rep) = c(d,n,1)
-  z_rep = z_rep[,,rep(1,2^d),drop=FALSE]
-
-  # The loss function :
-  func = function(bp,binary_repr,d,z_rep){
-    min = bp*binary_repr
-    max = bp^(1-binary_repr)
-    f = colMeans(colSums((min <= z_rep)&(z_rep<max))==d)
-    xxx = (f^2) / apply(max[,1,]-min[,1,],2,prod)
-    loss = - sum( xxx[!is.na(xxx)] ) # permet de ne pas avoir de bug quand il y a des boites de taille 0.
-    return(loss)
-  }
-
-  DEFAULT_SLQP_OPTIONS = list(
-    stopval = -Inf,
-    xtol_rel = 1e-4,
-    maxeval = 100000,
-    ftol_rel = 1e-6,
-    ftol_abs = 1e-6
-  )
-
+  # Deal with slsqp options :
+  DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
   # get setted options :
-  if(is.null(slsqp_options)){
-    slsqp_options = DEFAULT_SLQP_OPTIONS
-  }
+  if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
   if(!is.null(slsqp_options)){
     if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
     if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
@@ -203,50 +179,33 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL){
     if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
   }
 
+  # Launch optimisation routine :
   optimizer = nloptr::slsqp(
       x0 = rowMeans(z),
-      fn = func,
+      fn = lossFunc, # a cpp function
       lower = rep(0,d),
       upper = rep(1,d),
       nl.info=verbose_lvl>2,
       control=slsqp_options,
-      binary_repr = binary_repr,
-      d = d,
-      z_rep = z_rep)
+      bin_repr = bin_repr,
+      z = z)
 
-  # Return the breakpoint (re-normalized to the box) :
+  # Get the breakpoints and the final splitting :
   bp = a + optimizer$par*(b-a)
-  # if(verbose_lvl>0) cat("           breakpoints :",bp,"\n")
+  min = bp*bin_repr
+  max = bp^(1-bin_repr)
 
-  # Compute the p_values :
-  p_values = compute_bootstrapped_p_values(z,bp)
-  # if (verbose_lvl>0) cat("           p_values    :",p_values,"\n")
-  return(list(bp=bp,p_values=p_values))
-}
-
-compute_bootstrapped_p_values <- function(z,bp,N = 999){
-
-  # prerequisites :
-  d = nrow(z)
-  n = ncol(z)
-
-  binary_repr = t(sapply(1:(2^d),number2binary,d))
-  min = bp*t(binary_repr)
-  max = bp^t(1-binary_repr)
-
-  # calling the cpp function to do that : it's much faster...
-  cpp_result = cortMonteCarlo(z,min,max,as.integer(N))
-  p_val = rowMeans(cpp_result[1,] <= t(cpp_result[-1,]))
+  # compute p-values :
+  montecarlo = cortMonteCarlo(z,min,max,as.integer(N)) # a cpp function
+  p_val = rowMeans(montecarlo[1,] <= t(montecarlo[-1,]))
 
   if(any(is.na(p_val))){
     p_val[is.na(p_val)] = 0
   }
 
-  return(p_val)
+  return(list(bp=bp,
+              p_values=p_val))
 }
-
-
-
 
 
 
