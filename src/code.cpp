@@ -71,3 +71,101 @@ Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z,
   }
   return(result);
 }
+
+
+// [[Rcpp::export]]
+double quadProd(const NumericMatrix a,
+                const NumericMatrix b,
+                const NumericVector kern,
+                const NumericMatrix other_a,
+                const NumericMatrix other_b,
+                const NumericVector other_kern) {
+
+  int d = a.ncol();
+  int n = a.nrow();
+  int other_n = other_a.nrow();
+  double temp;
+  double rez = 0.0;
+
+  for (int i=0; i<n; i++){
+    for (int j=0; j<other_n; j++){
+      temp = kern(i)*other_kern(j);
+      for (int dim=0; dim<d; dim++){
+        temp *= std::max(std::min(b(i,dim),other_b(j,dim)) - std::max(a(i,dim),other_a(j,dim)),0.0);
+      }
+      rez += temp;
+    }
+  }
+  return(rez);
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericMatrix normMatrix(const List as,
+                               const List bs,
+                               const List kernels){
+
+  int n = as.length();
+  Rcpp::NumericMatrix result(n,n);
+  for(int i=0; i< n; i++){
+    for(int j=0; j< n; j++){
+      if(i <= j){
+        result(i,j) = quadProd(as[i], bs[i], kernels[i], as[j], bs[j], kernels[j]);
+        result(j,i) = result(i,j);
+      }
+
+    }
+  }
+  return(result);
+}
+
+
+// [[Rcpp::export]]
+double lossFunc(const NumericVector bp,
+                const NumericMatrix bin_repr,
+                const NumericMatrix z){
+
+
+  int D = bin_repr.ncol();
+  int d = bin_repr.nrow();
+  int n = z.ncol();
+  double f;
+  double loss=0;
+  double vol;
+
+  Rcpp::NumericVector min(d);
+  Rcpp::NumericVector max(d);
+  Rcpp::LogicalVector is_in(n);
+
+  for (int n_box=0; n_box < D; n_box++){
+    vol = 1.0;
+    f= 0.0;
+    is_in.fill(true);
+
+    // Compute sides and volumes :
+    for (int dim=0; dim < d; dim++){
+      min(dim) = bp(dim)*bin_repr(dim,n_box);
+      max(dim) = std::pow(bp(dim),1.0-bin_repr(dim,n_box));
+      vol = vol*(max(dim) - min(dim));
+
+      for(int n_obs=0; n_obs<n; n_obs++){
+        is_in(n_obs) = is_in(n_obs) && (min(dim)<=z(dim,n_obs)) && (z(dim,n_obs) < max(dim));
+      }
+    }
+    if(vol != 0){
+      // check if observations are inside the box :
+      for(int n_obs=0; n_obs<n; n_obs++){
+        if(is_in(n_obs)){
+          f += 1.0/n;
+        }
+      }
+      loss -=f*f/vol;
+    }
+  }
+  return(loss);
+}
+
+
+
+
+
+

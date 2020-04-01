@@ -19,9 +19,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// quadProd
+double quadProd(const NumericMatrix a, const NumericMatrix b, const NumericVector kern, const NumericMatrix other_a, const NumericMatrix other_b, const NumericVector other_kern);
+RcppExport SEXP _cort_quadProd(SEXP aSEXP, SEXP bSEXP, SEXP kernSEXP, SEXP other_aSEXP, SEXP other_bSEXP, SEXP other_kernSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type kern(kernSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type other_a(other_aSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type other_b(other_bSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type other_kern(other_kernSEXP);
+    rcpp_result_gen = Rcpp::wrap(quadProd(a, b, kern, other_a, other_b, other_kern));
+    return rcpp_result_gen;
+END_RCPP
+}
+// normMatrix
+Rcpp::NumericMatrix normMatrix(const List as, const List bs, const List kernels);
+RcppExport SEXP _cort_normMatrix(SEXP asSEXP, SEXP bsSEXP, SEXP kernelsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List >::type as(asSEXP);
+    Rcpp::traits::input_parameter< const List >::type bs(bsSEXP);
+    Rcpp::traits::input_parameter< const List >::type kernels(kernelsSEXP);
+    rcpp_result_gen = Rcpp::wrap(normMatrix(as, bs, kernels));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lossFunc
+double lossFunc(const NumericVector bp, const NumericMatrix bin_repr, const NumericMatrix z);
+RcppExport SEXP _cort_lossFunc(SEXP bpSEXP, SEXP bin_reprSEXP, SEXP zSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector >::type bp(bpSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type bin_repr(bin_reprSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type z(zSEXP);
+    rcpp_result_gen = Rcpp::wrap(lossFunc(bp, bin_repr, z));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_cort_cortMonteCarlo", (DL_FUNC) &_cort_cortMonteCarlo, 4},
+    {"_cort_quadProd", (DL_FUNC) &_cort_quadProd, 6},
+    {"_cort_normMatrix", (DL_FUNC) &_cort_normMatrix, 3},
+    {"_cort_lossFunc", (DL_FUNC) &_cort_lossFunc, 3},
     {NULL, NULL, 0}
 };
 

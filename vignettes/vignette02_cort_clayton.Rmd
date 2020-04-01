@@ -40,17 +40,23 @@ rClayton <- function(n,dim,alpha){
 ```
 
 
-For reproducibility reasons, we set the random number generator. This vignette has been compiled on a version of R > 3.6, so the fix of the random number generator added in this version is used. To reproduce results from an earlier version, just use `sample.kind = "Rounding"`. The following code simulates a dataset and then visualise it : 
+For reproducibility reasons, we set the random number generator. This vignette has been compiled on a version of R > 3.6, so the fix of the random number generator added in this version is used. To reproduce results from an earlier version, just use `sample.kind = "Rounding"`.
+
+```{r setseed}
+set_seed <- function(seed){
+  if(as.numeric(version$minor)<6){
+    # the way of specifying the random number generation changed. 
+    set.seed(seed,kind = "Mersenne-Twister",normal.kind = "Inversion")
+  } else {
+    set.seed(seed,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
+  }
+}
+```
+
+The following code simulates a dataset and then visualise it : 
 
 ```{r dataset} 
-if(as.numeric(version$minor)<6){
-  # the way of specifying the random number generation changed. 
-  set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion")
-} else {
-  set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion",sample.kind = "Rejection")
-}
-
-
+set_seed(12)
 n = 200 # taken small to reduce runtime of the vignette.
 d = 4
 n_trees = 5 # taken small to reduce runtime of the vignette.
@@ -74,6 +80,7 @@ We can clearly see that the second marginal is independent form the rest. In the
 Now that we have a dataset, we can run the Cort algorithm on it. In the implementation proposed here, this is done via the `cort::Cort()` function, passing first the dataset, and then various parameters. See `?Cort` for a detailed list of parameters. Note that the verbosity level is quite progressive: We will here put it on 4 to see the splitting decisions that the algorithm is making.
 
 ```{r run_cort} 
+set_seed(12)
 (model = Cort(data,verbose_lvl=4,p_value_for_dim_red = 0.75))
 ```
 

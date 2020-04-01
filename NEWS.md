@@ -1,3 +1,9 @@
+# cort 0.3.0.9000
+
+* Adding speedups via Rcpp to some core
+* Adding furrr to the cortforest : you can now fit the trees in parallell. 
+* Some other minor corrections.
+
 # cort 0.3.0
 
 * Changes to conform to CRAN submissions recomendations
