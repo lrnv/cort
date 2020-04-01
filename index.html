@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -92,13 +92,18 @@
   <div class="contents col-md-9">
 
 
-<p>The <code>cort</code> package provides S4 classes to deal with certain non-parametrical copula models : checkerboard constructions, plain or with known margins, convex mixtures of copula models, and the CORT algorithm. This algorithm mimics the classical CART regression estimator to estimate copula, producing a piecewise constant density estimator that is both non-parametric, convergent, and memory-efficient. It includes a localised dimension reduction procedure. Last but not least, we provide a way of bagging copula models that is quite convenient with the CORT algorithm, producing a copula forest.</p>
+<p>The <code>cort</code> package provides S4 classes and methods to fit several copula models:</p>
+<ul>
+<li><p>The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) <a href="doi:10.1080/03610926.2019.1586936" class="uri">doi:10.1080/03610926.2019.1586936</a> are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension.</p></li>
+<li><p>The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain.</p></li>
+<li><p>We finaly provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.</p></li>
+</ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>In the future, you we be able to install the released version of cort from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<p><code>cort</code> is Now on <a href="https://CRAN.R-project.org">CRAN</a>! You can install the sable version with:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"cort"</span>)</pre></div>
-<p>but for now, only the upstream version is avaliable. It can be installed with :</p>
+<p>The upstream developpement version can also be installed with :</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"lrnv/cort"</span>)</pre></div>
 <p>The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is useful. Please read them for more details.</p>
 </div>
@@ -109,6 +114,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=cort">https://​cloud.r-project.org/​package=cort</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/lrnv/cort/">https://​github.com/​lrnv/​cort/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/lrnv/cort/issues">https://​github.com/​lrnv/​cort/​issues</a>
@@ -132,6 +139,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=cort"><img src="https://www.r-pkg.org/badges/version/cort" alt="CRAN status"></a></li>
 <li><a href="https://travis-ci.com/lrnv/cort"><img src="https://img.shields.io/travis/com/lrnv/cort/master?logo=travis&amp;style=flat-square&amp;label=Linux" alt="Travis build status"></a></li>
 <li><a href="https://github.com/lrnv/cort/actions"><img src="https://img.shields.io/github/workflow/status/lrnv/cort/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&amp;label=Github%20build&amp;style=flat-square" alt="Github Build status"></a></li>
 <li><a href="https://ci.appveyor.com/project/lrnv/cort"><img src="https://img.shields.io/appveyor/ci/lrnv/cort?label=Windows&amp;logo=appveyor&amp;style=flat-square" alt="AppVeyor build status"></a></li>
