@@ -100,21 +100,9 @@ CortForest = function(x,
   }
 
   if(verbose_lvl>1){cat("     Computing norm matrix...\n")}
-  # now we can compute the norm matrix :
-  norm_matrix = matrix(0,nrow=n_trees,ncol=n_trees)
-  for (i in 1:n_trees){
-    if(verbose_lvl>3){cat("          ------row",i,"/",n_trees,":",i-1," quad_prod to compute.\n")}
-    for(j in 1:n_trees){
-      if(i > j ){
-        norm_matrix[j,i] <-quad_prod(trees[[i]],trees[[j]])
-      } else {
-        if(i == j){
-          norm_matrix[i,j] <- quad_norm(trees[[i]])/2
-        }
-      }
-    }
-  }
-  norm_matrix = norm_matrix + t(norm_matrix)
+  norm_matrix = normMatrix(as = purrr::map(trees,~.x@a),
+                           bs = purrr::map(trees,~.x@b),
+                           kernels = purrr::map(trees,~.x@p/.x@vols))
 
   # we now need the weights. Let's not fit them yet.
   weights = rep(1:n_trees,n_trees)
@@ -126,21 +114,19 @@ CortForest = function(x,
   oob_ise = numeric(n_trees - 1)
 
   for (j in 2:n_trees){
-    if(verbose_lvl>3){cat("          ------tree",i,"/",n_trees,"\n")}
     weights = rep(1/j,j) # weights computed from only theese trees
 
     oob_wts = weights
     dim(oob_wts) = c(1,j)
     oob_wts = t(oob_wts[rep(1,n),]*(1-is_in[,1:j]))
-
     oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts)/colSums(oob_wts)
     oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
     oob_ise[j-1] = weights %*% norm_matrix[1:j,1:j] %*% weights
-
   }
+
   if(verbose_lvl>0){cat(affichage,"Done !\n")}
   # Output the forest with all it's stats :
-  model = .CortForest(
+  return(.CortForest(
     data = data,
     p_value_for_dim_red = p_value_for_dim_red,
     number_max_dim = max(number_max_dim,d),
@@ -154,10 +140,7 @@ CortForest = function(x,
     oob_pmf = oob_pmf,
     oob_kl = oob_kl,
     oob_ise = oob_ise
-  )
-
-  # then fit and return it :
-  return(model)
+  ))
 }
 
 setMethod(f = "show", signature = c(object = "CortForest"), definition = function(object){

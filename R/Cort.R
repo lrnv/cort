@@ -409,38 +409,15 @@ setMethod(f = "quad_prod_with_data", signature = c(object="Cort"),   definition 
 #' @describeIn quad_prod-methods Method for the class Cort
 setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   definition = function(object,other_tree) {
 
-
-  d = ncol(object@data)
-  n = nrow(object@a)
-  other_n = nrow(other_tree@a)
-
-  kern = object@p/object@vols
-  other_kern = other_tree@p/other_tree@vols
-
-  dim(kern) <- c(n,1)
-  dim(other_kern) <- c(1,other_n)
-
-  cross_kern = kern[,rep(1,other_n)]*other_kern[rep(1,n),] # n, other_n
-
-  a       = object@a
-  b       = object@b
-  other_a = other_tree@a
-  other_b = other_tree@b
-
-  dim(a) <-       c(n, 1,       d)
-  dim(b) <-       c(n, 1,       d)
-  dim(other_a) <- c(1, other_n, d)
-  dim(other_b) <- c(1, other_n, d)
-
-  a <-             a[,         rep(1,other_n),]
-  b <-             b[,         rep(1,other_n),]
-  other_a <- other_a[rep(1,n),               ,]
-  other_b <- other_b[rep(1,n),               ,]
-
-  side_lengths = pmax(pmin(b,other_b) - pmax(a,other_a),0)
-  volumes_of_intersections = apply(side_lengths,1:2,prod) # TAKES A LOT OF TIME
-
-  return(sum(cross_kern*volumes_of_intersections))
+  # The implemntation is in C++
+  return(quadProd(
+    object@a,
+    object@b,
+    object@p/object@vols,
+    other_tree@a,
+    other_tree@b,
+    other_tree@p/other_tree@vols
+  ))
 
 })
 

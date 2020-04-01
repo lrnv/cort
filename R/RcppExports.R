@@ -5,3 +5,11 @@ cortMonteCarlo <- function(z, min, max, N) {
     .Call(`_cort_cortMonteCarlo`, z, min, max, N)
 }
 
+quadProd <- function(a, b, kern, other_a, other_b, other_kern) {
+    .Call(`_cort_quadProd`, a, b, kern, other_a, other_b, other_kern)
+}
+
+normMatrix <- function(as, bs, kernels) {
+    .Call(`_cort_normMatrix`, as, bs, kernels)
+}
+
