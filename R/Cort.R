@@ -314,7 +314,7 @@ setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(c
 
   for (i in 2:d){
     for (j in 1:(i-1)){
-      rho[j,i] <- rho[i,j] <- 12*sum(apply((2-b[,c(i,j)] - a[,c(i,j)])/2,1,prod)*p)-3
+      rho[j,i] <- rho[i,j] <- 12*sum(apply((2-b[,c(i,j),drop=FALSE] - a[,c(i,j),drop=FALSE])/2,1,prod)*p)-3
     }
   }
 
@@ -334,10 +334,10 @@ B <- function(a,b,n_leaves,d_dim){
   dim(c) <- c(1,        n_leaves, d_dim)
   dim(d) <- c(1,        n_leaves, d_dim)
 
-  a <- a[,                rep(1,n_leaves),]
-  b <- b[,                rep(1,n_leaves),]
-  c <- c[rep(1,n_leaves),                ,]
-  d <- d[rep(1,n_leaves),                ,]
+  a <- a[,                rep(1,n_leaves),,drop=FALSE]
+  b <- b[,                rep(1,n_leaves),,drop=FALSE]
+  c <- c[rep(1,n_leaves),                ,,drop=FALSE]
+  d <- d[rep(1,n_leaves),                ,,drop=FALSE]
 
   x = pmax(a,c)
   y = pmin(b,d)
@@ -362,11 +362,11 @@ setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(c
 
   # comput ethe cross_kernel :
   cross_B = B(a,b,n,d) # n, n, d
-  cross_B = apply(vapply(1:K,function(i){cross_B[,,dims[i,]]},cross_B[,,dims[1,]]),c(1,2,4),prod) # n,n,K
+  cross_B = apply(vapply(1:K,function(i){cross_B[,,dims[i,],drop=FALSE]},cross_B[,,dims[1,],drop=FALSE]),c(1,2,4),prod) # n,n,K
 
   # compute boxes measures :
   side_lengths = b - a #n, d
-  measures = t(apply(vapply(1:K,function(i){side_lengths[,dims[i,]]},side_lengths[,c(1,2)]),c(1,3),prod)) # K, n
+  measures = t(apply(vapply(1:K,function(i){side_lengths[,dims[i,],drop=FALSE]},side_lengths[,c(1,2),drop=FALSE]),c(1,3),prod)) # K, n
 
   # compute the cross_kernel of the model :
   kernel = weights/t(measures) # n,K
