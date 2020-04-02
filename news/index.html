@@ -140,9 +140,11 @@
 <a href="#cort-0309000" class="anchor"></a>cort 0.3.0.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li>Adding speedups via Rcpp to some core</li>
-<li>Adding furrr to the cortforest : you can now fit the trees in parallell.</li>
-<li>Some other minor corrections.</li>
+<li>Speed up via Rcpp some core funtionalities.</li>
+<li>Parrallell computations are now possible via furrr in CortForest.</li>
+<li>Corrected misspelling in the documentations.</li>
+<li>Corrected bug when there is only one leave in the tree.</li>
+<li>Corrected bug in pairs.Cort : dimensions were switched for leaves but not for points.</li>
 </ul>
 </div>
     <div id="cort-030" class="section level1">
@@ -150,6 +152,7 @@
 <a href="#cort-030" class="anchor"></a>cort 0.3.0<small> 2020-04-01 </small>
 </h1>
 <ul>
+<li>First release published on cran !</li>
 <li>Changes to conform to CRAN submissions recomendations</li>
 <li>Added a multiprocess option via furrr</li>
 </ul>
@@ -159,8 +162,8 @@
 <a href="#cort-020" class="anchor"></a>cort 0.2.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>Pass checks on every plateform : some corrections to descriptions</li>
-<li>some corrections to documentations.</li>
+<li>Corrections ot pass checks on every CI plateform.</li>
+<li>Some corections to spelling in documentation.</li>
 </ul>
 </div>
     <div id="cort-010" class="section level1">
@@ -168,27 +171,7 @@
 <a href="#cort-010" class="anchor"></a>cort 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>Finalised the API</li>
-</ul>
-</div>
-    <div id="cort-0009003" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.0.9003">
-<a href="#cort-0009003" class="anchor"></a>cort 0.0.0.9003<small> Unreleased </small>
-</h1>
-<ul>
-<li>Moved the bootstrap to C++ : huge gain in performance</li>
-<li>Added a vignette with a clayton example.</li>
-</ul>
-</div>
-    <div id="cort-0009002" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.0.9002">
-<a href="#cort-0009002" class="anchor"></a>cort 0.0.0.9002<small> Unreleased </small>
-</h1>
-<ul>
-<li>Added the CortForest model</li>
-<li>Added many methods to Cort and CortForest</li>
-<li>Lightened the Cort objects.</li>
-<li>Fasten the p-values computations</li>
+<li>Finilised and block the API.</li>
 </ul>
 </div>
     <div id="cort-0009001" class="section level1">
@@ -196,8 +179,9 @@
 <a href="#cort-0009001" class="anchor"></a>cort 0.0.0.9001<small> Unreleased </small>
 </h1>
 <ul>
-<li>Merged the code from he former named <code>empcop</code> package.</li>
-<li>The CORT algorithm is now better implemented and runs a little faster.</li>
+<li>Lightned the Cort object.</li>
+<li>Fastened p-values computations by moving bootstrap to Rcpp.</li>
+<li>Added a vignette with a clayton exemple.</li>
 </ul>
 </div>
     <div id="cort-0009000" class="section level1">
@@ -207,7 +191,10 @@
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 <li>Making the workspace settings : travis, appveyor, github actions, pkgdowm, â¦</li>
-<li>We will target CRAN with this package.</li>
+<li>merged the code from former empCop package.</li>
+<li>Implement Cort algorithm</li>
+<li>Implement the CortForest algorithm</li>
+<li>Add many methods to Cort and CortForest class.</li>
 </ul>
 </div>
   </div>
