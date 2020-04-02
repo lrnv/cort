@@ -534,7 +534,9 @@ plot.Cort <- function(x,...){
       if(i != j){
         xx = dd[(dd$dim_x == i)&(dd$dim_y==j),]
         graphics::rect(xx$ymin,xx$xmin,xx$ymax,xx$xmax,col=grDevices::gray(1-xx$col),border=NA,density=NA)
-        graphics::points(x@data[,i],x@data[,j],cex=0.7,col="red")
+
+          graphics::points(x@data[,j],x@data[,i],cex=0.5,col="red")
+
       }
     }
   }
