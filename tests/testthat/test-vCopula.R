@@ -1,5 +1,5 @@
 context("Testing the method vCopula")
-library(cort)
+quiet(library(cort))
 
 # define some copulas :
 data(LifeCycleSavings)

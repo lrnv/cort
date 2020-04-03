@@ -33,10 +33,8 @@ Language: en-US
 Collate: 
     'utils.R'
     'generics.R'
-    'Box.R'
     'ConvexCombCopula.R'
     'empiricalCopula.R'
-    'WeightedBox.R'
     'Cort.R'
     'CortForest.R'
     'RcppExports.R'

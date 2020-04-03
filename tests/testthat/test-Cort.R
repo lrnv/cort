@@ -19,7 +19,7 @@ smaller_model = project_on_dims(model,c(1,2))
 kendall = kendall_func(model,seq(0,1,length.out=10),M=10)
 
 testthat::test_that("initialisation check of Cort are ok", {
-  testthat::expect_error(model = Cort(LifeCycleSavings,pseudo_data=TRUE,verbose_lvl = 0))
+  testthat::expect_error(Cort(LifeCycleSavings,pseudo_data=TRUE,verbose_lvl = 0))
 })
 
 testthat::test_that("the quandratic norm is coherent with the quad prod", {

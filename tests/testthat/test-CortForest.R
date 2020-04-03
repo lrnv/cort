@@ -1,5 +1,7 @@
 context("Testing the class CortForest...")
-library(cort)
+
+quiet(library(cort))
+quiet(suppressWarnings(library(purrr)))
 model = CortForest(LifeCycleSavings[,1:2],verbose_lvl = 0,n_trees=3)
 
 quiet(show(model))
