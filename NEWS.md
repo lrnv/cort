@@ -7,6 +7,7 @@
 * Corrected bug in pairs.Cort : dimensions were switched for leaves but not for points.
 * Removed dependency to magritr::`%>%`. This was unnecessary.
 * Cut the runtime of p_values computtions by half.
+* better runtime in the loss function in Rcpp.
 
 # cort 0.3.0
 
