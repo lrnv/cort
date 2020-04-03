@@ -1,10 +1,11 @@
 # cort 0.3.0.9000
 
-* Speed up via Rcpp some core funtionalities.
-* Parrallell computations are now possible via furrr in CortForest. 
+* Speed up via Rcpp some core functionalities.
+* Parallel computations are now possible via furrr in CortForest. 
 * Corrected misspelling in the documentations.
 * Corrected bug when there is only one leave in the tree.
 * Corrected bug in pairs.Cort : dimensions were switched for leaves but not for points.
+* Removed dependency to magritr::`%>%`. This was unnecessary.
 
 # cort 0.3.0
 
@@ -14,18 +15,18 @@
 
 # cort 0.2.0
 
-* Corrections ot pass checks on every CI plateform.
-* Some corections to spelling in documentation.
+* Corrections to pass checks on every CI plateform.
+* Some corrections to spelling in documentation.
 
 # cort 0.1.0
 
-* Finilised and block the API.
+* Finalised and block the API.
 
 # cort 0.0.0.9001
 
-* Lightned the Cort object.
+* The Cort object is now lighter.
 * Fastened p-values computations by moving bootstrap to Rcpp.
-* Added a vignette with a clayton exemple.
+* Added a vignette with a clayton example.
 
 
 # cort 0.0.0.9000

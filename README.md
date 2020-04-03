@@ -12,7 +12,7 @@ The `cort` package provides S4 classes and methods to fit several copula models:
 
 * The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. 
 
-* We finaly provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.
+* We finally provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.
 
 ## Installation
 
@@ -22,7 +22,7 @@ The `cort` package provides S4 classes and methods to fit several copula models:
 install.packages("cort")
 ```
 
-The upstream developpement version can also be installed with :
+The upstream development version can also be installed with :
 
 ``` r
 devtools::install_github("lrnv/cort")

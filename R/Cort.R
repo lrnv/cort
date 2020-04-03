@@ -110,13 +110,12 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
               if(any(are_splittables)){
 
                 # Split every box :
-                leaves = purrr::map(leaves, ~split(.x,
+                leaves = unlist(purrr::map(leaves, ~split(.x,
                                   p_val_threshold = object@p_value_for_dim_red,
                                   number_max_dim=object@number_max_dim,
                                   verbose_lvl=object@verbose_lvl-1,
                                   slsqp_options = slsqp_options
-                  )) %>%
-                  unlist(recursive = FALSE)
+                  )),recursive = FALSE)
 
                 continue = TRUE
               } else {
@@ -139,7 +138,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
 
             middle_points =  # d,n
             evaluation_points = purrr::map(1:d,~unique((object@b+object@a)[,.x]/2))
-            dims = purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}) %>% unlist()
+            dims = unlist(purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}))
             F_vec = unlist(evaluation_points)
 
             lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)

@@ -2,7 +2,7 @@
 #' @importFrom Rdpack reprompt
 #' @importFrom stats runif
 #' @importFrom utils capture.output
-#' @include utils.R utils-pipe.R
+#' @include utils.R
 NULL
 
 ########## Non-exported generics :

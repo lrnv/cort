@@ -17,6 +17,7 @@ contructor
 ConvexCombcopula
 ConvexCombCopula
 CortForest
+cran
 cuberos
 Cuberos
 Deheuvel
@@ -28,6 +29,7 @@ dimentional
 doi
 durante
 ECBC
+empCop
 Fernández
 fide
 Finalised
@@ -44,6 +46,7 @@ le
 lebesgue
 LifeCycleSavings
 localised
+magritr
 Masiello
 mathbb
 mathbf
@@ -57,13 +60,13 @@ nloptr
 notin
 oob
 ouptut
-parametrical
 pCopula
 pkgdowm
 plateform
 priori
 Quesada
 rCopula
+Rcpp
 recomendations
 repesenting
 reproducibility
