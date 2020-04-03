@@ -70,7 +70,7 @@ CortForest = function(x,
   n = nrow(data)
 
   # for each tree, indexes of it's values :
-  indexes = matrix(sample(1:n,size=n*n_trees,replace = TRUE),nrow=n_trees,ncol=n) # n_trees, n
+  indexes = matrix(resample(1:n,size=n*n_trees,replace = TRUE),nrow=n_trees,ncol=n) # n_trees, n
 
 
   if(verbose_lvl <= 1){
@@ -154,7 +154,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "CortForest"), de
   if(n==0){
     return(matrix(0,nrow=0,ncol=copula@dim))
   }
-  sampled_indexes = sample(1:length(copula@trees),size=n,prob = copula@weights,replace=TRUE)
+  sampled_indexes = resample(1:length(copula@trees),size=n,prob = copula@weights,replace=TRUE)
   return(do.call(rbind,purrr::map(unique(sampled_indexes),~rCopula(sum(sampled_indexes==.x),copula@trees[[.x]]))))
 
 })

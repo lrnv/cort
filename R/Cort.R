@@ -152,7 +152,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
 
                   # Randomize splitting dimensions :
                   if(length(split_dims[[i_leaf]]) > object@number_max_dim){
-                    random_dims       = sample(x =split_dims[[i_leaf]], size=object@number_max_dim, replace=FALSE)
+                    random_dims       = resample(x =split_dims[[i_leaf]], size=object@number_max_dim, replace=FALSE)
                     non_taken_dims    = split_dims[[i_leaf]][!(split_dims[[i_leaf]] %in% random_dims)]
                     split_dims[[i_leaf]] = random_dims
                   } else{
@@ -337,7 +337,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "Cort"), definiti
 
   # We need to simulate n rnadom vctors from the fitted model :
   # for that, we will samples indexes of the boxes according to weights :
-  sampled_indexes = sample(1:nrow(copula@a),size=n,prob = copula@p,replace=TRUE)
+  sampled_indexes = resample(1:nrow(copula@a),size=n,prob = copula@p,replace=TRUE)
   sim = matrix(runif(n*copula@dim),nrow=n,ncol=copula@dim)
   sim = copula@a[sampled_indexes,] + sim * (copula@b[sampled_indexes,]-copula@a[sampled_indexes,])
   return(sim)

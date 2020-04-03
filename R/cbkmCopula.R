@@ -110,7 +110,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbkmCopula"), de
     if(nrow(possibles_boxes) == 0){
       return(rep(-10,d - p)) # NO boxes were founded -> error code.
     } else {
-      return(possibles_boxes[sample(1:nrow(possibles_boxes),size=1),-J])
+      return(possibles_boxes[resample(1:nrow(possibles_boxes),size=1),-J])
     }
   })
 

@@ -85,7 +85,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "ConvexCombCopula
   # to choose wich copulas will be simulated from, sample
   # 1:length(copulas) with weights equal to alpha, with replacement OFC
   n_cop = length(copula@copulas)
-  sampled_copulas <- sample(1:n_cop, size = n, replace = TRUE, prob = copula@alpha)
+  sampled_copulas <- resample(1:n_cop, size = n, replace = TRUE, prob = copula@alpha)
   tbl <- table(sampled_copulas)
 
   # then sample from each of those copulas the right number of times :
@@ -95,7 +95,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "ConvexCombCopula
 
   # then rbind all of them and resample (randomly) rows :
   samples <- do.call(rbind, samples)
-  samples <- samples[sample(1:nrow(samples), size = nrow(samples),
+  samples <- samples[resample(1:nrow(samples), size = nrow(samples),
                             replace = FALSE), ]
   return(samples)
 })

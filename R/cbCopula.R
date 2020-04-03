@@ -106,7 +106,7 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbCopula"), defi
   # observations inside the box.  notes that boxes with probability 0,
   # i.e without observation, were not included here.  This makes the
   # algorythme fast.
-  rows <- sample(x = 1:nrow(x), size = n, replace = TRUE)
+  rows <- resample(x = 1:nrow(x), size = n, replace = TRUE)
   seuil_inf <- boxes_from_points(x,m)[rows,,drop=FALSE]
   seuil_sup <- t(t(seuil_inf) + 1/m)
 
