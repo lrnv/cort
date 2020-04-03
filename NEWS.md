@@ -6,6 +6,7 @@
 * Corrected bug when there is only one leave in the tree.
 * Corrected bug in pairs.Cort : dimensions were switched for leaves but not for points.
 * Removed dependency to magritr::`%>%`. This was unnecessary.
+* Cut the runtime of p_values computtions by half.
 
 # cort 0.3.0
 

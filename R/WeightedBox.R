@@ -194,7 +194,6 @@ Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL, N 
   bp = a + optimizer$par*(b-a)
   min = bp*bin_repr
   max = bp^(1-bin_repr)
-
   # compute p-values :
   montecarlo = cortMonteCarlo(z,min,max,as.integer(N)) # a cpp function
   p_val = rowMeans(montecarlo[1,] <= t(montecarlo[-1,]))
