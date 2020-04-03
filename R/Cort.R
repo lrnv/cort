@@ -94,7 +94,22 @@ setMethod(f = "show", signature = c(object = "Cort"), definition = function(obje
                        nrow(object@a)," leaves."))
           })
 
-setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL){
+setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL, N = 999){
+
+
+            # Deal with slsqp options :
+            DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
+            # get setted options :
+            if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
+            if(!is.null(slsqp_options)){
+              if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
+              if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
+              if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
+              if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
+              if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
+            }
+
+
 
             # Splitting the domain into small boxes :
             if(object@verbose_lvl>0) {cat("Splitting...\n")}
@@ -123,13 +138,17 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                 for(i_leaf in which(are_splittables)){
 
                   # verbosity :
-                  if(object@verbose_lvl>1){cat(paste0("        Leaf with ",nrow(data_dist[[i_leaf]])," points.\n"))}
-                  verb_df = data.frame(min = object@a[i_leaf,], max = object@b[i_leaf,])
-                  verb_df$bp      = rep(NaN,d)
-                  verb_df$p_value = rep(NaN,d)
-                  verb_df$action  = rep("",d)
-                  verb_df$reason  = rep("",d)
-                  row.names(verb_df) = paste0("             ",1:nrow(verb_df))
+                  if(object@verbose_lvl>1){
+                    cat(paste0("        Leaf with ",nrow(data_dist[[i_leaf]])," points.\n"))
+                  }
+                  if(object@verbose_lvl>2){
+                    verb_df = data.frame(min = object@a[i_leaf,], max = object@b[i_leaf,])
+                    verb_df$bp      = rep(NaN,d)
+                    verb_df$p_value = rep(NaN,d)
+                    verb_df$action  = rep("",d)
+                    verb_df$reason  = rep("",d)
+                    row.names(verb_df) = paste0("             ",1:nrow(verb_df))
+                  }
 
                   # Randomize splitting dimensions :
                   if(length(split_dims[[i_leaf]]) > object@number_max_dim){
@@ -141,35 +160,69 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                   }
 
                   # verbosity :
-                  verb_df$action[non_taken_dims] = "Dissmissed"
-                  verb_df$reason[non_taken_dims] = "Randomly"
+                  if(object@verbose_lvl>2){
+                    verb_df$action[non_taken_dims] = "Dissmissed"
+                    verb_df$reason[non_taken_dims] = "Randomly"
+                  }
 
                   if(length(split_dims[[i_leaf]])<=1){
                     # we just keep the leaf :
                     split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
-                  } else {
-                    # we try to split:
-                    optimizer = Optmize_breakpoint(data_dist[[i_leaf]][,split_dims[[i_leaf]]],
-                                                   object@a[i_leaf,split_dims[[i_leaf]]],
-                                                   object@b[i_leaf,split_dims[[i_leaf]]],
-                                                   verbose_lvl=object@verbose_lvl-1,
-                                                   slsqp_options = slsqp_options)
+                  } else { # we try to split:
 
-                    # get info from the optimizer :
-                    verb_df$bp[split_dims[[i_leaf]]]      <- bp       <- optimizer$bp
-                    verb_df$p_value[split_dims[[i_leaf]]] <- p_values <- optimizer$p_values
+                    # Compute prerequisites for the optimisation of the breakpoint
+                    n = nrow(data_dist[[i_leaf]])
+                    d_split = length(split_dims[[i_leaf]])
+                    a = object@a[i_leaf,split_dims[[i_leaf]]]
+                    b = object@b[i_leaf,split_dims[[i_leaf]]]
+                    z = (t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) - a)/(b-a) # d*n
+                    bin_repr = sapply(1:(2^d_split),number2binary,d_split)
+
+                    #Launche optimisation routine for the breakpoint :
+                    optimizer = nloptr::slsqp(
+                      x0 = rowMeans(z),
+                      fn = lossFunc, # a cpp function
+                      lower = rep(0,d_split),
+                      upper = rep(1,d_split),
+                      nl.info=object@verbose_lvl>3,
+                      control=slsqp_options,
+                      bin_repr = bin_repr,
+                      z = z)
+
+                    # Get the breakpoints and the final splitting :
+                    bp = a + optimizer$par*(b-a)
+                    z_min = bp*bin_repr
+                    z_max = bp^(1-bin_repr)
+
+                    # Compute p-values for the breakpoint :
+                    montecarlo = cortMonteCarlo(z,z_min,z_max,as.integer(N)) # a cpp function
+                    p_values = rowMeans(montecarlo[1,] <= t(montecarlo[-1,]))
+
+                    if(any(is.na(p_values))){
+                      p_values[is.na(p_values)] = 0
+                    }
+
+                    if(object@verbose_lvl>2){
+                      verb_df$bp[split_dims[[i_leaf]]]      <- bp
+                      verb_df$p_value[split_dims[[i_leaf]]] <- p_values
+                    }
 
                     # if p_values are too big, remove dimensions.
                     p_val_too_big  = p_values > object@p_value_for_dim_red
-                    verb_df$action[split_dims[[i_leaf]][p_val_too_big]] = "Removed"
-                    verb_df$reason[split_dims[[i_leaf]][p_val_too_big]] = "Independence test"
+                    if(object@verbose_lvl>2){
+                      verb_df$action[split_dims[[i_leaf]][p_val_too_big]] = "Removed"
+                      verb_df$reason[split_dims[[i_leaf]][p_val_too_big]] = "Independence test"
+                    }
 
                     # if any of the breakpoints are too close to boundary, we remove the dimensions :
                     normed_bp      = (bp - object@a[i_leaf,split_dims[[i_leaf]]])/(object@b[i_leaf,split_dims[[i_leaf]]] - object@a[i_leaf,split_dims[[i_leaf]]])
                     threshold          = 1/min((nrow(data_dist[[i_leaf]])+1)^2,1000)
                     close_to_bound = (normed_bp< threshold) + (normed_bp > 1-threshold) > 0
-                    verb_df$action[split_dims[[i_leaf]][close_to_bound]] = "Removed"
-                    verb_df$reason[split_dims[[i_leaf]][close_to_bound]] = "Close to boundary"
+
+                    if(object@verbose_lvl>2){
+                      verb_df$action[split_dims[[i_leaf]][close_to_bound]] = "Removed"
+                      verb_df$reason[split_dims[[i_leaf]][close_to_bound]] = "Close to boundary"
+                    }
 
                     to_be_removed = p_val_too_big+close_to_bound>0
 
@@ -185,13 +238,15 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
 
                       if(length(split_dims[[i_leaf]]) == 1){
                         # we just keep the leaf as is :
-                        verb_df$action[split_dims[[i_leaf]]] = "Dissmissed"
-                        verb_df$reason[split_dims[[i_leaf]]] = "No one-dim split"
+                        if(object@verbose_lvl>2){
+                          verb_df$action[split_dims[[i_leaf]]] = "Dissmissed"
+                          verb_df$reason[split_dims[[i_leaf]]] = "No one-dim split"
+                        }
                         split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
                       } else {
                         # NOW WE SPLIT
                         i_leaf_to_remove = c(i_leaf_to_remove,i_leaf)
-                        verb_df$action[split_dims[[i_leaf]]] = "Splitted"
+                        if(object@verbose_lvl>2){verb_df$action[split_dims[[i_leaf]]] = "Splitted"}
 
                         # remove the breakpoint from the data points if it's one of them :
                         are_the_breakpoint  = (colSums(t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) == bp) == length(split_dims[[i_leaf]]))
@@ -252,12 +307,22 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
             dims = unlist(purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}))
             F_vec = unlist(evaluation_points)
             lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)
-            model = build_model(P_mat = diag(1/object@vols),
-                                q_vec = -object@f/object@vols,
-                                A_mat = rbind(lambdas,rep(1,n),diag(n)),
-                                l_vec = c(F_vec,1,rep(0,n)),
-                                u_vec = c(F_vec,1,rep(Inf,n)),
-                                verbose_lvl = object@verbose_lvl-1)
+
+            # Constructing the parameters for the osqp solver :
+            P_mat = diag(1/object@vols)
+            q_vec = -object@f/object@vols
+            A_mat = rbind(lambdas,rep(1,n),diag(n))
+            l_vec = c(F_vec,1,rep(0,n))
+            u_vec = c(F_vec,1,rep(Inf,n))
+
+            # building the model
+            if (object@verbose_lvl>1) { model = osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec, pars=osqp::osqpSettings(max_iter = 100000L,
+                                 eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE))
+            } else { model = osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec, pars=osqp::osqpSettings(max_iter = 100000L,
+                                 eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE))
+            }
+
+            # Launching the solver
             model$WarmStart(x=object@f)
             rez = model$Solve()
             # saving weights:
@@ -266,70 +331,6 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
             if(object@verbose_lvl>0){cat("Done !\n")}
             return(object)
           })
-
-Optmize_breakpoint <- function(data,a=0,b=1,verbose_lvl=0,slsqp_options=NULL, N = 999){
-
-  # Compute prerequisites :
-  n = nrow(data)
-  d = ncol(data)
-  z = (t(data) - a)/(b-a) # d*n
-  bin_repr = sapply(1:(2^d),number2binary,d)
-
-  # Deal with slsqp options :
-  DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
-  # get setted options :
-  if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
-  if(!is.null(slsqp_options)){
-    if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
-    if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
-    if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
-    if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
-    if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
-  }
-
-  # Launch optimisation routine :
-  optimizer = nloptr::slsqp(
-    x0 = rowMeans(z),
-    fn = lossFunc, # a cpp function
-    lower = rep(0,d),
-    upper = rep(1,d),
-    nl.info=verbose_lvl>2,
-    control=slsqp_options,
-    bin_repr = bin_repr,
-    z = z)
-
-  # Get the breakpoints and the final splitting :
-  bp = a + optimizer$par*(b-a)
-  min = bp*bin_repr
-  max = bp^(1-bin_repr)
-  # compute p-values :
-  montecarlo = cortMonteCarlo(z,min,max,as.integer(N)) # a cpp function
-  p_val = rowMeans(montecarlo[1,] <= t(montecarlo[-1,]))
-
-  if(any(is.na(p_val))){
-    p_val[is.na(p_val)] = 0
-  }
-
-  return(list(bp=bp,
-              p_values=p_val))
-}
-
-build_model <- function(P_mat,q_vec,A_mat,l_vec,u_vec,verbose_lvl=1){
-  if (verbose_lvl>0) {
-    return(osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec,
-                      pars=osqp::osqpSettings(max_iter = 100000L,
-                                              eps_abs = 0.000001, eps_rel = 0.000001,
-                                              eps_prim_inf = 0.000001, eps_dual_inf = 0.000001,
-                                              verbose = TRUE)))
-  } else {
-    return(osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec,
-                      pars=osqp::osqpSettings(max_iter = 100000L,
-                                              eps_abs = 0.000001, eps_rel = 0.000001,
-                                              eps_prim_inf = 0.000001, eps_dual_inf = 0.000001,
-                                              verbose = FALSE)))
-  }
-}
-
 
 #' @describeIn rCopula-methods Method for the class Cort
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "Cort"), definition = function(n, copula) {
