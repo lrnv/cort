@@ -68,13 +68,11 @@ Cort = function(x,
 
   d = ncol(data)
   #construct the main leave :
-  root = WeightedBox(Box(rep(0,d),rep(1,d)),data,min_node_size=min_node_size)
   model = .Cort(
     data = data,
     p_value_for_dim_red = p_value_for_dim_red,
     number_max_dim = min(number_max_dim,d),
     min_node_size = min_node_size,
-    #leaves=list(root),
     verbose_lvl=verbose_lvl,
     dim = ncol(data),
     vols = c(1),
