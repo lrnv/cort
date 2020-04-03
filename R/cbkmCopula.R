@@ -133,10 +133,6 @@ setMethod(f = "pCopula", signature = c(u = "matrix", copula = "cbkmCopula"),  de
   # given in the paper.  remind that pCopula and dCopula generics already
   # transform inputs into matrices...
 
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coer??able to a matrix with dim(copula) columns.")
-  }
-
   ######## Precalculations :
   J               <- copula@margins
   d               <- dim(copula)

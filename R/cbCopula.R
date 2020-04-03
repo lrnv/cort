@@ -122,10 +122,6 @@ setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "cbCopula"), defi
   # remind that pCopula and dCopula generics already transform inputs
   # into matrices...
 
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coercible to a matrix with dim(copula) columns.")
-  }
-
   x = copula@data
   x = as.matrix(x)
   rownames(x) <- NULL
@@ -146,9 +142,6 @@ setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "cbCopula"), defi
 
 #' @describeIn dCopula-methods Method for the cbCopula
 setMethod(f = "dCopula", signature = c(u = "matrix",  copula="cbCopula"),   definition = function(u, copula) {
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coercible to a matrix with dim(copula) columns.")
-  }
 
   x = as.matrix(copula@data)
   seuil_inf = boxes_from_points(x,copula@m)

@@ -103,10 +103,6 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "ConvexCombCopula
 #' @describeIn pCopula-methods Method for the cbCopula
 setMethod(f = "pCopula", signature = c(u = "matrix", copula = "ConvexCombCopula"),  definition = function(u, copula) {
 
-  # remind that pCopula and dCopula generics already transform inputs into matrices...
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coercable to a matrix with dim(copula) columns.")
-  }
   as.vector(
     vapply(copula@copulas,
            pCopula,

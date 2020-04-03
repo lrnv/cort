@@ -347,14 +347,6 @@ setMethod(f = "rCopula", signature = c(n = "numeric", copula = "Cort"), definiti
 setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "Cort"), definition = function(u, copula) {
 
   # for the c.d.f of the copula, we need to compute the measure_in per box and sum them :
-
-  # remind that pCopula and dCopula generics already transform inputs
-  # into matrices...
-
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coercible to a matrix with dim(copula) columns.")
-  }
-
   a = copula@a
   b = copula@b
   p = copula@p
@@ -377,9 +369,6 @@ setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "Cort"), definiti
 
 #' @describeIn dCopula-methods Method for the class Cort
 setMethod(f = "dCopula", signature = c(u = "matrix",  copula="Cort"),   definition = function(u, copula) {
-  if (ncol(u) != dim(copula)) {
-    stop("the input value must be coercible to a matrix with dim(copula) columns.")
-  }
 
   a = copula@a
   b = copula@b
