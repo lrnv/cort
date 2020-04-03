@@ -86,4 +86,3 @@ str_pad <- function(string,width,side){ # retro-engeniered from stringr::str_pad
   },string,width,USE.NAMES = FALSE)
 }
 
-
