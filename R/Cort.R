@@ -260,19 +260,13 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                         d_split=length(split_dims[[i_leaf]])
                         D = 2^d_split
                         for (i in 1:D){
+                          # build the leaf :
                           bin = number2binary(i,d_split)
                           new_a = object@a[i_leaf,]
                           new_b = object@b[i_leaf,]
                           new_a[split_dims[[i_leaf]]] = bp^bin * new_a[split_dims[[i_leaf]]] ^ (1-bin)
                           new_b[split_dims[[i_leaf]]] = bp^(1-bin) * new_b[split_dims[[i_leaf]]] ^ bin
-
-
-
                           i_new_data = colSums((t(data_dist[[i_leaf]]) >= new_a)*(t(data_dist[[i_leaf]])<new_b))==d
-
-
-
-
                           new_data = data_dist[[i_leaf]][i_new_data, , drop=FALSE]
 
                           # imput the new information from the leaf :
