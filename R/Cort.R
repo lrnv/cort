@@ -42,6 +42,7 @@ NULL
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param slsqp_options options for nloptr::slsqp to find breakpoints : you can change defaults.
 #' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
+#' @param N The number of bootstrap resamples for p_values computations.
 #'
 #' @name Cort-Class
 #' @title The Cort estimator
@@ -58,9 +59,10 @@ Cort = function(x,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
                 verbose_lvl=1,
-                slsqp_options = NULL) {
+                slsqp_options = NULL,
+                N = 999) {
 
-  # coerce the data :
+  # Coerce the data :
   data= as.matrix(x)
   row.names(data) = NULL
   colnames(data) = NULL
@@ -70,8 +72,9 @@ Cort = function(x,
   }
 
   d = ncol(data)
-  #construct the main leave :
-  model = .Cort(
+
+  # Construct the object :
+  object = .Cort(
     data = data,
     p_value_for_dim_red = p_value_for_dim_red,
     number_max_dim = min(number_max_dim,d),
@@ -85,248 +88,237 @@ Cort = function(x,
     b = matrix(1,ncol=d,nrow=1)
   )
 
-  # then fit and return it :
-  return(fit(model,slsqp_options))
+  # Deal with solver parameters :
+  DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
+  if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
+  if(!is.null(slsqp_options)){
+    if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
+    if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
+    if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
+    if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
+    if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
+  }
+  if (object@verbose_lvl>1) {
+    OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
+  } else {
+    OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE)
+  }
+
+  # Now we start fitting.
+  if(object@verbose_lvl>0) {cat("Splitting...\n")}
+  data_dist = list(object@data)
+  split_dims = list(1:d)
+
+  # Loop until there are no more splittable leaves :
+  continue = TRUE
+  while(continue){
+
+    are_splittables = purrr::map_lgl(1:nrow(object@a),function(j){
+      (nrow(data_dist[[j]])>object@min_node_size) && (length(split_dims[[j]])>1)
+    })
+
+    if(!any(are_splittables)){
+      continue = FALSE # we get out the while loop
+    } else {
+      if(object@verbose_lvl>0){cat("\n    ",sum(are_splittables),"leaves to split...")}
+      if(object@verbose_lvl>1){cat("\n")}
+      i_leaf_to_remove = numeric()
+      for(i_leaf in which(are_splittables)){
+
+        # verbosity :
+        if(object@verbose_lvl>1){
+          cat(paste0("        Leaf with ",nrow(data_dist[[i_leaf]])," points.\n"))
+        }
+        if(object@verbose_lvl>2){
+          verb_df = data.frame(min = object@a[i_leaf,], max = object@b[i_leaf,])
+          verb_df$bp      = rep(NaN,d)
+          verb_df$p_value = rep(NaN,d)
+          verb_df$action  = rep("",d)
+          verb_df$reason  = rep("",d)
+          row.names(verb_df) = paste0("             ",1:nrow(verb_df))
+        }
+
+        # Randomize splitting dimensions :
+        if(length(split_dims[[i_leaf]]) > object@number_max_dim){
+          random_dims       = resample(x =split_dims[[i_leaf]], size=object@number_max_dim, replace=FALSE)
+          non_taken_dims    = split_dims[[i_leaf]][!(split_dims[[i_leaf]] %in% random_dims)]
+          split_dims[[i_leaf]] = random_dims
+        } else{
+          non_taken_dims = numeric()
+        }
+
+        # verbosity :
+        if(object@verbose_lvl>2){
+          verb_df$action[non_taken_dims] = "Dissmissed"
+          verb_df$reason[non_taken_dims] = "Randomly"
+        }
+
+        if(length(split_dims[[i_leaf]])<=1){
+          # we just keep the leaf :
+          split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
+        } else { # we try to split:
+
+          # Compute prerequisites for the optimisation of the breakpoint
+          n = nrow(data_dist[[i_leaf]])
+          d_split = length(split_dims[[i_leaf]])
+          a = object@a[i_leaf,split_dims[[i_leaf]]]
+          b = object@b[i_leaf,split_dims[[i_leaf]]]
+          z = (t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) - a)/(b-a) # d*n
+          bin_repr = sapply(1:(2^d_split),number2binary,d_split)
+
+          #Launche optimisation routine for the breakpoint :
+          optimizer = nloptr::slsqp(
+            x0 = rowMeans(z),
+            fn = lossFunc, # a cpp function
+            lower = rep(0,d_split),
+            upper = rep(1,d_split),
+            nl.info=object@verbose_lvl>3,
+            control=slsqp_options,
+            bin_repr = bin_repr,
+            z = z)
+
+          # Get the breakpoints and the final splitting :
+          bp = a + optimizer$par*(b-a)
+          z_min = bp*bin_repr
+          z_max = bp^(1-bin_repr)
+
+          # Compute p-values for the breakpoint :
+          p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
+
+          if(any(is.na(p_values))){
+            p_values[is.na(p_values)] = 0
+          }
+
+          if(object@verbose_lvl>2){
+            verb_df$bp[split_dims[[i_leaf]]]      <- bp
+            verb_df$p_value[split_dims[[i_leaf]]] <- p_values
+          }
+
+          # if p_values are too big, remove dimensions.
+          p_val_too_big  = p_values > object@p_value_for_dim_red
+          if(object@verbose_lvl>2){
+            verb_df$action[split_dims[[i_leaf]][p_val_too_big]] = "Removed"
+            verb_df$reason[split_dims[[i_leaf]][p_val_too_big]] = "Independence test"
+          }
+
+          # if any of the breakpoints are too close to boundary, we remove the dimensions :
+          normed_bp      = (bp - object@a[i_leaf,split_dims[[i_leaf]]])/(object@b[i_leaf,split_dims[[i_leaf]]] - object@a[i_leaf,split_dims[[i_leaf]]])
+          threshold          = 1/min((nrow(data_dist[[i_leaf]])+1)^2,1000)
+          close_to_bound = (normed_bp< threshold) + (normed_bp > 1-threshold) > 0
+
+          if(object@verbose_lvl>2){
+            verb_df$action[split_dims[[i_leaf]][close_to_bound]] = "Removed"
+            verb_df$reason[split_dims[[i_leaf]][close_to_bound]] = "Close to boundary"
+          }
+
+          to_be_removed = p_val_too_big+close_to_bound>0
+
+          if(all(to_be_removed)){
+            # we just keep the leaf :
+            split_dims[[i_leaf]] = non_taken_dims
+          } else {
+
+            if(any(to_be_removed)){
+              split_dims[[i_leaf]] = split_dims[[i_leaf]][!to_be_removed]
+              bp = bp[!to_be_removed]
+            }
+
+            if(length(split_dims[[i_leaf]]) == 1){
+              # we just keep the leaf as is :
+              if(object@verbose_lvl>2){
+                verb_df$action[split_dims[[i_leaf]]] = "Dissmissed"
+                verb_df$reason[split_dims[[i_leaf]]] = "No one-dim split"
+              }
+              split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
+            } else {
+              # NOW WE SPLIT
+              i_leaf_to_remove = c(i_leaf_to_remove,i_leaf)
+              if(object@verbose_lvl>2){verb_df$action[split_dims[[i_leaf]]] = "Splitted"}
+
+              # remove the breakpoint from the data points if it's one of them :
+              are_the_breakpoint  = (colSums(t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) == bp) == length(split_dims[[i_leaf]]))
+              if(any(are_the_breakpoint)){
+                if(object@verbose_lvl>4){cat("be carrefull, we are splitting on a point.\n")}
+                data_dist[[i_leaf]] = data_dist[[i_leaf]][!are_the_breakpoint,]
+              }
+
+              # construct new information for new leaves :
+              d_split=length(split_dims[[i_leaf]])
+              D = 2^d_split
+              for (i in 1:D){
+                # build the leaf :
+                bin = number2binary(i,d_split)
+                new_a = object@a[i_leaf,]
+                new_b = object@b[i_leaf,]
+                new_a[split_dims[[i_leaf]]] = bp^bin * new_a[split_dims[[i_leaf]]] ^ (1-bin)
+                new_b[split_dims[[i_leaf]]] = bp^(1-bin) * new_b[split_dims[[i_leaf]]] ^ bin
+                i_new_data = colSums((t(data_dist[[i_leaf]]) >= new_a)*(t(data_dist[[i_leaf]])<new_b))==d
+                new_data = data_dist[[i_leaf]][i_new_data, , drop=FALSE]
+
+                # imput the new information from the leaf :
+                object@a = rbind(object@a,new_a)
+                object@b = rbind(object@b,new_b)
+                split_dims = c(split_dims,list(c(split_dims[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
+                data_dist = c(data_dist,list(new_data))
+              }
+            }
+          }
+        }
+
+        if(object@verbose_lvl>2) {
+          cat(toString.data.frame(verb_df,digits=8))
+          cat("\n")
+        }
+        if(object@verbose_lvl>2){cat("\n")}
+
+      }
+      # remove information from the splitted leaves :
+      if(length(i_leaf_to_remove) >= 1){
+        object@a = object@a[-i_leaf_to_remove,]
+        object@b = object@b[-i_leaf_to_remove,]
+        split_dims = split_dims[-i_leaf_to_remove]
+        data_dist = data_dist[-i_leaf_to_remove]
+      }
+    }
+  }
+  #  info about the data distribution :
+  object@vols = apply(object@b-object@a,1,prod)
+  object@f    = purrr::map_dbl(data_dist,~nrow(.x))/nrow(object@data)
+
+  # Then compute the weights :
+  if(object@verbose_lvl>0) {cat("\nEnforcing constraints...\n")}
+
+  # Building constraints :
+  n = nrow(object@a)
+  d = ncol(object@a)
+  evaluation_points = purrr::map(1:d,~unique((object@b+object@a)[,.x]/2))
+  dims = unlist(purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}))
+  F_vec = unlist(evaluation_points)
+  lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)
+
+  # building the model
+  model = osqp::osqp(P=diag(1/object@vols),
+                     q=-object@f/object@vols,
+                     A=rbind(lambdas,rep(1,n),diag(n)),
+                     l=c(F_vec,1,rep(0,n)),
+                     u=c(F_vec,1,rep(Inf,n)),
+                     pars=OSQP_PARS)
+
+  # Launching the solver
+  model$WarmStart(x=object@f)
+  rez = model$Solve()
+  # saving weights:
+  object@p = pmax(rez$x,0)/sum(pmax(rez$x,0)) # correction for small negative weights.
+
+  if(object@verbose_lvl>0){cat("Done !\n")}
+  return(object)
 }
 
 setMethod(f = "show", signature = c(object = "Cort"), definition = function(object){
-            cat(paste0("Cort copula model: ",nrow(object@data),"x",ncol(object@data),"-dataset and ",
-                       nrow(object@a)," leaves."))
-          })
+  cat(paste0("Cort copula model: ",nrow(object@data),"x",ncol(object@data),"-dataset and ",
+             nrow(object@a)," leaves."))
+})
 
-setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL, N = 999){
-
-            # Deal with solver parameters :
-            DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
-            # get setted options :
-            if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
-            if(!is.null(slsqp_options)){
-              if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
-              if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
-              if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
-              if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
-              if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
-            }
-            if (object@verbose_lvl>1) {
-              OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
-            } else {
-              OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE)
-            }
-
-            # Splitting the domain into small boxes :
-            if(object@verbose_lvl>0) {cat("Splitting...\n")}
-
-            # initialise the first leave [a,b]
-            d = object@dim
-            object@a = matrix(0,nrow=1,ncol=d)
-            object@b = matrix(1,nrow=1,ncol=d)
-            data_dist = list(object@data)
-            split_dims = list(1:d)
-
-            # splitting loop :
-            continue = TRUE
-            while(continue){
-
-              are_splittables = purrr::map_lgl(1:nrow(object@a),function(j){
-                (nrow(data_dist[[j]])>object@min_node_size) && (length(split_dims[[j]])>1)
-              })
-
-              if(!any(are_splittables)){
-                continue = FALSE # we get out the while loop
-              } else {
-                if(object@verbose_lvl>0){cat("\n    ",sum(are_splittables),"leaves to split...")}
-                if(object@verbose_lvl>1){cat("\n")}
-                i_leaf_to_remove = numeric()
-                for(i_leaf in which(are_splittables)){
-
-                  # verbosity :
-                  if(object@verbose_lvl>1){
-                    cat(paste0("        Leaf with ",nrow(data_dist[[i_leaf]])," points.\n"))
-                  }
-                  if(object@verbose_lvl>2){
-                    verb_df = data.frame(min = object@a[i_leaf,], max = object@b[i_leaf,])
-                    verb_df$bp      = rep(NaN,d)
-                    verb_df$p_value = rep(NaN,d)
-                    verb_df$action  = rep("",d)
-                    verb_df$reason  = rep("",d)
-                    row.names(verb_df) = paste0("             ",1:nrow(verb_df))
-                  }
-
-                  # Randomize splitting dimensions :
-                  if(length(split_dims[[i_leaf]]) > object@number_max_dim){
-                    random_dims       = resample(x =split_dims[[i_leaf]], size=object@number_max_dim, replace=FALSE)
-                    non_taken_dims    = split_dims[[i_leaf]][!(split_dims[[i_leaf]] %in% random_dims)]
-                    split_dims[[i_leaf]] = random_dims
-                  } else{
-                    non_taken_dims = numeric()
-                  }
-
-                  # verbosity :
-                  if(object@verbose_lvl>2){
-                    verb_df$action[non_taken_dims] = "Dissmissed"
-                    verb_df$reason[non_taken_dims] = "Randomly"
-                  }
-
-                  if(length(split_dims[[i_leaf]])<=1){
-                    # we just keep the leaf :
-                    split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
-                  } else { # we try to split:
-
-                    # Compute prerequisites for the optimisation of the breakpoint
-                    n = nrow(data_dist[[i_leaf]])
-                    d_split = length(split_dims[[i_leaf]])
-                    a = object@a[i_leaf,split_dims[[i_leaf]]]
-                    b = object@b[i_leaf,split_dims[[i_leaf]]]
-                    z = (t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) - a)/(b-a) # d*n
-                    bin_repr = sapply(1:(2^d_split),number2binary,d_split)
-
-                    #Launche optimisation routine for the breakpoint :
-                    optimizer = nloptr::slsqp(
-                      x0 = rowMeans(z),
-                      fn = lossFunc, # a cpp function
-                      lower = rep(0,d_split),
-                      upper = rep(1,d_split),
-                      nl.info=object@verbose_lvl>3,
-                      control=slsqp_options,
-                      bin_repr = bin_repr,
-                      z = z)
-
-                    # Get the breakpoints and the final splitting :
-                    bp = a + optimizer$par*(b-a)
-                    z_min = bp*bin_repr
-                    z_max = bp^(1-bin_repr)
-
-                    # Compute p-values for the breakpoint :
-                    p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
-
-                    if(any(is.na(p_values))){
-                      p_values[is.na(p_values)] = 0
-                    }
-
-                    if(object@verbose_lvl>2){
-                      verb_df$bp[split_dims[[i_leaf]]]      <- bp
-                      verb_df$p_value[split_dims[[i_leaf]]] <- p_values
-                    }
-
-                    # if p_values are too big, remove dimensions.
-                    p_val_too_big  = p_values > object@p_value_for_dim_red
-                    if(object@verbose_lvl>2){
-                      verb_df$action[split_dims[[i_leaf]][p_val_too_big]] = "Removed"
-                      verb_df$reason[split_dims[[i_leaf]][p_val_too_big]] = "Independence test"
-                    }
-
-                    # if any of the breakpoints are too close to boundary, we remove the dimensions :
-                    normed_bp      = (bp - object@a[i_leaf,split_dims[[i_leaf]]])/(object@b[i_leaf,split_dims[[i_leaf]]] - object@a[i_leaf,split_dims[[i_leaf]]])
-                    threshold          = 1/min((nrow(data_dist[[i_leaf]])+1)^2,1000)
-                    close_to_bound = (normed_bp< threshold) + (normed_bp > 1-threshold) > 0
-
-                    if(object@verbose_lvl>2){
-                      verb_df$action[split_dims[[i_leaf]][close_to_bound]] = "Removed"
-                      verb_df$reason[split_dims[[i_leaf]][close_to_bound]] = "Close to boundary"
-                    }
-
-                    to_be_removed = p_val_too_big+close_to_bound>0
-
-                    if(all(to_be_removed)){
-                      # we just keep the leaf :
-                      split_dims[[i_leaf]] = non_taken_dims
-                    } else {
-
-                      if(any(to_be_removed)){
-                        split_dims[[i_leaf]] = split_dims[[i_leaf]][!to_be_removed]
-                        bp = bp[!to_be_removed]
-                      }
-
-                      if(length(split_dims[[i_leaf]]) == 1){
-                        # we just keep the leaf as is :
-                        if(object@verbose_lvl>2){
-                          verb_df$action[split_dims[[i_leaf]]] = "Dissmissed"
-                          verb_df$reason[split_dims[[i_leaf]]] = "No one-dim split"
-                        }
-                        split_dims[[i_leaf]] = c(split_dims[[i_leaf]],non_taken_dims)
-                      } else {
-                        # NOW WE SPLIT
-                        i_leaf_to_remove = c(i_leaf_to_remove,i_leaf)
-                        if(object@verbose_lvl>2){verb_df$action[split_dims[[i_leaf]]] = "Splitted"}
-
-                        # remove the breakpoint from the data points if it's one of them :
-                        are_the_breakpoint  = (colSums(t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) == bp) == length(split_dims[[i_leaf]]))
-                        if(any(are_the_breakpoint)){
-                          if(object@verbose_lvl>4){cat("be carrefull, we are splitting on a point.\n")}
-                          data_dist[[i_leaf]] = data_dist[[i_leaf]][!are_the_breakpoint,]
-                        }
-
-                        # construct new information for new leaves :
-                        d_split=length(split_dims[[i_leaf]])
-                        D = 2^d_split
-                        for (i in 1:D){
-                          # build the leaf :
-                          bin = number2binary(i,d_split)
-                          new_a = object@a[i_leaf,]
-                          new_b = object@b[i_leaf,]
-                          new_a[split_dims[[i_leaf]]] = bp^bin * new_a[split_dims[[i_leaf]]] ^ (1-bin)
-                          new_b[split_dims[[i_leaf]]] = bp^(1-bin) * new_b[split_dims[[i_leaf]]] ^ bin
-                          i_new_data = colSums((t(data_dist[[i_leaf]]) >= new_a)*(t(data_dist[[i_leaf]])<new_b))==d
-                          new_data = data_dist[[i_leaf]][i_new_data, , drop=FALSE]
-
-                          # imput the new information from the leaf :
-                          object@a = rbind(object@a,new_a)
-                          object@b = rbind(object@b,new_b)
-                          split_dims = c(split_dims,list(c(split_dims[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
-                          data_dist = c(data_dist,list(new_data))
-                        }
-                      }
-                    }
-                  }
-
-                  if(object@verbose_lvl>2) {
-                    cat(toString.data.frame(verb_df,digits=8))
-                    cat("\n")
-                  }
-                  if(object@verbose_lvl>2){cat("\n")}
-
-                }
-                # remove information from the splitted leaves :
-                if(length(i_leaf_to_remove) >= 1){
-                  object@a = object@a[-i_leaf_to_remove,]
-                  object@b = object@b[-i_leaf_to_remove,]
-                  split_dims = split_dims[-i_leaf_to_remove]
-                  data_dist = data_dist[-i_leaf_to_remove]
-                }
-              }
-            }
-            #  info about the data distribution :
-            object@vols = apply(object@b-object@a,1,prod)
-            object@f    = purrr::map_dbl(data_dist,~nrow(.x))/nrow(object@data)
-
-            # Then compute the weights :
-            if(object@verbose_lvl>0) {cat("\nEnforcing constraints...\n")}
-
-            # Building constraints :
-            n = nrow(object@a)
-            d = ncol(object@a)
-            evaluation_points = purrr::map(1:d,~unique((object@b+object@a)[,.x]/2))
-            dims = unlist(purrr::map2(evaluation_points,1:d,function(x,y){rep(y,length(x))}))
-            F_vec = unlist(evaluation_points)
-            lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)
-
-            # building the model
-            model = osqp::osqp(P=diag(1/object@vols),
-                               q=-object@f/object@vols,
-                               A=rbind(lambdas,rep(1,n),diag(n)),
-                               l=c(F_vec,1,rep(0,n)),
-                               u=c(F_vec,1,rep(Inf,n)),
-                               pars=OSQP_PARS)
-
-            # Launching the solver
-            model$WarmStart(x=object@f)
-            rez = model$Solve()
-            # saving weights:
-            object@p = pmax(rez$x,0)/sum(pmax(rez$x,0)) # correction for small negative weights.
-
-            if(object@verbose_lvl>0){cat("Done !\n")}
-            return(object)
-          })
 
 #' @describeIn rCopula-methods Method for the class Cort
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "Cort"), definition = function(n, copula) {

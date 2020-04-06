@@ -12,7 +12,8 @@ Cort(
   pseudo_data = FALSE,
   number_max_dim = NULL,
   verbose_lvl = 1,
-  slsqp_options = NULL
+  slsqp_options = NULL,
+  N = 999
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ Cort(
 \item{verbose_lvl}{numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.}
 
 \item{slsqp_options}{options for nloptr::slsqp to find breakpoints : you can change defaults.}
+
+\item{N}{The numbe rof bootstrap resamples for p_values computations.}
 }
 \value{
 a Cort object that can be fitted easily to produce a copula estimate.

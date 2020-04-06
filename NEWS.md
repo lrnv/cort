@@ -10,6 +10,7 @@
 * Better runtime in the loss function in Rcpp.
 * Removed Box classes : infrastructure changes that make the package lighter and faster.
 * Replace the `sample` function by a more solid one given by ?sample.
+* Removed unnecessary generic
 
 # cort 0.3.0
 
