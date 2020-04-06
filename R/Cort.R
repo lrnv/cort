@@ -96,7 +96,7 @@ setMethod(f = "show", signature = c(object = "Cort"), definition = function(obje
 
 setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL, N = 999){
 
-            # Deal with slsqp options :
+            # Deal with solver parameters :
             DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
             # get setted options :
             if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
@@ -106,6 +106,11 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
               if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
               if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
               if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
+            }
+            if (object@verbose_lvl>1) {
+              OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
+            } else {
+              OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE)
             }
 
             # Splitting the domain into small boxes :
@@ -192,8 +197,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                     z_max = bp^(1-bin_repr)
 
                     # Compute p-values for the breakpoint :
-                    montecarlo = cortMonteCarlo(z,z_min,z_max,as.integer(N)) # a cpp function
-                    p_values = rowMeans(montecarlo[1,] <= t(montecarlo[-1,]))
+                    p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
 
                     if(any(is.na(p_values))){
                       p_values[is.na(p_values)] = 0
@@ -261,7 +265,14 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                           new_b = object@b[i_leaf,]
                           new_a[split_dims[[i_leaf]]] = bp^bin * new_a[split_dims[[i_leaf]]] ^ (1-bin)
                           new_b[split_dims[[i_leaf]]] = bp^(1-bin) * new_b[split_dims[[i_leaf]]] ^ bin
-                          i_new_data = apply((t(data_dist[[i_leaf]]) >= new_a)*(t(data_dist[[i_leaf]])<new_b),2,all)
+
+
+
+                          i_new_data = colSums((t(data_dist[[i_leaf]]) >= new_a)*(t(data_dist[[i_leaf]])<new_b))==d
+
+
+
+
                           new_data = data_dist[[i_leaf]][i_new_data, , drop=FALSE]
 
                           # imput the new information from the leaf :
@@ -305,19 +316,13 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
             F_vec = unlist(evaluation_points)
             lambdas = pmin(pmax((F_vec - t(object@a[,dims,drop=FALSE]))/(t(object@b[,dims,drop=FALSE] - object@a[,dims,drop=FALSE])),0),1)
 
-            # Constructing the parameters for the osqp solver :
-            P_mat = diag(1/object@vols)
-            q_vec = -object@f/object@vols
-            A_mat = rbind(lambdas,rep(1,n),diag(n))
-            l_vec = c(F_vec,1,rep(0,n))
-            u_vec = c(F_vec,1,rep(Inf,n))
-
             # building the model
-            if (object@verbose_lvl>1) { model = osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec, pars=osqp::osqpSettings(max_iter = 100000L,
-                                 eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE))
-            } else { model = osqp::osqp(P=P_mat, q=q_vec, A=A_mat, l=l_vec, u=u_vec, pars=osqp::osqpSettings(max_iter = 100000L,
-                                 eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE))
-            }
+            model = osqp::osqp(P=diag(1/object@vols),
+                               q=-object@f/object@vols,
+                               A=rbind(lambdas,rep(1,n),diag(n)),
+                               l=c(F_vec,1,rep(0,n)),
+                               u=c(F_vec,1,rep(Inf,n)),
+                               pars=OSQP_PARS)
 
             # Launching the solver
             model$WarmStart(x=object@f)

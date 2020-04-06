@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // cortMonteCarlo
-Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z, const NumericMatrix min, const NumericMatrix max, const int N);
+Rcpp::NumericVector cortMonteCarlo(const NumericMatrix z, const NumericMatrix min, const NumericMatrix max, const int N);
 RcppExport SEXP _cort_cortMonteCarlo(SEXP zSEXP, SEXP minSEXP, SEXP maxSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

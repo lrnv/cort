@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z,
+Rcpp::NumericVector cortMonteCarlo(const NumericMatrix z,
                                    const NumericMatrix min,
                                    const NumericMatrix max,
                                    const int N) {
@@ -15,8 +15,13 @@ Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z,
   NumericVector f_k(D);
   LogicalMatrix core_checks(D,n);
   NumericMatrix z_boot(d,n);
-  NumericMatrix result(N+1,d);
-  result.fill(0.0);
+  NumericVector observed_stat(d);
+  NumericMatrix bootstraped_stat(N,d);
+  NumericVector p_values(d);
+
+  observed_stat.fill(0.0);
+  bootstraped_stat.fill(0.0);
+  //p_values.fill(0.0);
 
   for (int d_rem = 0; d_rem < d; d_rem++){
 
@@ -46,12 +51,12 @@ Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z,
           f_l += 1.0/n;
         }
       }
-      result(0,d_rem) += (f_l*f_l)/lambda_l(n_leave) - 2 * (f_l*f_k(n_leave))/lambda_k(n_leave);
+      observed_stat(d_rem) += (f_l*f_l)/lambda_l(n_leave) - 2 * (f_l*f_k(n_leave))/lambda_k(n_leave);
     }
 
     // Now bootstrap the same thing :
     z_boot = Rcpp::clone(z);
-    for (int n_boot = 1; n_boot <= N; n_boot++){
+    for (int n_boot = 0; n_boot < N; n_boot++){
       z_boot(d_rem,_) = runif(n); // The bootstrap is here.
       for (int n_leave = 0; n_leave < D; n_leave++){
         f_l = 0.0;
@@ -60,11 +65,14 @@ Rcpp::NumericMatrix cortMonteCarlo(const NumericMatrix z,
             f_l += 1.0/n;
           }
         }
-        result(n_boot,d_rem) += (f_l*f_l)/lambda_l(n_leave) - 2 * (f_l*f_k(n_leave))/lambda_k(n_leave);
+        bootstraped_stat(n_boot,d_rem) += (f_l*f_l)/lambda_l(n_leave) - 2 * (f_l*f_k(n_leave))/lambda_k(n_leave);
       }
     }
   }
-  return(result);
+  for(int d_rem =0; d_rem < d; d_rem++){
+    p_values(d_rem) = mean(observed_stat(d_rem) <= bootstraped_stat(_,d_rem));
+  }
+  return(p_values);
 }
 
 // [[Rcpp::export]]

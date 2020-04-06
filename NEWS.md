@@ -3,11 +3,11 @@
 * Speed up via Rcpp some core functionalities.
 * Parallel computations are now possible via furrr in CortForest. 
 * Corrected misspelling in the documentations.
-* Corrected bug when there is only one leave in the tree.
-* Corrected bug in pairs.Cort : dimensions were switched for leaves but not for points.
-* Removed dependency to magritr::`%>%`. This was unnecessary.
+* Fixed bug when there is only one leave in the tree.
+* Fixed bug in pairs.Cort : dimensions were switched for leaves but not for points.
+* Removed dependency to magritr.
 * Cut the runtime of p_values computations by half.
-* better runtime in the loss function in Rcpp.
+* Better runtime in the loss function in Rcpp.
 * Removed Box classes : infrastructure changes that make the package lighter and faster.
 * Replace the `sample` function by a more solid one given by ?sample.
 
