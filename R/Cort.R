@@ -96,7 +96,6 @@ setMethod(f = "show", signature = c(object = "Cort"), definition = function(obje
 
 setMethod(f="fit", signature = c(object="Cort"), definition = function(object,slsqp_options = NULL, N = 999){
 
-
             # Deal with slsqp options :
             DEFAULT_SLQP_OPTIONS = list(stopval = -Inf,xtol_rel = 1e-4,maxeval = 100000,ftol_rel = 1e-6,ftol_abs = 1e-6)
             # get setted options :
@@ -108,8 +107,6 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
               if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
               if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
             }
-
-
 
             # Splitting the domain into small boxes :
             if(object@verbose_lvl>0) {cat("Splitting...\n")}
@@ -270,7 +267,7 @@ setMethod(f="fit", signature = c(object="Cort"), definition = function(object,sl
                           # imput the new information from the leaf :
                           object@a = rbind(object@a,new_a)
                           object@b = rbind(object@b,new_b)
-                          split_dims = c(split_dims,list(c(split_dims[[i_leaf]],non_taken_dims))) # append new split dims
+                          split_dims = c(split_dims,list(c(split_dims[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
                           data_dist = c(data_dist,list(new_data))
                         }
                       }
@@ -388,12 +385,6 @@ setMethod(f = "dCopula", signature = c(u = "matrix",  copula="Cort"),   definiti
   core = (u[,rep(1,n),,drop=FALSE] >= a[rep(1,m),,,drop=FALSE])*(u[,rep(1,n),,drop=FALSE] < b[rep(1,m),,,drop=FALSE]) # m, n, d
   are_in = (rowSums(core,dims = 2)==d)
   return(rowSums(are_in * p[rep(1,m),,drop=FALSE]/vols[rep(1,m),,drop=FALSE])) # m
-
-
-
-
- # return(rowSums(vapply(copula@leaves,function(l){contains(l,u,type="rllc")*l@weight},FUN.VALUE = rep(0.5,nrow(u)))))
-
 })
 
 #' @describeIn biv_rho-methods Method for the class Cort
@@ -414,8 +405,6 @@ setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(c
   }
 
   return(rho)
-
-
 })
 
 # helper function for the kendall tau computation :
@@ -478,7 +467,6 @@ setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(c
   mat[dims] <- kappa
   mat = mat+t(mat)
   return(mat)
-
 })
 
 #' @describeIn loss-methods Method for the class Cort
@@ -513,7 +501,6 @@ setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   d
     other_tree@b,
     other_tree@p/other_tree@vols
   ))
-
 })
 
 #' @param M the number of simulations

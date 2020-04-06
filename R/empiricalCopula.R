@@ -25,8 +25,8 @@ setClass(Class = "empiricalCopula", contains = c("VIRTUAL"),
 pairs.empiricalCopula <- function(x,...){
    N = nrow(x@data)
    suppressWarnings(graphics::pairs(rbind(rCopula(N,x),x@data),
-         lower.panel = function(x,y,ind.lower,col.lower,ind.upper,col.upper,...){graphics::points(x[ind.lower],y[ind.lower],col = col.lower,...)},
-         upper.panel = function(x,y,ind.upper,col.upper,ind.lower,col.lower,...){graphics::points(x[ind.upper],y[ind.upper],col = col.upper,...)},
+         lower.panel = function(x,y,ind.lower,col.lower,ind.upper,col.upper,...){suppressWarnings(graphics::points(x[ind.lower],y[ind.lower],col = col.lower,...))},
+         upper.panel = function(x,y,ind.upper,col.upper,ind.lower,col.lower,...){suppressWarnings(graphics::points(x[ind.upper],y[ind.upper],col = col.upper,...))},
          ind.upper = c(rep(TRUE,N),rep(FALSE,N)),
          ind.lower = c(rep(FALSE,N),rep(TRUE,N)),
          col.upper = 'red',
