@@ -11,6 +11,7 @@
 * Removed Box classes : infrastructure changes that make the package lighter and faster.
 * Replace the `sample` function by a more solid one given by ?sample.
 * Removed unnecessary generic
+* Solver options and number of bootstrap resamples are now accessible as parameters to the Cort() function.
 
 # cort 0.3.0
 

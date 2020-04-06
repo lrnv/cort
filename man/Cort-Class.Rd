@@ -13,6 +13,7 @@ Cort(
   number_max_dim = NULL,
   verbose_lvl = 1,
   slsqp_options = NULL,
+  osqp_options = NULL,
   N = 999
 )
 }
@@ -31,7 +32,9 @@ Cort(
 
 \item{slsqp_options}{options for nloptr::slsqp to find breakpoints : you can change defaults.}
 
-\item{N}{The numbe rof bootstrap resamples for p_values computations.}
+\item{osqp_options}{options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.}
+
+\item{N}{The number of bootstrap resamples for p_values computations.}
 }
 \value{
 a Cort object that can be fitted easily to produce a copula estimate.

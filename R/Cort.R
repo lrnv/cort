@@ -43,6 +43,7 @@ NULL
 #' @param slsqp_options options for nloptr::slsqp to find breakpoints : you can change defaults.
 #' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
 #' @param N The number of bootstrap resamples for p_values computations.
+#' @param osqp_options options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.
 #'
 #' @name Cort-Class
 #' @title The Cort estimator
@@ -60,6 +61,7 @@ Cort = function(x,
                 number_max_dim=NULL,
                 verbose_lvl=1,
                 slsqp_options = NULL,
+                osqp_options = NULL,
                 N = 999) {
 
   # Coerce the data :
@@ -98,11 +100,14 @@ Cort = function(x,
     if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
     if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
   }
-  if (object@verbose_lvl>1) {
-    OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
-  } else {
-    OSQP_PARS = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE)
+  if(is.null(osqp_options)){
+    if (object@verbose_lvl>1) {
+      osqp_options = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
+    } else {
+      osqp_options = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = FALSE)
+    }
   }
+
 
   # Now we start fitting.
   if(object@verbose_lvl>0) {cat("Splitting...\n")}
@@ -302,7 +307,7 @@ Cort = function(x,
                      A=rbind(lambdas,rep(1,n),diag(n)),
                      l=c(F_vec,1,rep(0,n)),
                      u=c(F_vec,1,rep(Inf,n)),
-                     pars=OSQP_PARS)
+                     pars=osqp_options)
 
   # Launching the solver
   model$WarmStart(x=object@f)
