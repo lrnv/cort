@@ -14,7 +14,8 @@ Cort(
   verbose_lvl = 1,
   slsqp_options = NULL,
   osqp_options = NULL,
-  N = 999
+  N = 999,
+  force_grid = FALSE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ Cort(
 \item{osqp_options}{options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.}
 
 \item{N}{The number of bootstrap resamples for p_values computations.}
+
+\item{force_grid}{boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.}
 }
 \value{
 a Cort object that can be fitted easily to produce a copula estimate.

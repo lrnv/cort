@@ -44,6 +44,7 @@ NULL
 #' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
 #' @param N The number of bootstrap resamples for p_values computations.
 #' @param osqp_options options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.
+#' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.
 #'
 #' @name Cort-Class
 #' @title The Cort estimator
@@ -62,7 +63,8 @@ Cort = function(x,
                 verbose_lvl=1,
                 slsqp_options = NULL,
                 osqp_options = NULL,
-                N = 999) {
+                N = 999,
+                force_grid=FALSE) {
 
   # Coerce the data :
   data= as.matrix(x)
@@ -74,6 +76,7 @@ Cort = function(x,
   }
 
   d = ncol(data)
+  n_obs = nrow(data)
 
   # Construct the object :
   object = .Cort(
@@ -183,6 +186,13 @@ Cort = function(x,
 
           # Get the breakpoints and the final splitting :
           bp = a + optimizer$par*(b-a)
+
+          if(force_grid){
+            bp = round(bp*2*(n_obs+1))/(n_obs+1)/2
+          }
+
+
+
           z_min = bp*bin_repr
           z_max = bp^(1-bin_repr)
 
@@ -205,9 +215,14 @@ Cort = function(x,
             verb_df$reason[split_dims[[i_leaf]][p_val_too_big]] = "Independence test"
           }
 
+
           # if any of the breakpoints are too close to boundary, we remove the dimensions :
           normed_bp      = (bp - object@a[i_leaf,split_dims[[i_leaf]]])/(object@b[i_leaf,split_dims[[i_leaf]]] - object@a[i_leaf,split_dims[[i_leaf]]])
-          threshold          = 1/min((nrow(data_dist[[i_leaf]])+1)^2,1000)
+          if(force_grid){
+            threshold          = 1/(n_obs+1)^2
+          } else {
+            threshold          = 1/min((nrow(data_dist[[i_leaf]])+1)^2,1000)
+          }
           close_to_bound = (normed_bp< threshold) + (normed_bp > 1-threshold) > 0
 
           if(object@verbose_lvl>2){

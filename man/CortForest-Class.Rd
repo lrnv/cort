@@ -13,7 +13,8 @@ CortForest(
   min_node_size = 1,
   pseudo_data = FALSE,
   number_max_dim = NULL,
-  verbose_lvl = 2
+  verbose_lvl = 2,
+  force_grid = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ CortForest(
 \item{number_max_dim}{The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.}
 
 \item{verbose_lvl}{verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.}
+
+\item{force_grid}{boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.}
 }
 \value{
 a CortForest object that can be fitted easily to produce a copula estimate.

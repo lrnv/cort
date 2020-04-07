@@ -38,6 +38,7 @@
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param n_trees Number of trees
 #' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
+#' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
 #'
 #' @name CortForest-Class
 #' @title Bagged Cort estimates
@@ -55,7 +56,8 @@ CortForest = function(x,
                 min_node_size=1,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
-                verbose_lvl=2) {
+                verbose_lvl=2,
+                force_grid= FALSE) {
 
   # coerce the data :
   data= as.matrix(x)
@@ -86,7 +88,8 @@ CortForest = function(x,
           min_node_size=min_node_size,
           pseudo_data=TRUE,
           number_max_dim=number_max_dim,
-          verbose_lvl=0))},.progress=TRUE)
+          verbose_lvl=0,
+          force_grid = force_grid))},.progress=TRUE)
 
     if(verbose_lvl>0){cat(affichage,"Computing statistics...\n")}
   # now compute the masked pmf :
