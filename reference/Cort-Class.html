@@ -148,7 +148,10 @@
   <span class='kw'>pseudo_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>number_max_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose_lvl</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>slsqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>slsqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>osqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>999</span>,
+  <span class='kw'>force_grid</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -181,6 +184,18 @@
     <tr>
       <th>slsqp_options</th>
       <td><p>options for nloptr::slsqp to find breakpoints : you can change defaults.</p></td>
+    </tr>
+    <tr>
+      <th>osqp_options</th>
+      <td><p>options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>The number of bootstrap resamples for p_values computations.</p></td>
+    </tr>
+    <tr>
+      <th>force_grid</th>
+      <td><p>boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.</p></td>
     </tr>
     </table>
 
