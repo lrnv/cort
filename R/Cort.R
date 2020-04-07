@@ -108,7 +108,6 @@ Cort = function(x,
     }
   }
 
-
   # Now we start fitting.
   if(object@verbose_lvl>0) {cat("Splitting...\n")}
   data_dist = list(object@data)

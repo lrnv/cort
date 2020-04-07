@@ -1,5 +1,6 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/cort)](https://CRAN.R-project.org/package=cort)
+[![CRAN number of downloads](https://cranlogs.r-pkg.org/badges/grand-total/cort)](https://cranlogs.r-pkg.org/badges/grand-total/cort)
 [![Travis build status](https://img.shields.io/travis/com/lrnv/cort/master?logo=travis&style=flat-square&label=Linux)](https://travis-ci.com/lrnv/cort)
 [![Github Build status](https://img.shields.io/github/workflow/status/lrnv/cort/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&label=Github%20build&style=flat-square)](https://github.com/lrnv/cort/actions)
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/lrnv/cort?label=Windows&logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/lrnv/cort)
