@@ -39,6 +39,7 @@
 #' @param n_trees Number of trees
 #' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
 #' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
+#' @param oob_weighting boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)
 #'
 #' @name CortForest-Class
 #' @title Bagged Cort estimates
@@ -57,7 +58,8 @@ CortForest = function(x,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
                 verbose_lvl=2,
-                force_grid= FALSE) {
+                force_grid = FALSE,
+                oob_weighting = TRUE) {
 
   # coerce the data :
   data= as.matrix(x)
@@ -92,6 +94,7 @@ CortForest = function(x,
           force_grid = force_grid))},.progress=TRUE)
 
     if(verbose_lvl>0){cat(affichage,"Computing statistics...\n")}
+
   # now compute the masked pmf :
   if(verbose_lvl>1){cat("     Computing pmf...\n")}
   pmf = matrix(0,nrow=n_trees,ncol=n)
@@ -104,12 +107,46 @@ CortForest = function(x,
   }
 
   if(verbose_lvl>1){cat("     Computing norm matrix...\n")}
-  norm_matrix = normMatrix(as = purrr::map(trees,~.x@a),
-                           bs = purrr::map(trees,~.x@b),
+  norm_matrix = normMatrix(as = purrr::map(trees,"a"),
+                           bs = purrr::map(trees,"b"),
                            kernels = purrr::map(trees,~.x@p/.x@vols))
 
   # we now need the weights. Let's not fit them yet.
   weights = rep(1:n_trees,n_trees)
+
+
+
+
+
+  # weights
+  if(!oob_weighting){
+    weighting_sheme = map(2:n_trees,function(j){rep(1/j,j)})
+  } else {
+    if(verbose_lvl>1){cat("     Computing weights...\n")}
+    loss <- function(w,pmf,norm_mat,is_in){
+      big_w = w
+      dim(big_w) = c(1,length(w))
+      big_w = t(big_w[rep(1,nrow(is_in)),]*(1-is_in))
+      w %*% norm_mat %*% w - mean(colSums(pmf*big_w)/colSums(big_w),na.rm=TRUE)
+    }
+    oob_wts = matrix(NA,n_trees,n_trees)
+    oob_wts[2,1:2] <- rep(1/2,2)
+
+    weighting_sheme = furrr::future_map(2:n_trees,function(j){
+      rez = nloptr::slsqp(
+        x0 = rep(1/j,j),
+        fn = loss, # a cpp function
+        lower = rep(0,j),
+        upper = rep(1,j),
+        heq = function(w){sum(w)-1},
+        nl.info=FALSE,
+        pmf = pmf[1:j,],
+        norm_mat = norm_matrix[1:j,1:j],
+        is_in = is_in[,1:j])$par
+
+      return(pmax(rez,0)/sum(pmax(rez,0)))
+    },.progress=TRUE)
+  }
 
   # OUT OF BAG STATS
   if(verbose_lvl>1){cat("     Computing oob stats...\n")}
@@ -118,14 +155,14 @@ CortForest = function(x,
   oob_ise = numeric(n_trees - 1)
 
   for (j in 2:n_trees){
-    weights = rep(1/j,j) # weights computed from only theese trees
-
-    oob_wts = weights
-    dim(oob_wts) = c(1,j)
-    oob_wts = t(oob_wts[rep(1,n),]*(1-is_in[,1:j]))
-    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts)/colSums(oob_wts)
+    # compte pmf, kl and ise from oob_wts
+    oob_wts = weighting_sheme[[j-1]]
+    oob_wts_big = oob_wts
+    dim(oob_wts_big) = c(1,j)
+    oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
+    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
     oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
-    oob_ise[j-1] = weights %*% norm_matrix[1:j,1:j] %*% weights
+    oob_ise[j-1] = oob_wts %*% norm_matrix[1:j,1:j] %*% oob_wts -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
   }
 
   if(verbose_lvl>0){cat(affichage,"Done !\n")}
@@ -137,7 +174,7 @@ CortForest = function(x,
     verbose_lvl=verbose_lvl,
     trees = trees,
     dim = ncol(data),
-    weights = weights,
+    weights = oob_wts,
     indexes = indexes,
     pmf = pmf,
     norm_matrix = norm_matrix,
