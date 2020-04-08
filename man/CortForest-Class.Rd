@@ -14,7 +14,8 @@ CortForest(
   pseudo_data = FALSE,
   number_max_dim = NULL,
   verbose_lvl = 2,
-  force_grid = FALSE
+  force_grid = FALSE,
+  oob_weighting = TRUE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ CortForest(
 \item{verbose_lvl}{verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.}
 
 \item{force_grid}{boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.}
+
+\item{oob_weighting}{boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)}
 }
 \value{
 a CortForest object that can be fitted easily to produce a copula estimate.

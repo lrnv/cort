@@ -39,7 +39,7 @@
 #' @param n_trees Number of trees
 #' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
 #' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
-#' @param oob_weighting boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)
+#' @param oob_weighting boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equally weighted)
 #'
 #' @name CortForest-Class
 #' @title Bagged Cort estimates
@@ -120,7 +120,7 @@ CortForest = function(x,
 
   # weights
   if(!oob_weighting){
-    weighting_sheme = map(2:n_trees,function(j){rep(1/j,j)})
+    weighting_sheme = purrr::map(2:n_trees,function(j){rep(1/j,j)})
   } else {
     if(verbose_lvl>1){cat("     Computing weights...\n")}
     loss <- function(w,pmf,norm_mat,is_in){
