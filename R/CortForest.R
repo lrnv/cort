@@ -39,6 +39,7 @@
 #' @param n_trees Number of trees
 #' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
 #' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
+#' @param oob_weighting boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)
 #'
 #' @name CortForest-Class
 #' @title Bagged Cort estimates
@@ -57,7 +58,8 @@ CortForest = function(x,
                 pseudo_data=FALSE,
                 number_max_dim=NULL,
                 verbose_lvl=2,
-                force_grid= FALSE) {
+                force_grid = FALSE,
+                oob_weighting = TRUE) {
 
   # coerce the data :
   data= as.matrix(x)
@@ -92,6 +94,7 @@ CortForest = function(x,
           force_grid = force_grid))},.progress=TRUE)
 
     if(verbose_lvl>0){cat(affichage,"Computing statistics...\n")}
+
   # now compute the masked pmf :
   if(verbose_lvl>1){cat("     Computing pmf...\n")}
   pmf = matrix(0,nrow=n_trees,ncol=n)
@@ -117,15 +120,61 @@ CortForest = function(x,
   oob_kl = numeric(n_trees-1)
   oob_ise = numeric(n_trees - 1)
 
-  for (j in 2:n_trees){
-    weights = rep(1/j,j) # weights computed from only theese trees
+  if(oob_weighting){
+    loss <- function(w,pmf,norm_mat,is_in){
+      big_w = w
+      dim(big_w) = c(1,length(w))
+      big_w = t(big_w[rep(1,nrow(is_in)),]*(1-is_in))
+      w %*% norm_mat %*% w - mean(colSums(pmf*big_w)/colSums(big_w),na.rm=TRUE)
+    }
+    oob_wts = matrix(NA,n_trees,n_trees)
+    oob_wts[2,1:2] <- rep(1/2,2)
+    for (j in 2:n_trees){
 
-    oob_wts = weights
-    dim(oob_wts) = c(1,j)
-    oob_wts = t(oob_wts[rep(1,n),]*(1-is_in[,1:j]))
-    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts)/colSums(oob_wts)
-    oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
-    oob_ise[j-1] = weights %*% norm_matrix[1:j,1:j] %*% weights
+      #Launche optimisation routine for the breakpoint :
+
+      if(length(oob_wts[j,1:j]) != j){
+        browser()
+      }
+
+      rez = nloptr::slsqp(
+        x0 = oob_wts[j,1:j],
+        fn = loss, # a cpp function
+        lower = rep(0,j),
+        upper = rep(1,j),
+        heq = function(w){sum(w)-1},
+        nl.info=verbose_lvl>2,
+        pmf = pmf[1:j,],
+        norm_mat = norm_matrix[1:j,1:j],
+        is_in = is_in[,1:j])$par
+
+      oob_wts[j,1:j] = pmax(rez,0)/sum(pmax(rez,0))
+
+      # compte pmf, kl and ise from oob_wts
+      oob_wts_big = oob_wts[j,1:j]
+      dim(oob_wts_big) = c(1,j)
+      oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
+      oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
+      oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
+      oob_ise[j-1] = oob_wts[j,1:j] %*% norm_matrix[1:j,1:j] %*% oob_wts[j,1:j] -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
+
+      if(j < n_trees){
+        oob_wts[j+1,1:(j+1)] = c(oob_wts[j,1:j]*j/(j+1),1/(j+1))
+      }
+    }
+    oob_wts = oob_wts[n_trees,]
+
+  } else {
+    for (j in 2:n_trees){
+      # compte pmf, kl and ise from oob_wts
+      oob_wts = rep(1/j,j)
+      oob_wts_big = oob_wts
+      dim(oob_wts_big) = c(1,j)
+      oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
+      oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
+      oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
+      oob_ise[j-1] = oob_wts %*% norm_matrix[1:j,1:j] %*% oob_wts -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
+    }
   }
 
   if(verbose_lvl>0){cat(affichage,"Done !\n")}
@@ -137,7 +186,7 @@ CortForest = function(x,
     verbose_lvl=verbose_lvl,
     trees = trees,
     dim = ncol(data),
-    weights = weights,
+    weights = oob_wts,
     indexes = indexes,
     pmf = pmf,
     norm_matrix = norm_matrix,
