@@ -13,6 +13,7 @@
 * Removed unnecessary generic
 * Solver options and number of bootstrap resamples are now accessible as parameters to the Cort() function.
 * Add an option to force the checkerboard grid on trees and inside the forest.
+* Add a weighting option for the forest.
 
 # cort 0.3.0
 
