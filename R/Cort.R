@@ -329,6 +329,12 @@ Cort = function(x,
   # saving weights:
   object@p = pmax(rez$x,0)/sum(pmax(rez$x,0)) # correction for small negative weights.
 
+
+  # remove names :
+  row.names(object@a) <- NULL
+  row.names(object@b) <- NULL
+  names(object@vols) <- NULL
+
   if(object@verbose_lvl>0){cat("Done !\n")}
   return(object)
 }

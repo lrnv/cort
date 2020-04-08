@@ -107,8 +107,8 @@ CortForest = function(x,
   }
 
   if(verbose_lvl>1){cat("     Computing norm matrix...\n")}
-  norm_matrix = normMatrix(as = purrr::map(trees,~.x@a),
-                           bs = purrr::map(trees,~.x@b),
+  norm_matrix = normMatrix(as = purrr::map(trees,"a"),
+                           bs = purrr::map(trees,"b"),
                            kernels = purrr::map(trees,~.x@p/.x@vols))
 
   # we now need the weights. Let's not fit them yet.
