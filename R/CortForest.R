@@ -114,13 +114,15 @@ CortForest = function(x,
   # we now need the weights. Let's not fit them yet.
   weights = rep(1:n_trees,n_trees)
 
-  # OUT OF BAG STATS
-  if(verbose_lvl>1){cat("     Computing oob stats...\n")}
-  oob_pmf = matrix(0,nrow=n,ncol=n_trees-1)
-  oob_kl = numeric(n_trees-1)
-  oob_ise = numeric(n_trees - 1)
 
-  if(oob_weighting){
+
+
+
+  # weights
+  if(!oob_weighting){
+    weighting_sheme = map(2:n_trees,function(j){rep(1/j,j)})
+  } else {
+    if(verbose_lvl>1){cat("     Computing weights...\n")}
     loss <- function(w,pmf,norm_mat,is_in){
       big_w = w
       dim(big_w) = c(1,length(w))
@@ -129,52 +131,38 @@ CortForest = function(x,
     }
     oob_wts = matrix(NA,n_trees,n_trees)
     oob_wts[2,1:2] <- rep(1/2,2)
-    for (j in 2:n_trees){
 
-      #Launche optimisation routine for the breakpoint :
-
-      if(length(oob_wts[j,1:j]) != j){
-        browser()
-      }
-
+    weighting_sheme = furrr::future_map(2:n_trees,function(j){
       rez = nloptr::slsqp(
-        x0 = oob_wts[j,1:j],
+        x0 = rep(1/j,j),
         fn = loss, # a cpp function
         lower = rep(0,j),
         upper = rep(1,j),
         heq = function(w){sum(w)-1},
-        nl.info=verbose_lvl>2,
+        nl.info=FALSE,
         pmf = pmf[1:j,],
         norm_mat = norm_matrix[1:j,1:j],
         is_in = is_in[,1:j])$par
 
-      oob_wts[j,1:j] = pmax(rez,0)/sum(pmax(rez,0))
+      return(pmax(rez,0)/sum(pmax(rez,0)))
+    },.progress=TRUE)
+  }
 
-      # compte pmf, kl and ise from oob_wts
-      oob_wts_big = oob_wts[j,1:j]
-      dim(oob_wts_big) = c(1,j)
-      oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
-      oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
-      oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
-      oob_ise[j-1] = oob_wts[j,1:j] %*% norm_matrix[1:j,1:j] %*% oob_wts[j,1:j] -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
+  # OUT OF BAG STATS
+  if(verbose_lvl>1){cat("     Computing oob stats...\n")}
+  oob_pmf = matrix(0,nrow=n,ncol=n_trees-1)
+  oob_kl = numeric(n_trees-1)
+  oob_ise = numeric(n_trees - 1)
 
-      if(j < n_trees){
-        oob_wts[j+1,1:(j+1)] = c(oob_wts[j,1:j]*j/(j+1),1/(j+1))
-      }
-    }
-    oob_wts = oob_wts[n_trees,]
-
-  } else {
-    for (j in 2:n_trees){
-      # compte pmf, kl and ise from oob_wts
-      oob_wts = rep(1/j,j)
-      oob_wts_big = oob_wts
-      dim(oob_wts_big) = c(1,j)
-      oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
-      oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
-      oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
-      oob_ise[j-1] = oob_wts %*% norm_matrix[1:j,1:j] %*% oob_wts -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
-    }
+  for (j in 2:n_trees){
+    # compte pmf, kl and ise from oob_wts
+    oob_wts = weighting_sheme[[j-1]]
+    oob_wts_big = oob_wts
+    dim(oob_wts_big) = c(1,j)
+    oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
+    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
+    oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
+    oob_ise[j-1] = oob_wts %*% norm_matrix[1:j,1:j] %*% oob_wts -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
   }
 
   if(verbose_lvl>0){cat(affichage,"Done !\n")}
