@@ -185,18 +185,17 @@ Cort = function(x,
             z = z)
 
           # Get the breakpoints and the final splitting :
-          bp = a + optimizer$par*(b-a)
+          z_bp = optimizer$par
+          bp = a + z_bp*(b-a)
 
           if(force_grid){
             bp = round(bp*2*(n_obs+1))/(n_obs+1)/2
+            z_bp = (bp-a)/(b-a)
           }
 
-
-
-          z_min = bp*bin_repr
-          z_max = bp^(1-bin_repr)
-
           # Compute p-values for the breakpoint :
+          z_min = z_bp*bin_repr
+          z_max = z_bp^(1-bin_repr)
           p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
 
           if(any(is.na(p_values))){
