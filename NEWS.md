@@ -14,6 +14,8 @@
 * Solver options and number of bootstrap resamples are now accessible as parameters to the Cort() function.
 * Add an option to force the checkerboard grid on trees and inside the forest.
 * Add a weighting option for the forest.
+* Corrected a BIG mistake on the forest p-values... Results are much better now.
+* Tried to optimize the norm matrix computation.
 
 # cort 0.3.0
 

@@ -115,9 +115,6 @@ CortForest = function(x,
   weights = rep(1:n_trees,n_trees)
 
 
-
-
-
   # weights
   if(!oob_weighting){
     weighting_sheme = purrr::map(2:n_trees,function(j){rep(1/j,j)})

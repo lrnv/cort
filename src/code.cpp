@@ -102,19 +102,66 @@ double quadProd(const NumericMatrix a,
 }
 
 // [[Rcpp::export]]
-Rcpp::NumericMatrix normMatrix(const List as,
+Rcpp::NumericMatrix normMatrix(const List ass,
                                const List bs,
                                const List kernels){
 
-  int n = as.length();
-  Rcpp::NumericMatrix result(n,n);
-  for(int i=0; i< n; i++){
-    for(int j=0; j< n; j++){
-      if(i <= j){
-        result(i,j) = quadProd(as[i], bs[i], kernels[i], as[j], bs[j], kernels[j]);
+  int n_tree = ass.length();
+  int n, other_n, temp, d;
+  Rcpp::NumericMatrix result(n_tree,n_tree);
+  Rcpp::NumericMatrix a;
+  Rcpp::NumericMatrix b;
+  Rcpp::NumericVector kern;
+  Rcpp::NumericMatrix other_a;
+  Rcpp::NumericMatrix other_b;
+  Rcpp::NumericVector other_kern;
+
+  result.fill(0.0);
+
+  d = as<Rcpp::NumericMatrix>(ass[1]).ncol();
+
+  for(int i=0; i< n_tree; i++){
+
+    a = as<Rcpp::NumericMatrix>(ass[i]);
+    b = as<Rcpp::NumericMatrix>(bs[i]);
+    kern = as<Rcpp::NumericVector>(kernels[i]);
+    n = a.nrow();
+
+    // Fill the quadratic norm of the models :
+    for(int k = 0; k <n; k++){
+      temp =  kern(k)*kern(k);
+      if(temp != 0){
+        for (int dim=0; dim<d; dim++){
+          temp *= b(k,dim)-a(k,dim);
+        }
+      }
+      result(i,i) += temp;
+    }
+    // Then fit everywhere else :
+    for(int j=0; j< n_tree; j++){
+      if(i < j){
+
+        other_a = as<Rcpp::NumericMatrix>(ass[j]);
+        other_b = as<Rcpp::NumericMatrix>(bs[j]);
+        other_kern = as<Rcpp::NumericVector>(kernels[j]);
+        other_n = other_a.nrow();
+
+        for (int k=0; k<n; k++){
+          for (int l=0; l<other_n; l++){
+            temp = kern(k)*other_kern(l);
+            if(temp != 0){
+              for (int dim=0; dim<d; dim++){
+                temp *= std::max(std::min(b(k,dim),other_b(l,dim)) - std::max(a(k,dim),other_a(l,dim)),0.0);
+                if(temp == 0){
+                  break;
+                }
+              }
+              result(i,j) += temp;
+            }
+          }
+        }
         result(j,i) = result(i,j);
       }
-
     }
   }
   return(result);

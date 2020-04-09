@@ -9,8 +9,8 @@ quadProd <- function(a, b, kern, other_a, other_b, other_kern) {
     .Call(`_cort_quadProd`, a, b, kern, other_a, other_b, other_kern)
 }
 
-normMatrix <- function(as, bs, kernels) {
-    .Call(`_cort_normMatrix`, as, bs, kernels)
+normMatrix <- function(ass, bs, kernels) {
+    .Call(`_cort_normMatrix`, ass, bs, kernels)
 }
 
 lossFunc <- function(bp, bin_repr, z) {

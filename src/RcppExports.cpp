@@ -36,15 +36,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // normMatrix
-Rcpp::NumericMatrix normMatrix(const List as, const List bs, const List kernels);
-RcppExport SEXP _cort_normMatrix(SEXP asSEXP, SEXP bsSEXP, SEXP kernelsSEXP) {
+Rcpp::NumericMatrix normMatrix(const List ass, const List bs, const List kernels);
+RcppExport SEXP _cort_normMatrix(SEXP assSEXP, SEXP bsSEXP, SEXP kernelsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List >::type as(asSEXP);
+    Rcpp::traits::input_parameter< const List >::type ass(assSEXP);
     Rcpp::traits::input_parameter< const List >::type bs(bsSEXP);
     Rcpp::traits::input_parameter< const List >::type kernels(kernelsSEXP);
-    rcpp_result_gen = Rcpp::wrap(normMatrix(as, bs, kernels));
+    rcpp_result_gen = Rcpp::wrap(normMatrix(ass, bs, kernels));
     return rcpp_result_gen;
 END_RCPP
 }

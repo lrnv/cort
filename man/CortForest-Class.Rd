@@ -37,7 +37,7 @@ CortForest(
 
 \item{force_grid}{boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.}
 
-\item{oob_weighting}{boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)}
+\item{oob_weighting}{boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equally weighted)}
 }
 \value{
 a CortForest object that can be fitted easily to produce a copula estimate.
