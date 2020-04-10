@@ -15,7 +15,8 @@
 * Add an option to force the checkerboard grid on trees and inside the forest.
 * Add a weighting option for the forest.
 * Corrected a BIG mistake on the forest p-values... Results are much better now.
-* Tried to optimize the norm matrix computation.
+* Optimized the norm-matrix computation in cpp
+* Fitting weights of forest only once -- major speedup but resulting graphs might be less cool.
 
 # cort 0.3.0
 

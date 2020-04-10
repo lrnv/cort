@@ -92,10 +92,15 @@ double quadProd(const NumericMatrix a,
   for (int i=0; i<n; i++){
     for (int j=0; j<other_n; j++){
       temp = kern(i)*other_kern(j);
-      for (int dim=0; dim<d; dim++){
-        temp *= std::max(std::min(b(i,dim),other_b(j,dim)) - std::max(a(i,dim),other_a(j,dim)),0.0);
+      if(temp != 0){
+        for (int dim=0; dim<d; dim++){
+          temp *= std::max(std::min(b(i,dim),other_b(j,dim)) - std::max(a(i,dim),other_a(j,dim)),0.0);
+          if(temp == 0){
+            break;
+          }
+        }
+        rez += temp;
       }
-      rez += temp;
     }
   }
   return(rez);
@@ -139,6 +144,7 @@ Rcpp::NumericMatrix normMatrix(const List ass,
     }
     // Then fit everywhere else :
     for(int j=0; j< n_tree; j++){
+      Rcout << i << "," << j << std::endl;
       if(i < j){
 
         other_a = as<Rcpp::NumericMatrix>(ass[j]);
@@ -166,6 +172,7 @@ Rcpp::NumericMatrix normMatrix(const List ass,
   }
   return(result);
 }
+
 
 // [[Rcpp::export]]
 double lossFunc(const NumericVector bp,
