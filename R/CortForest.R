@@ -61,100 +61,87 @@ CortForest = function(x,
                 force_grid = FALSE,
                 oob_weighting = TRUE) {
 
-  # coerce the data :
+  # Deal with verbosity :
+  showing = ifelse(verbose_lvl <= 1,"","========================")
+
+  # Extract and coerce data :
   data= as.matrix(x)
   row.names(data) = NULL
   colnames(data) = NULL
-
-  if(!pseudo_data){
-    data = apply(data,2,rank,ties.method="random")/(nrow(data)+1)
-  }
-
+  if(!pseudo_data){ data = apply(data,2,rank,ties.method="random")/(nrow(data)+1) }
   d = ncol(data)
   n = nrow(data)
 
-  # for each tree, indexes of it's values :
+  # Bootstrap observation for the trees
   indexes = matrix(resample(1:n,size=n*n_trees,replace = TRUE),nrow=n_trees,ncol=n) # n_trees, n
 
 
-  if(verbose_lvl <= 1){
-    affichage = ""
-  } else {
-    affichage = "========================"
-  }
-
-  if(verbose_lvl>0){cat(affichage,"Computing trees...\n")}
+  # Fit the trees
+  if(verbose_lvl>0){cat(showing,"Computing trees...\n")}
   trees = furrr::future_map(1:n_trees,function(i){
-    return(Cort(data[indexes[i,],],
+    Cort(data[indexes[i,],],
          p_value_for_dim_red=p_value_for_dim_red,
-          min_node_size=min_node_size,
-          pseudo_data=TRUE,
-          number_max_dim=number_max_dim,
-          verbose_lvl=0,
-          force_grid = force_grid))},.progress=TRUE)
+         min_node_size=min_node_size,
+         pseudo_data=TRUE,
+         number_max_dim=number_max_dim,
+         verbose_lvl=0,
+         force_grid = force_grid)},.progress=TRUE)
 
-    if(verbose_lvl>0){cat(affichage,"Computing statistics...\n")}
+  # Compute the stats
+  if(verbose_lvl>0){cat(showing,"Computing statistics...\n")}
 
-  # now compute the masked pmf :
+  # Computation of the pmf and of it's mask
   if(verbose_lvl>1){cat("     Computing pmf...\n")}
-  pmf = matrix(0,nrow=n_trees,ncol=n)
-  is_in = matrix(1:n,nrow=n,ncol=n_trees) # n, n_trees
+  pmf = is_out = matrix(NA,nrow=n_trees,ncol=n)
   for (i in 1:n_trees){
-    for (j in 1:n){
-      is_in[j,i] = (j %in% indexes[i,])
-    }
+    is_out[i,] = 1-(1:n %in% indexes[i])
     pmf[i,] = dCopula(data,trees[[i]])
   }
 
+  # Parallel computation for norm_matrix :
   if(verbose_lvl>1){cat("     Computing norm matrix...\n")}
-
-  as = purrr::map(trees,"a")
-  bs = purrr::map(trees,"b")
-  kernels = purrr::map(trees,~.x@p/.x@vols)
-  norm_matrix = normMatrix(as,bs,kernels)
+  norm_matrix = diag(purrr::map_dbl(trees,quad_norm))/2
+  idx = data.frame(nrow = rep(1:n_trees,n_trees),ncol=rep(1:n_trees,each=n_trees))
+  idx = idx[idx$nrow < idx$ncol,]
+  norm_matrix[as.matrix(idx)] <- furrr::future_map_dbl(1:nrow(idx),function(i){quad_prod(trees[[idx[i,1]]],trees[[idx[i,2]]])},.progress=TRUE)
+  norm_matrix = norm_matrix + t(norm_matrix)
 
   # Fitting weights
   if(!oob_weighting){
     oob_wts = rep(1/n_trees,n_trees)
   } else {
     if(verbose_lvl>1){cat("     Computing weights...\n")}
-    loss <- function(w, pmf, norm_mat, is_in){
-      big_w = w
-      dim(big_w) = c(1,length(w))
-      big_w = t(big_w[rep(1,nrow(is_in)),]*(1-is_in))
-      w %*% norm_mat %*% w - mean(colSums(pmf*big_w)/colSums(big_w),na.rm=TRUE)
+
+    loss <- function(opt_par, pmf, norm_mat, is_out){
+      weights_out = is_out*opt_par
+      return(opt_par %*% norm_mat %*% opt_par - mean(colSums(pmf*weights_out)/colSums(weights_out),na.rm=TRUE))
     }
     rez = nloptr::slsqp(
         x0 = rep(1/n_trees,n_trees),
         fn = loss,
         lower = rep(0,n_trees),
-        upper = rep(1,n_trees),
-        heq = function(w){sum(w)-1},
+        heq = function(opt_par){sum(opt_par)-1},
         nl.info=TRUE,
+        control=list(maxeval = 1000000L,xtol_rel=1e-15),
         pmf = pmf,
         norm_mat = norm_matrix,
-        is_in = is_in)$par
-
-      oob_wts = pmax(rez,0)/sum(pmax(rez,0))
+        is_out = is_out)$par
+    oob_wts = pmax(rez,0)/sum(pmax(rez,0))
   }
-  # OUT OF BAG STATS
+
+  # OComputation of out-of-bag statistics
   if(verbose_lvl>1){cat("     Computing oob stats...\n")}
   oob_pmf = matrix(0,nrow=n,ncol=n_trees - 1)
   oob_kl = numeric(n_trees - 1)
   oob_ise = numeric(n_trees - 1)
-
+  oob_wts_out = is_out*oob_wts
   for (j in 2:n_trees){
-    # compte pmf, kl and ise from oob_wts
-    oob_wts_big = oob_wts[1:j]
-    dim(oob_wts_big) = c(1,j)
-    oob_wts_big = t(oob_wts_big[rep(1,n),]*(1-is_in[,1:j]))
-    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_big)/colSums(oob_wts_big)
-    oob_kl[j-1] = -mean(log(oob_pmf[!is.na(oob_pmf[,j-1]),j-1]))
-    oob_ise[j-1] = oob_wts[1:j] %*% norm_matrix[1:j,1:j] %*% oob_wts[1:j] -2 * mean(oob_pmf[!is.na(oob_pmf[,j-1]),j-1])
+    oob_pmf[,j-1] = colSums(pmf[1:j,]*oob_wts_out[1:j,])/colSums(oob_wts_out[1:j,])
+    oob_kl[j-1] = -mean(log(oob_pmf[,j-1]),na.rm=TRUE)
+    oob_ise[j-1] = (oob_wts[1:j] %*% norm_matrix[1:j,1:j] %*% oob_wts[1:j])/(sum(oob_wts[1:j])^2) -2 * mean(oob_pmf[,j-1],na.rm=TRUE)
   }
 
-  if(verbose_lvl>0){cat(affichage,"Done !\n")}
-  # Output the forest with all it's stats :
+  if(verbose_lvl>0){cat(showing,"Done !\n")}
   return(.CortForest(
     data = data,
     p_value_for_dim_red = p_value_for_dim_red,
@@ -206,6 +193,16 @@ setMethod(f = "constraint_infl", signature = c(object="CortForest"),   definitio
 setMethod(f = "quad_norm", signature = c(object="CortForest"),   definition = function(object) {
   return(object@weights %*% object@norm_matrix %*% object@weights)
 })
+
+
+
+
+
+
+
+
+
+
 
 
 

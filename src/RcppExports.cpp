@@ -35,19 +35,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// normMatrix
-Rcpp::NumericMatrix normMatrix(const List ass, const List bs, const List kernels);
-RcppExport SEXP _cort_normMatrix(SEXP assSEXP, SEXP bsSEXP, SEXP kernelsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List >::type ass(assSEXP);
-    Rcpp::traits::input_parameter< const List >::type bs(bsSEXP);
-    Rcpp::traits::input_parameter< const List >::type kernels(kernelsSEXP);
-    rcpp_result_gen = Rcpp::wrap(normMatrix(ass, bs, kernels));
-    return rcpp_result_gen;
-END_RCPP
-}
 // lossFunc
 double lossFunc(const NumericVector bp, const NumericMatrix bin_repr, const NumericMatrix z);
 RcppExport SEXP _cort_lossFunc(SEXP bpSEXP, SEXP bin_reprSEXP, SEXP zSEXP) {
@@ -65,7 +52,6 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_cort_cortMonteCarlo", (DL_FUNC) &_cort_cortMonteCarlo, 4},
     {"_cort_quadProd", (DL_FUNC) &_cort_quadProd, 6},
-    {"_cort_normMatrix", (DL_FUNC) &_cort_normMatrix, 3},
     {"_cort_lossFunc", (DL_FUNC) &_cort_lossFunc, 3},
     {NULL, NULL, 0}
 };

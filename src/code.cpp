@@ -92,10 +92,10 @@ double quadProd(const NumericMatrix a,
   for (int i=0; i<n; i++){
     for (int j=0; j<other_n; j++){
       temp = kern(i)*other_kern(j);
-      if(temp != 0){
+      if(temp != 0.0){
         for (int dim=0; dim<d; dim++){
           temp *= std::max(std::min(b(i,dim),other_b(j,dim)) - std::max(a(i,dim),other_a(j,dim)),0.0);
-          if(temp == 0){
+          if(temp == 0.0){
             break;
           }
         }
@@ -105,74 +105,6 @@ double quadProd(const NumericMatrix a,
   }
   return(rez);
 }
-
-// [[Rcpp::export]]
-Rcpp::NumericMatrix normMatrix(const List ass,
-                               const List bs,
-                               const List kernels){
-
-  int n_tree = ass.length();
-  int n, other_n, temp, d;
-  Rcpp::NumericMatrix result(n_tree,n_tree);
-  Rcpp::NumericMatrix a;
-  Rcpp::NumericMatrix b;
-  Rcpp::NumericVector kern;
-  Rcpp::NumericMatrix other_a;
-  Rcpp::NumericMatrix other_b;
-  Rcpp::NumericVector other_kern;
-
-  result.fill(0.0);
-
-  d = as<Rcpp::NumericMatrix>(ass[1]).ncol();
-
-  for(int i=0; i< n_tree; i++){
-
-    a = as<Rcpp::NumericMatrix>(ass[i]);
-    b = as<Rcpp::NumericMatrix>(bs[i]);
-    kern = as<Rcpp::NumericVector>(kernels[i]);
-    n = a.nrow();
-
-    // Fill the quadratic norm of the models :
-    for(int k = 0; k <n; k++){
-      temp =  kern(k)*kern(k);
-      if(temp != 0){
-        for (int dim=0; dim<d; dim++){
-          temp *= b(k,dim)-a(k,dim);
-        }
-      }
-      result(i,i) += temp;
-    }
-    // Then fit everywhere else :
-    for(int j=0; j< n_tree; j++){
-      Rcout << i << "," << j << std::endl;
-      if(i < j){
-
-        other_a = as<Rcpp::NumericMatrix>(ass[j]);
-        other_b = as<Rcpp::NumericMatrix>(bs[j]);
-        other_kern = as<Rcpp::NumericVector>(kernels[j]);
-        other_n = other_a.nrow();
-
-        for (int k=0; k<n; k++){
-          for (int l=0; l<other_n; l++){
-            temp = kern(k)*other_kern(l);
-            if(temp != 0){
-              for (int dim=0; dim<d; dim++){
-                temp *= std::max(std::min(b(k,dim),other_b(l,dim)) - std::max(a(k,dim),other_a(l,dim)),0.0);
-                if(temp == 0){
-                  break;
-                }
-              }
-              result(i,j) += temp;
-            }
-          }
-        }
-        result(j,i) = result(i,j);
-      }
-    }
-  }
-  return(result);
-}
-
 
 // [[Rcpp::export]]
 double lossFunc(const NumericVector bp,

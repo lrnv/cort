@@ -507,7 +507,7 @@ setMethod(f = "quad_prod_with_data", signature = c(object="Cort"),   definition 
 #' @describeIn quad_prod-methods Method for the class Cort
 setMethod(f = "quad_prod", signature = c(object="Cort",other_tree = "Cort"),   definition = function(object,other_tree) {
 
-  # The implemntation is in C++
+  # The implementation is in Rcpp
   return(quadProd(
     object@a,
     object@b,

@@ -17,6 +17,7 @@
 * Corrected a BIG mistake on the forest p-values... Results are much better now.
 * Optimized the norm-matrix computation in cpp
 * Fitting weights of forest only once -- major speedup but resulting graphs might be less cool.
+* Simplifying forest code.
 
 # cort 0.3.0
 
