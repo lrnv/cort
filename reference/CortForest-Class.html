@@ -195,7 +195,7 @@
     </tr>
     <tr>
       <th>oob_weighting</th>
-      <td><p>boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equaly weighted)</p></td>
+      <td><p>boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equally weighted)</p></td>
     </tr>
     </table>
 
@@ -212,6 +212,26 @@
 #&gt;      Computing pmf...
 #&gt;      Computing norm matrix...
 #&gt;      Computing weights...
+#&gt; 
+#&gt; Call:
+#&gt; nloptr(x0 = x0, eval_f = fn, eval_grad_f = gr, lb = lower, ub = upper, 
+#&gt;     eval_g_ineq = hin, eval_jac_g_ineq = hinjac, eval_g_eq = heq, 
+#&gt;     eval_jac_g_eq = heqjac, opts = opts)
+#&gt; 
+#&gt; 
+#&gt; Minimization using NLopt version 2.4.2 
+#&gt; 
+#&gt; NLopt solver status: 4 ( NLOPT_XTOL_REACHED: Optimization stopped because 
+#&gt; xtol_rel or xtol_abs (above) was reached. )
+#&gt; 
+#&gt; Number of Iterations....: 24 
+#&gt; Termination conditions:  stopval: -Inf	xtol_rel: 1e-15	maxeval: 1e+06	ftol_rel: 0	ftol_abs: 0 
+#&gt; Number of inequality constraints:  0 
+#&gt; Number of equality constraints:    1 
+#&gt; Optimal value of objective function:  -1.60993044107934 
+#&gt; Optimal value of controls: 0.6286121 0.3713879
+#&gt; 
+#&gt; 
 #&gt;      Computing oob stats...
 #&gt; ======================== Done !</div><div class='output co'>#&gt; CortForest copula model: 50x3-dataset and 2 Cort trees.</div></pre>
   </div>
