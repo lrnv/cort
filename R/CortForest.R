@@ -112,21 +112,30 @@ CortForest = function(x,
   } else {
     if(verbose_lvl>1){cat("     Computing weights...\n")}
 
-    loss <- function(opt_par, pmf, norm_mat, is_out){
-      weights_out = is_out*opt_par
-      return(opt_par %*% norm_mat %*% opt_par - mean(colSums(pmf*weights_out)/colSums(weights_out),na.rm=TRUE))
-    }
-    rez = nloptr::slsqp(
-        x0 = rep(1/n_trees,n_trees),
+      loss <- function(opt_par, pmf, norm_mat, is_out){
+        weights_out = is_out*opt_par
+        return(opt_par %*% norm_mat %*% opt_par - mean(colSums(pmf*weights_out)/colSums(weights_out),na.rm=TRUE))
+      }
+
+      # a good starting point :
+      x0 = 1/diag(norm_matrix)
+      x0 = x0 / sum(x0)
+
+      rez = nloptr::slsqp(
+        x0 = x0,
         fn = loss,
         lower = rep(0,n_trees),
         heq = function(opt_par){sum(opt_par)-1},
-        nl.info=TRUE,
-        control=list(maxeval = 1000000L,xtol_rel=1e-15),
+        nl.info=verbose_lvl>1,
+        control=list(maxeval  = 1000000L,
+                     xtol_rel = 1e-10,
+                     ftol_rel = 1e-10,
+                     ftol_abs = 1e-10),
         pmf = pmf,
         norm_mat = norm_matrix,
         is_out = is_out)$par
-    oob_wts = pmax(rez,0)/sum(pmax(rez,0))
+
+      oob_wts = pmax(rez,0)/sum(pmax(rez,0))
   }
 
   # OComputation of out-of-bag statistics
