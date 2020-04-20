@@ -187,11 +187,11 @@
     </tr>
     <tr>
       <th>verbose_lvl</th>
-      <td><p>verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.</p></td>
+      <td><p>verbosity level : can be 0 (default) or an integer. bigger the integer bigger the output level.</p></td>
     </tr>
     <tr>
       <th>force_grid</th>
-      <td><p>boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.</p></td>
+      <td><p>boolean (default: FALSE). set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.</p></td>
     </tr>
     <tr>
       <th>oob_weighting</th>
@@ -221,11 +221,11 @@
 #&gt; 
 #&gt; Minimization using NLopt version 2.4.2 
 #&gt; 
-#&gt; NLopt solver status: 4 ( NLOPT_XTOL_REACHED: Optimization stopped because 
-#&gt; xtol_rel or xtol_abs (above) was reached. )
+#&gt; NLopt solver status: 3 ( NLOPT_FTOL_REACHED: Optimization stopped because 
+#&gt; ftol_rel or ftol_abs (above) was reached. )
 #&gt; 
-#&gt; Number of Iterations....: 24 
-#&gt; Termination conditions:  stopval: -Inf	xtol_rel: 1e-15	maxeval: 1e+06	ftol_rel: 0	ftol_abs: 0 
+#&gt; Number of Iterations....: 5 
+#&gt; Termination conditions:  stopval: -Inf	xtol_rel: 1e-10	maxeval: 1e+06	ftol_rel: 1e-10	ftol_abs: 1e-10 
 #&gt; Number of inequality constraints:  0 
 #&gt; Number of equality constraints:    1 
 #&gt; Optimal value of objective function:  -1.60993044107934 

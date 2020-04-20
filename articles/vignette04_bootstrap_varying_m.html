@@ -111,9 +111,9 @@
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="no">rank</span>)/(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">LifeCycleSavings</span>)+<span class="fl">1</span>)
 <span class="no">d</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">df</span>)
 <span class="no">n</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">df</span>)
-<span class="no">nb_replicates</span> <span class="kw">=</span> <span class="fl">5</span> <span class="co"># number of replication of the resampling.</span>
+<span class="no">nb_replicates</span> <span class="kw">=</span> <span class="fl">20</span> <span class="co"># number of replication of the resampling.</span>
 <span class="no">nb_fold</span> <span class="kw">=</span> <span class="fl">5</span> <span class="co"># "k" value for the k-fold resampling method.</span>
-<span class="no">nb_cop</span> <span class="kw">=</span> <span class="fl">20</span> <span class="co"># the number of m-randomized checkerboard copulas we will test.</span>
+<span class="no">nb_cop</span> <span class="kw">=</span> <span class="fl">50</span> <span class="co"># the number of m-randomized checkerboard copulas we will test.</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="no">df</span>,<span class="kw">lower.panel</span> <span class="kw">=</span> <span class="kw">NULL</span>)</pre></body></html></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/getting%20data%20and%20parameters-1.png" width="672"></p>
 </div>
@@ -192,26 +192,56 @@
 <p>Each point on the graph correspond to the rmse of a model. We recall the values of <span class="math inline">\(m\)</span> used by those models :</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">rand_m</span>
 <span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5]</span>
-<span class="co">#&gt;  [1,]   10    8   40   20   40</span>
-<span class="co">#&gt;  [2,]    2   40    4    2   10</span>
-<span class="co">#&gt;  [3,]    4   40   40    5    5</span>
-<span class="co">#&gt;  [4,]    4    2    8    4   10</span>
-<span class="co">#&gt;  [5,]   10    5    4    8    5</span>
-<span class="co">#&gt;  [6,]    5   40   20   20    2</span>
-<span class="co">#&gt;  [7,]   40    8   40   10    8</span>
-<span class="co">#&gt;  [8,]   20   10    5    5    2</span>
-<span class="co">#&gt;  [9,]    2    4   10    2    5</span>
-<span class="co">#&gt; [10,]    4   40    8    2    5</span>
-<span class="co">#&gt; [11,]    2   40   40   20   10</span>
-<span class="co">#&gt; [12,]    8    4   10   10    5</span>
-<span class="co">#&gt; [13,]    4   20    8   40    2</span>
-<span class="co">#&gt; [14,]    2   40   20    2    5</span>
-<span class="co">#&gt; [15,]    5   10   40    4   10</span>
-<span class="co">#&gt; [16,]    8    4    4    4    8</span>
-<span class="co">#&gt; [17,]    2   20    2    2   10</span>
-<span class="co">#&gt; [18,]   20   20    2    5   20</span>
-<span class="co">#&gt; [19,]    5    5    5    2    8</span>
-<span class="co">#&gt; [20,]   40    8   10    8    2</span></pre></body></html></div>
+<span class="co">#&gt;  [1,]   10    2    5    8   10</span>
+<span class="co">#&gt;  [2,]    5   40    8    5    4</span>
+<span class="co">#&gt;  [3,]    2    4   20   40    8</span>
+<span class="co">#&gt;  [4,]   20   10    5    5    4</span>
+<span class="co">#&gt;  [5,]    4    2   10   40    8</span>
+<span class="co">#&gt;  [6,]    4   40    4    5   10</span>
+<span class="co">#&gt;  [7,]    5   10   40    8    2</span>
+<span class="co">#&gt;  [8,]   20   20   40   10   10</span>
+<span class="co">#&gt;  [9,]    2   20    2   20   40</span>
+<span class="co">#&gt; [10,]    4    5    4   20    5</span>
+<span class="co">#&gt; [11,]   20    5    2    2    8</span>
+<span class="co">#&gt; [12,]   40    2   20   40   40</span>
+<span class="co">#&gt; [13,]   40    8    8   40    2</span>
+<span class="co">#&gt; [14,]    2    2   40    4    2</span>
+<span class="co">#&gt; [15,]    2   10   10    2    4</span>
+<span class="co">#&gt; [16,]    2    4   20   10    2</span>
+<span class="co">#&gt; [17,]    8    8    4   10   20</span>
+<span class="co">#&gt; [18,]    4    5    2    2   10</span>
+<span class="co">#&gt; [19,]    8   20   20    2   40</span>
+<span class="co">#&gt; [20,]    4   40   40    2    5</span>
+<span class="co">#&gt; [21,]    4    5   40   20    4</span>
+<span class="co">#&gt; [22,]    2   20    8    8   40</span>
+<span class="co">#&gt; [23,]   40    2    2   40   10</span>
+<span class="co">#&gt; [24,]    8    4   40   20   10</span>
+<span class="co">#&gt; [25,]   20   10    8    5   20</span>
+<span class="co">#&gt; [26,]   40   10   40   40   10</span>
+<span class="co">#&gt; [27,]    4    5   40    2    2</span>
+<span class="co">#&gt; [28,]   20    5   10   40    4</span>
+<span class="co">#&gt; [29,]   40   10    2   40    5</span>
+<span class="co">#&gt; [30,]    5    5    4   40    5</span>
+<span class="co">#&gt; [31,]    5   20   40    8   40</span>
+<span class="co">#&gt; [32,]    5   10    5   10   10</span>
+<span class="co">#&gt; [33,]   10   10    2   10    5</span>
+<span class="co">#&gt; [34,]    2   20    2    8    4</span>
+<span class="co">#&gt; [35,]    2    2    8    5   20</span>
+<span class="co">#&gt; [36,]    5    2    8   10   10</span>
+<span class="co">#&gt; [37,]    2    5   10    5   40</span>
+<span class="co">#&gt; [38,]   10    5    4   10   20</span>
+<span class="co">#&gt; [39,]   10    8    4   40   10</span>
+<span class="co">#&gt; [40,]   20   10    2    2    2</span>
+<span class="co">#&gt; [41,]    5    8   40    8   40</span>
+<span class="co">#&gt; [42,]   40   40   40   40   10</span>
+<span class="co">#&gt; [43,]    8    4   40    2    5</span>
+<span class="co">#&gt; [44,]   20   40    8    2    4</span>
+<span class="co">#&gt; [45,]    2    4   20    4    8</span>
+<span class="co">#&gt; [46,]   40   20   40   20   10</span>
+<span class="co">#&gt; [47,]   40    2   20   10    8</span>
+<span class="co">#&gt; [48,]    4    8   20    8   40</span>
+<span class="co">#&gt; [49,]   40   40   20   20   10</span>
+<span class="co">#&gt; [50,]    5   40    4    8    2</span></pre></body></html></div>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">convex_combination</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ConvexCombCopula-class.html">ConvexCombCopula</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">cops</span>,<span class="kw">recursive</span><span class="kw">=</span><span class="fl">FALSE</span>),<span class="kw">alpha</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>/<span class="no">rmse_by_model</span>,<span class="no">nb_replicates</span>*<span class="no">nb_fold</span>))
 <span class="no">simu</span> <span class="kw">=</span> <span class="fu"><a href="../reference/rCopula-methods.html">rCopula</a></span>(<span class="fl">1000</span>,<span class="no">convex_combination</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="no">simu</span>,<span class="kw">lower.panel</span> <span class="kw">=</span> <span class="kw">NULL</span>,<span class="kw">cex</span><span class="kw">=</span><span class="fl">0.5</span>)</pre></body></html></div>
