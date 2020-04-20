@@ -1,23 +1,18 @@
 # cort 0.3.0.9000
 
-* Speed up via Rcpp some core functionalities.
+* Removed dependency to magritr.
+* 70% of core computations have been moved on to Rcpp code for performance. 
 * Parallel computations are now possible via furrr in CortForest. 
-* Corrected misspelling in the documentations.
+* Improved documentation
+* Infrastructure lightening : the Box class was removed, and some unnecessary generics were also removed.
+* Solver options and number of bootstrap resamples are now accessible as parameters to the Cort() function.
+* Add an option to force the checkerboard grid on trees and inside Cort() and CortForest().
+* The forest now weights the trees (can be turned off by an option)
+* Fixed bug in p-value computations.
 * Fixed bug when there is only one leave in the tree.
 * Fixed bug in pairs.Cort : dimensions were switched for leaves but not for points.
-* Removed dependency to magritr.
-* Cut the runtime of p_values computations by half.
-* Better runtime in the loss function in Rcpp.
-* Removed Box classes : infrastructure changes that make the package lighter and faster.
-* Replace the `sample` function by a more solid one given by ?sample.
-* Removed unnecessary generic
-* Solver options and number of bootstrap resamples are now accessible as parameters to the Cort() function.
-* Add an option to force the checkerboard grid on trees and inside the forest.
-* Add a weighting option for the forest.
-* Corrected a BIG mistake on the forest p-values... Results are much better now.
-* Optimized the norm-matrix computation in cpp
-* Fitting weights of forest only once -- major speedup but resulting graphs might be less cool.
-* Simplifying forest code.
+* Fixed bug in pCopula values for cbCopula objects.
+
 
 # cort 0.3.0
 
