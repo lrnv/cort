@@ -85,9 +85,7 @@ setMethod(f = "show",    signature = c(object = "cbkmCopula"),                de
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbkmCopula"), definition = function(n, copula) {
 
   # if n=0, return a 0xdim(copula) matrix :
-  if (n == 0) {
-    return(matrix(NA, nrow = 0, ncol = dim(copula)))
-  }
+  if (n == 0) {return(matrix(NA, nrow = 0, ncol = dim(copula)))}
 
   # get copula infos :
   J <- copula@margins
