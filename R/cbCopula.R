@@ -92,9 +92,9 @@ setMethod(f = "show",    signature = c(object = "cbCopula"),                defi
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbCopula"), definition = function(n, copula) {
 
   # if n=0, return a 0xdim matrix :
-  if (n == 0) { return(matrix(0, nrow = 0, ncol = ncol(x))) }
+  if (n == 0) { return(matrix(0, nrow = 0, ncol = copula@dim)) }
   x = copula@data
-  d = ncol(x)
+  d = copula@dim
   m = copula@m
   rows <- resample(x = 1:nrow(x), size = n, replace = TRUE)
   seuil_inf <- boxes_from_points(x,m)[rows,,drop=FALSE]
