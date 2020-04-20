@@ -21,7 +21,7 @@ NULL
                             errors <- c(errors,"data should be a matrix inside 0,1")
                           }
                           if(object@number_max_dim > ncol(object@data)){
-                            errors <- c(errors, "the maximum number of splitting dimensions should be smaller than the umber of dimensons!")
+                            errors <- c(errors, "the maximum number of splitting dimensions should be smaller than the number of dimensons!")
                           }
                           if(object@number_max_dim < 2){
                             errors <- c(errros, "splits cannot be done in dimmensions smaller than 2.")
@@ -328,7 +328,6 @@ Cort = function(x,
   # saving weights:
   object@p = pmax(rez$x,0)/sum(pmax(rez$x,0)) # correction for small negative weights.
 
-
   # remove names :
   row.names(object@a) <- NULL
   row.names(object@b) <- NULL
@@ -346,65 +345,31 @@ setMethod(f = "show", signature = c(object = "Cort"), definition = function(obje
 
 #' @describeIn rCopula-methods Method for the class Cort
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "Cort"), definition = function(n, copula) {
-
-  # We need to simulate n rnadom vctors from the fitted model :
-  # for that, we will samples indexes of the boxes according to weights :
+  # we sample the boxes and then sample from them.
   sampled_indexes = resample(1:nrow(copula@a),size=n,prob = copula@p,replace=TRUE)
-  sim = matrix(runif(n*copula@dim),nrow=n,ncol=copula@dim)
-  sim = copula@a[sampled_indexes,] + sim * (copula@b[sampled_indexes,]-copula@a[sampled_indexes,])
-  return(sim)
+  matrix(runif(n*copula@dim,min = as.vector(copula@a[sampled_indexes,]),max=as.vector(copula@b[sampled_indexes,])),nrow=n,ncol=copula@dim)
 })
 
 #' @describeIn pCopula-methods Method for the class Cort
 setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "Cort"), definition = function(u, copula) {
-
-  # for the c.d.f of the copula, we need to compute the measure_in per box and sum them :
-  a = copula@a
-  b = copula@b
-  p = copula@p
-
-  n = dim(a)[1]
-  d = dim(a)[2]
-  m = dim(u)[1]
-
-  dim(u) = c(m,1,d)
-  dim(a) = c(1,n,d)
-  dim(b) = c(1,n,d)
-  dim(p) = c(1,n)
-
-  core = (u[,rep(1,n),,drop=FALSE] - a[rep(1,m),,,drop=FALSE])/(b-a)[rep(1,m),,,drop=FALSE] # m, n, d
-  measure_in = apply(pmax(pmin(core,1),0),1:2,prod) # m,n
-  return(rowSums(measure_in * p[rep(1,m),,drop=FALSE])) # m
-
-  #return(rowSums(vapply(copula@leaves,function(l){measure_in(l,u)*l@weight},FUN.VALUE=numeric(nrow(u)))))
+  # The implementation is in Rcpp.
+  pCort(copula@a,
+        copula@b,
+        copula@p,
+        u)
 })
 
 #' @describeIn dCopula-methods Method for the class Cort
 setMethod(f = "dCopula", signature = c(u = "matrix",  copula="Cort"),   definition = function(u, copula) {
-
-  a = copula@a
-  b = copula@b
-  p = copula@p
-  vols = copula@vols
-
-  n = dim(a)[1]
-  d = dim(a)[2]
-  m = dim(u)[1]
-
-  dim(u) = c(m,1,d)
-  dim(a) = c(1,n,d)
-  dim(b) = c(1,n,d)
-  dim(p) = c(1,n)
-  dim(vols) = c(1,n)
-
-  core = (u[,rep(1,n),,drop=FALSE] >= a[rep(1,m),,,drop=FALSE])*(u[,rep(1,n),,drop=FALSE] < b[rep(1,m),,,drop=FALSE]) # m, n, d
-  are_in = (rowSums(core,dims = 2)==d)
-  return(rowSums(are_in * p[rep(1,m),,drop=FALSE]/vols[rep(1,m),,drop=FALSE])) # m
+  # The implementation is in Rcpp
+  dCort(copula@a,
+        copula@b,
+        copula@p/copula@vols,
+        u)
 })
 
 #' @describeIn biv_rho-methods Method for the class Cort
 setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(copula) {
-
   # The implementation is in Rcpp.
   bivRho(copula@a,
          copula@b,
@@ -413,7 +378,6 @@ setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(c
 
 #' @describeIn biv_tau-methods Method for the class Cort
 setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(copula) {
-
   # The implmeentation is in Rcpp
   bivTau(copula@a,
          copula@b,
@@ -471,56 +435,22 @@ setMethod(f = "kendall_func", signature = c(object="Cort"),   definition = funct
 #' @describeIn project_on_dims-methods Method for the class Cort
 setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = function(object,dims) {
 
-  # this function should project the tree on a smaller subset of dimensions.
-  # for the moment only sets of 2 dimensions are supported, although bigger sets might be used;
-  if(length(dims) != 2){
-    stop("only two-dimensional projection are supported for the moment")
-  }
-  # first, getting the edges of the bins :
-  a       = object@a
-  b       = object@b
-  kernel = object@p/object@vols
-  n = nrow(a)
-  d = ncol(a)
+  # The implementation is in Rcpp
+  cpp_result = projectOnTwoDims(a=t(object@a),
+                                b=t(object@b),
+                                p=object@p,
+                                f=object@f,
+                                dims=dims,
+                                data = object@data[,dims],
+                                kern = object@p/object@vols)
 
-  points = rbind(a,b)
-  edges = purrr::map(dims,function(i){
-    sort(unique(points[,i]))
-  }) # a list; dimension by dimensions, of the breakpoints in the dimensions we want to keep.
-
-  # now we need ot construct the boxes :
-  ks = 1:(length(edges[[1]])-1)
-  ls = 1:(length(edges[[2]])-1)
-
-  new_n = length(ks)*length(ls)
-  new_a = matrix(0,nrow=new_n,ncol=2)
-  new_b = new_a
-  i=1
-  for (k in ks){
-    for (l in ls){
-      new_a[i,] <- c(edges[[1]][k  ], edges[[2]][l  ])
-      new_b[i,] <- c(edges[[1]][k+1], edges[[2]][l+1])
-      i = i+1
-    }
-  }
-
-  a_complete = rep(0,d)
-  b_complete = rep(1,d)
-
-  # set things : data, f, p, dim, a, b, vols.
   object@dim = 2
   object@data = object@data[,dims]
-  object@f = purrr::map_dbl(1:new_n,function(i){
-    sum(colSums((new_a[i,] <= t(object@data)) & (t(object@data) < new_b[i,]))==2)
-  })/nrow(object@data)
-  object@p = purrr::map_dbl(1:new_n,function(i){
-      a_complete[dims] <- new_a[i,]
-      b_complete[dims] <- new_b[i,]
-      return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*kernel))
-  })
-  object@a = new_a
-  object@b = new_b
-  object@vols = apply((new_b - new_a),1,prod)
+  object@f = cpp_result$f
+  object@p = cpp_result$p
+  object@a = cpp_result$a
+  object@b = cpp_result$b
+  object@vols = cpp_result$vols
   return(object)
 })
 

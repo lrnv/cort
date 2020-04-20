@@ -13,8 +13,20 @@ cortMonteCarlo <- function(z, min, max, N) {
     .Call(`_cort_cortMonteCarlo`, z, min, max, N)
 }
 
+dCort <- function(a, b, kern, u) {
+    .Call(`_cort_dCort`, a, b, kern, u)
+}
+
 lossFunc <- function(bp, bin_repr, z) {
     .Call(`_cort_lossFunc`, bp, bin_repr, z)
+}
+
+pCort <- function(a, b, p, u) {
+    .Call(`_cort_pCort`, a, b, p, u)
+}
+
+projectOnTwoDims <- function(a, b, p, f, kern, dims, data) {
+    .Call(`_cort_projectOnTwoDims`, a, b, p, f, kern, dims, data)
 }
 
 quadProd <- function(a, b, kern, other_a, other_b, other_kern) {
