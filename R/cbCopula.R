@@ -91,64 +91,28 @@ setMethod(f = "show",    signature = c(object = "cbCopula"),                defi
 #' @describeIn rCopula-methods Method for the cbCopula
 setMethod(f = "rCopula", signature = c(n = "numeric", copula = "cbCopula"), definition = function(n, copula) {
 
-  # get info from the copula :
+  # if n=0, return a 0xdim matrix :
+  if (n == 0) { return(matrix(0, nrow = 0, ncol = ncol(x))) }
   x = copula@data
-  x = as.matrix(x)
-  rownames(x) <- NULL
   d = ncol(x)
   m = copula@m
-
-  # if n=0, return a 0xdim matrix :
-  if (n == 0) { return(matrix(0, nrow = 0, ncol = d)) }
-
-  # Then, let's sample rows coresponding to observations, i.e let's
-  # sample those boxes with probabilities proportional to the number of
-  # observations inside the box.  notes that boxes with probability 0,
-  # i.e without observation, were not included here.  This makes the
-  # algorythme fast.
   rows <- resample(x = 1:nrow(x), size = n, replace = TRUE)
   seuil_inf <- boxes_from_points(x,m)[rows,,drop=FALSE]
-  seuil_sup <- t(t(seuil_inf) + 1/m)
-
-  # Finaly, sample some random uniform, and bound them inside the sampled boxes :
+  size = matrix(rep(1/m,each = n),nrow=n,ncol=d)
   rng <- matrix(runif(d * n), nrow = n, ncol = d)
-  result <- seuil_inf + rng * (seuil_sup - seuil_inf)
-  return(result)
+  return(seuil_inf + rng * size)
 })
 
 #' @describeIn pCopula-methods Method for the cbCopula
 setMethod(f = "pCopula", signature = c(u = "matrix",  copula = "cbCopula"), definition = function(u, copula) {
-
-  # remind that pCopula and dCopula generics already transform inputs
-  # into matrices...
-
-  x = copula@data
-  x = as.matrix(x)
-  rownames(x) <- NULL
-  d = ncol(x)
-  m = copula@m
-  n = nrow(copula@data)
-  seuil_inf <- boxes_from_points(x,m)
-
-  rez <- sapply(1:nrow(u), function(i) {
-    ponderation <- t(apply(seuil_inf, 1, function(y) { u[i, ] - y }))
-    ponderation <- t(pmax(pmin(t(ponderation),1/m),0)) ############### Attention probablement une erreur ici dans la vectorisation du m. Cette version est celle avec le m pas vectorisé !!
-
-    sum(apply(ponderation, 1, function(v) { (prod(v) * prod(m)) }))/n
-  })
-
-  return(rez)
+  # The implementation is in Rcpp
+  pcbCopula(u,copula@data,copula@m)
 })
 
 #' @describeIn dCopula-methods Method for the cbCopula
 setMethod(f = "dCopula", signature = c(u = "matrix",  copula="cbCopula"),   definition = function(u, copula) {
-
-  x = as.matrix(copula@data)
-  seuil_inf = boxes_from_points(x,copula@m)
-  seuil_inf_u = boxes_from_points(u,copula@m)
-  return(sapply(1:nrow(u), function(i){mean(apply(t(seuil_inf) == seuil_inf[i,],2,prod))}))
-
-
+  # The implementaiton is in Rcpp
+  dcbCopula(u,copula@data,copula@m)
 })
 
 

@@ -60,7 +60,7 @@ testthat::test_that("rCopula output is ok",{
 })
 
 testthat::test_that("dCopula is ok",{
-  testthat::expect_equal(dCopula(u,cop),rep(0.02,3))
+  testthat::expect_equal(dCopula(u,cop),rep(0,3))
   testthat::expect_error(dCopula(matrix(seq(0.3,1,length.out = 8),nrow=2),cop))
 })
 

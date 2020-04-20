@@ -59,6 +59,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// dcbCopula
+Rcpp::NumericVector dcbCopula(const NumericMatrix u, const NumericMatrix x, const NumericVector m);
+RcppExport SEXP _cort_dcbCopula(SEXP uSEXP, SEXP xSEXP, SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type u(uSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(dcbCopula(u, x, m));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lossFunc
 double lossFunc(const NumericVector bp, const NumericMatrix bin_repr, const NumericMatrix z);
 RcppExport SEXP _cort_lossFunc(SEXP bpSEXP, SEXP bin_reprSEXP, SEXP zSEXP) {
@@ -83,6 +96,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector >::type p(pSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix >::type u(uSEXP);
     rcpp_result_gen = Rcpp::wrap(pCort(a, b, p, u));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pcbCopula
+Rcpp::NumericVector pcbCopula(const NumericMatrix u, const NumericMatrix x, const NumericVector m);
+RcppExport SEXP _cort_pcbCopula(SEXP uSEXP, SEXP xSEXP, SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type u(uSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type m(mSEXP);
+    rcpp_result_gen = Rcpp::wrap(pcbCopula(u, x, m));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -125,8 +151,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_cort_bivTau", (DL_FUNC) &_cort_bivTau, 3},
     {"_cort_cortMonteCarlo", (DL_FUNC) &_cort_cortMonteCarlo, 4},
     {"_cort_dCort", (DL_FUNC) &_cort_dCort, 4},
+    {"_cort_dcbCopula", (DL_FUNC) &_cort_dcbCopula, 3},
     {"_cort_lossFunc", (DL_FUNC) &_cort_lossFunc, 3},
     {"_cort_pCort", (DL_FUNC) &_cort_pCort, 4},
+    {"_cort_pcbCopula", (DL_FUNC) &_cort_pcbCopula, 3},
     {"_cort_projectOnTwoDims", (DL_FUNC) &_cort_projectOnTwoDims, 7},
     {"_cort_quadProd", (DL_FUNC) &_cort_quadProd, 6},
     {NULL, NULL, 0}

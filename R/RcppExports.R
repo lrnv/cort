@@ -17,12 +17,20 @@ dCort <- function(a, b, kern, u) {
     .Call(`_cort_dCort`, a, b, kern, u)
 }
 
+dcbCopula <- function(u, x, m) {
+    .Call(`_cort_dcbCopula`, u, x, m)
+}
+
 lossFunc <- function(bp, bin_repr, z) {
     .Call(`_cort_lossFunc`, bp, bin_repr, z)
 }
 
 pCort <- function(a, b, p, u) {
     .Call(`_cort_pCort`, a, b, p, u)
+}
+
+pcbCopula <- function(u, x, m) {
+    .Call(`_cort_pcbCopula`, u, x, m)
 }
 
 projectOnTwoDims <- function(a, b, p, f, kern, dims, data) {

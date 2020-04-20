@@ -29,9 +29,9 @@ set.seed(1)
 df <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)
 d = ncol(df)
 n = nrow(df)
-nb_replicates = 5 # number of replication of the resampling.
+nb_replicates = 20 # number of replication of the resampling.
 nb_fold = 5 # "k" value for the k-fold resampling method.
-nb_cop = 20 # the number of m-randomized checkerboard copulas we will test.
+nb_cop = 50 # the number of m-randomized checkerboard copulas we will test.
 pairs(df,lower.panel = NULL)
 ```
 
