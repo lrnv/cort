@@ -257,7 +257,7 @@ Cort = function(x,
               are_the_breakpoint  = (colSums(t(data_dist[[i_leaf]][,split_dims[[i_leaf]]]) == bp) == length(split_dims[[i_leaf]]))
               if(any(are_the_breakpoint)){
                 if(object@verbose_lvl>4){cat("be carrefull, we are splitting on a point.\n")}
-                data_dist[[i_leaf]] = data_dist[[i_leaf]][!are_the_breakpoint,]
+                data_dist[[i_leaf]] = data_dist[[i_leaf]][!are_the_breakpoint,,drop=FALSE]
               }
 
               # construct new information for new leaves :
@@ -540,11 +540,11 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   if(length(dims) != 2){
     stop("only two-dimensional projection are supported for the moment")
   }
-
+  browser()
   # first, getting the edges of the bins :
   a       = object@a
   b       = object@b
-  p_over_vol = object@p/object@vols
+  kernel = object@p/object@vols
   n = nrow(a)
   d = ncol(a)
 
@@ -580,7 +580,7 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   object@p = purrr::map_dbl(1:new_n,function(i){
       a_complete[dims] <- new_a[i,]
       b_complete[dims] <- new_b[i,]
-      return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*p_over_vol))
+      return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*kernel))
     })
   object@dim = 2
   object@a = new_a

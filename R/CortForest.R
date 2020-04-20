@@ -37,8 +37,8 @@
 #' @param compte_loo_weights Defaults to FALSE. Allows to use an automatic re-weighting of the trees in the forest, based on leave-one-out considerations.
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param n_trees Number of trees
-#' @param verbose_lvl verbosity level : can be 0 (none) or an integer. bigger the integer bigger the output level.
-#' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
+#' @param verbose_lvl verbosity level : can be 0 (default) or an integer. bigger the integer bigger the output level.
+#' @param force_grid boolean (default: FALSE). set to TRUE to force breakpoint to be on the n-checkerboard grid in every tree.
 #' @param oob_weighting boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equally weighted)
 #'
 #' @name CortForest-Class
