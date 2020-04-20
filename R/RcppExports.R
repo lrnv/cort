@@ -5,11 +5,11 @@ cortMonteCarlo <- function(z, min, max, N) {
     .Call(`_cort_cortMonteCarlo`, z, min, max, N)
 }
 
-quadProd <- function(a, b, kern, other_a, other_b, other_kern) {
-    .Call(`_cort_quadProd`, a, b, kern, other_a, other_b, other_kern)
-}
-
 lossFunc <- function(bp, bin_repr, z) {
     .Call(`_cort_lossFunc`, bp, bin_repr, z)
+}
+
+quadProd <- function(a, b, kern, other_a, other_b, other_kern) {
+    .Call(`_cort_quadProd`, a, b, kern, other_a, other_b, other_kern)
 }
 
