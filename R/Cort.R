@@ -404,84 +404,20 @@ setMethod(f = "dCopula", signature = c(u = "matrix",  copula="Cort"),   definiti
 
 #' @describeIn biv_rho-methods Method for the class Cort
 setMethod(f = "biv_rho", signature = c(copula="Cort"),   definition = function(copula) {
-  # should return the spearmann rho for this copula.
 
-  d = ncol(copula@data)
-  n = nrow(copula@a)
-  rho = diag(d)
-  p = copula@p
-  a = copula@a
-  b = copula@b
-
-  for (i in 2:d){
-    for (j in 1:(i-1)){
-      rho[j,i] <- rho[i,j] <- 12*sum(apply((2-b[,c(i,j),drop=FALSE] - a[,c(i,j),drop=FALSE])/2,1,prod)*p)-3
-    }
-  }
-
-  return(rho)
+  # The implementation is in Rcpp.
+  bivRho(copula@a,
+         copula@b,
+         copula@p)
 })
-
-# helper function for the kendall tau computation :
-B <- function(a,b,n_leaves,d_dim){
-
-  c = a
-  d = b
-
-  dim(a) <- c(n_leaves, 1,        d_dim)
-  dim(b) <- c(n_leaves, 1,        d_dim)
-  dim(c) <- c(1,        n_leaves, d_dim)
-  dim(d) <- c(1,        n_leaves, d_dim)
-
-  a <- a[,                rep(1,n_leaves),,drop=FALSE]
-  b <- b[,                rep(1,n_leaves),,drop=FALSE]
-  c <- c[rep(1,n_leaves),                ,,drop=FALSE]
-  d <- d[rep(1,n_leaves),                ,,drop=FALSE]
-
-  x = pmax(a,c)
-  y = pmin(b,d)
-  z = pmax(a,d)
-
-  return((y *( y/2 - c)  - x * (x/2 -c)) * (x < y) + (b - z) * (d - c) * (z < b))
-}
 
 #' @describeIn biv_tau-methods Method for the class Cort
 setMethod(f = "biv_tau", signature = c(copula="Cort"),   definition = function(copula) {
-  # dimensions :
-  d = ncol(copula@data)
-  n = nrow(copula@a)
-  dims = cbind(rep(1:d,d),rep(1:d,each=d))
-  dims = dims[dims[,1]>dims[,2],,drop=FALSE]
-  K = nrow(dims)
 
-  # Extract info from the model :
-  weights = copula@p
-  a = copula@a
-  b = copula@b
-
-  # comput ethe cross_kernel :
-  cross_B = B(a,b,n,d) # n, n, d
-  cross_B = apply(vapply(1:K,function(i){cross_B[,,dims[i,],drop=FALSE]},cross_B[,,dims[1,],drop=FALSE]),c(1,2,4),prod) # n,n,K
-
-  # compute boxes measures :
-  side_lengths = b - a #n, d
-  measures = t(apply(vapply(1:K,function(i){side_lengths[,dims[i,],drop=FALSE]},side_lengths[,c(1,2),drop=FALSE]),c(1,3),prod)) # K, n
-
-  # compute the cross_kernel of the model :
-  kernel = weights/t(measures) # n,K
-  kernel2 = kernel
-  dim(kernel) = c(n,1,K)
-  dim(kernel2) = c(1,n,K)
-
-  # finaly :
-  cross_kernel = aperm(kernel[,rep(1,n),,drop=FALSE]*kernel2[rep(1,n),,,drop=FALSE]*cross_B,c(3,1,2)) # K, n, n
-  kappa = 4 * rowSums(cross_kernel) - 1
-
-  # just put them back in a 2*2 matrix :
-  mat = diag(d)/2
-  mat[dims] <- kappa
-  mat = mat+t(mat)
-  return(mat)
+  # The implmeentation is in Rcpp
+  bivTau(copula@a,
+         copula@b,
+         copula@p)
 })
 
 #' @describeIn loss-methods Method for the class Cort
@@ -540,7 +476,6 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   if(length(dims) != 2){
     stop("only two-dimensional projection are supported for the moment")
   }
-  browser()
   # first, getting the edges of the bins :
   a       = object@a
   b       = object@b
@@ -572,7 +507,8 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
   a_complete = rep(0,d)
   b_complete = rep(1,d)
 
-  # set things :
+  # set things : data, f, p, dim, a, b, vols.
+  object@dim = 2
   object@data = object@data[,dims]
   object@f = purrr::map_dbl(1:new_n,function(i){
     sum(colSums((new_a[i,] <= t(object@data)) & (t(object@data) < new_b[i,]))==2)
@@ -581,12 +517,10 @@ setMethod(f = "project_on_dims", signature = c(object="Cort"),   definition = fu
       a_complete[dims] <- new_a[i,]
       b_complete[dims] <- new_b[i,]
       return(sum(apply(pmax(pmin(t(b),b_complete)-pmax(t(a),a_complete),0),2,prod)*kernel))
-    })
-  object@dim = 2
+  })
   object@a = new_a
   object@b = new_b
   object@vols = apply((new_b - new_a),1,prod)
-
   return(object)
 })
 

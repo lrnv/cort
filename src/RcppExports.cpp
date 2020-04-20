@@ -5,6 +5,32 @@
 
 using namespace Rcpp;
 
+// bivRho
+Rcpp::NumericMatrix bivRho(const NumericMatrix a, const NumericMatrix b, const NumericVector p);
+RcppExport SEXP _cort_bivRho(SEXP aSEXP, SEXP bSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(bivRho(a, b, p));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bivTau
+Rcpp::NumericMatrix bivTau(const NumericMatrix a, const NumericMatrix b, const NumericVector p);
+RcppExport SEXP _cort_bivTau(SEXP aSEXP, SEXP bSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type b(bSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(bivTau(a, b, p));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cortMonteCarlo
 Rcpp::NumericVector cortMonteCarlo(const NumericMatrix z, const NumericMatrix min, const NumericMatrix max, const int N);
 RcppExport SEXP _cort_cortMonteCarlo(SEXP zSEXP, SEXP minSEXP, SEXP maxSEXP, SEXP NSEXP) {
@@ -50,6 +76,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_cort_bivRho", (DL_FUNC) &_cort_bivRho, 3},
+    {"_cort_bivTau", (DL_FUNC) &_cort_bivTau, 3},
     {"_cort_cortMonteCarlo", (DL_FUNC) &_cort_cortMonteCarlo, 4},
     {"_cort_lossFunc", (DL_FUNC) &_cort_lossFunc, 3},
     {"_cort_quadProd", (DL_FUNC) &_cort_quadProd, 6},
