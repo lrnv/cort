@@ -13,6 +13,8 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
+Depends:
+    R (>= 2.10)
 Imports: 
     Rdpack,
     methods,
@@ -41,6 +43,7 @@ Collate:
     'cbCopula.R'
     'cbkmCopula.R'
     'cort-package.R'
+    'data.R'
 VignetteBuilder: knitr
 RdMacros: Rdpack
 LinkingTo: 
