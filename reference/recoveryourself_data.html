@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • cort</title>
+<title>Dataset recoveryourself_data — recoveryourself_data • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Dataset recoveryourself_data — recoveryourself_data" />
+<meta property="og:description" content="This dataset is a simple test: we simulate random samples from a density inside the piecewise copula class,
+and test whether or not the estimator can recover it. For that, we will use a 2-dimensional sample with 500
+observations, uniform on the unit hypercube, and apply the following function:
+$$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})$$" />
 
 
 
@@ -58,7 +62,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -129,168 +133,28 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Dataset recoveryourself_data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>recoveryourself_data.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This dataset is a simple test: we simulate random samples from a density inside the piecewise copula class,
+and test whether or not the estimator can recover it. For that, we will use a 2-dimensional sample with 500
+observations, uniform on the unit hypercube, and apply the following function:
+$$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})$$</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='no'>recoveryourself_data</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="ConvexCombCopula-class.html">ConvexCombCopula()</a></code> </p>
-        </td>
-        <td><p>Convex Combination of copulas.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Cort-Class.html">Cort()</a></code> </p>
-        </td>
-        <td><p>The Cort estimator</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="CortForest-Class.html">CortForest()</a></code> </p>
-        </td>
-        <td><p>Bagged Cort estimates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="biv_rho-methods.html">biv_rho()</a></code> </p>
-        </td>
-        <td><p>Spearman's rho matrix of a copula</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="biv_tau-methods.html">biv_tau()</a></code> </p>
-        </td>
-        <td><p>Kendall's tau matrix of a copula</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cbCopula-Class.html">cbCopula()</a></code> </p>
-        </td>
-        <td><p>Checkerboard copulas</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cbkmCopula-Class.html">cbkmCopula()</a></code> </p>
-        </td>
-        <td><p>Checkerboard with known margins</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="clayton_data.html">clayton_data</a></code> </p>
-        </td>
-        <td><p>Dataset clayton_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="constraint_infl-methods.html">constraint_infl()</a></code> </p>
-        </td>
-        <td><p>Constraint influence of the model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dCopula-methods.html">dCopula()</a></code> </p>
-        </td>
-        <td><p>Copula density</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="funcdep_data.html">funcdep_data</a></code> </p>
-        </td>
-        <td><p>Dataset funcdep_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="impossible_data.html">impossible_data</a></code> </p>
-        </td>
-        <td><p>Dataset impossible_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="kendall_func-methods.html">kendall_func()</a></code> </p>
-        </td>
-        <td><p>Kendall function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="loss-methods.html">loss()</a></code> </p>
-        </td>
-        <td><p>Loss of the model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pCopula-methods.html">pCopula()</a></code> </p>
-        </td>
-        <td><p>Copula density</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="project_on_dims-methods.html">project_on_dims()</a></code> </p>
-        </td>
-        <td><p>Projection on smaller dimensions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="quad_norm-methods.html">quad_norm()</a></code> </p>
-        </td>
-        <td><p>Quadratic norm of the model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="quad_prod-methods.html">quad_prod()</a></code> </p>
-        </td>
-        <td><p>Quadratic product of 2 trees</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="quad_prod_with_data-methods.html">quad_prod_with_data()</a></code> </p>
-        </td>
-        <td><p>Quadratic product with data of the model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rCopula-methods.html">rCopula()</a></code> </p>
-        </td>
-        <td><p>Copula random variables simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="recoveryourself_data.html">recoveryourself_data</a></code> </p>
-        </td>
-        <td><p>Dataset recoveryourself_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="vCopula-methods.html">vCopula()</a></code> </p>
-        </td>
-        <td><p>Copula volume on hyper-boxes</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A matrix with 500 rows and 2 variables</p>
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
