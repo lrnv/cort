@@ -12,15 +12,16 @@ Rcpp::NumericVector dcbCopula(const NumericMatrix u,
   Rcpp::NumericMatrix floor_x(x);
   Rcpp::NumericMatrix floor_u(u);
   Rcpp::NumericVector rez(n_obs);
+  rez.fill(0.0);
 
   // coerce grid :
   for(int i = 0; i < n_pts; i++){
-    floor_x(i,_) = floor(x(i,_)*m);
+    floor_x(i,_) = 1.0*floor(x(i,_)*m);
   }
 
   for (int j = 0; j < n_obs; j++){
     // coerce points to inf_points :
-    floor_u(j,_) = floor(u(j,_)*m);
+    floor_u(j,_) = 1.0*floor(u(j,_)*m);
     for(int i = 0; i < n_pts; i++){
       if(is_true(all(floor_u(j,_) == floor_x(i,_)))){
         rez(j) += 1.0/n_pts;
@@ -28,7 +29,7 @@ Rcpp::NumericVector dcbCopula(const NumericMatrix u,
     }
   }
   for(int d =0; d < dim; d++){
-    rez = rez * m(d);
+    rez = 1.0 * rez * m(d);
   }
   return(rez);
 }

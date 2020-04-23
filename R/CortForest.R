@@ -193,21 +193,15 @@ setMethod(f = "dCopula", signature = c(u = "matrix",  copula="CortForest"),   de
   return(vapply(copula@trees,function(t){dCopula(u,t)},rep(0.5,nrow(u))) %*% copula@weights)
 })
 
-#' @describeIn constraint_infl-methods Method for the class Cort
+#' @describeIn constraint_infl-methods Method for the class CortForest
 setMethod(f = "constraint_infl", signature = c(object="CortForest"),   definition = function(object) {
   return(purrr::map_dbl(object@trees,constraint_infl))
 })
 
-#' @describeIn quad_norm-methods Method for the class Cort
+#' @describeIn quad_norm-methods Method for the class CortForest
 setMethod(f = "quad_norm", signature = c(object="CortForest"),   definition = function(object) {
   return(object@weights %*% object@norm_matrix %*% object@weights)
 })
-
-
-
-
-
-
 
 
 
