@@ -25,7 +25,7 @@ Compute the L2 norm of the model
 \itemize{
 \item \code{quad_norm,Cort-method}: Method for the class Cort
 
-\item \code{quad_norm,CortForest-method}: Method for the class Cort
+\item \code{quad_norm,CortForest-method}: Method for the class CortForest
 }}
 
 \examples{

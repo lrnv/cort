@@ -9,8 +9,8 @@ Rcpp::NumericVector dcbCopula(const NumericMatrix u,
   int n_obs = u.nrow();
   int dim = x.ncol();
   int n_pts = x.nrow();
-  Rcpp::NumericMatrix floor_x(x);
-  Rcpp::NumericMatrix floor_u(u);
+  Rcpp::NumericMatrix floor_x(n_pts,dim);
+  Rcpp::NumericMatrix floor_u(n_obs,dim);
   Rcpp::NumericVector rez(n_obs);
   rez.fill(0.0);
 
@@ -33,10 +33,3 @@ Rcpp::NumericVector dcbCopula(const NumericMatrix u,
   }
   return(rez);
 }
-
-//
-// x = as.matrix(copula@data)
-//   seuil_inf = boxes_from_points(x,copula@m)
-//   seuil_inf_u = boxes_from_points(u,copula@m)
-//   return(sapply(1:nrow(u), function(i){mean(apply(t(seuil_inf) == seuil_inf[i,],2,prod))}))
-//

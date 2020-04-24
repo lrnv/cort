@@ -25,7 +25,7 @@ Compute the constraint influence of the model
 \itemize{
 \item \code{constraint_infl,Cort-method}: Method for the class Cort
 
-\item \code{constraint_infl,CortForest-method}: Method for the class Cort
+\item \code{constraint_infl,CortForest-method}: Method for the class CortForest
 }}
 
 \examples{
