@@ -94,7 +94,7 @@ CortForest = function(x,
   if(verbose_lvl>1){cat("     Computing pmf...\n")}
   pmf = is_out = matrix(NA,nrow=n_trees,ncol=n)
   for (i in 1:n_trees){
-    is_out[i,] = 1-(1:n %in% indexes[i])
+    is_out[i,] = 1-(1:n %in% indexes[i,])
     pmf[i,] = dCopula(data,trees[[i]])
   }
 
