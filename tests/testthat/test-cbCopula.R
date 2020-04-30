@@ -54,7 +54,6 @@ testthat::test_that("dim is ok",{
 })
 
 testthat::test_that("rCopula output is ok",{
-  #testthat::expect_equivalent(rCopula(0,cbCopula(LifeCycleSavings[,1:2])),rCopula(0,archmCopula("Clayton",0.7,2)))
   testthat::expect_is(rCopula(10,cop),"matrix")
   testthat::expect_equal(ncol(rCopula(10,cop)),dim(cop))
 })
