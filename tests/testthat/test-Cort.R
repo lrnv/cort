@@ -289,6 +289,7 @@ NULL, NULL)), b = structure(c(0.568806693118027, 0.568806693118027,
 testthat::test_that('still same result on LifeCycleSavings',{
   testthat::expect_equivalent(x$a,x_ref$a)
   testthat::expect_equivalent(x$b,x_ref$b)
+  testthat::expect_lt(sqrt(sum((x$p - x_ref$p)^2)), 1e-04)
   testthat::expect_equivalent(x$p,x_ref$p)
   testthat::expect_equivalent(x$f,x_ref$f)
   #testthat::expect_mapequal(x,x_ref)
