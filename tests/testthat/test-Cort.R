@@ -7,6 +7,8 @@ v=matrix(seq(0,1,length.out=15),ncol=5)
 w=matrix(rep(1,15),ncol=5)
 
 quiet(show(model))
+quiet(plot(model))
+quiet(pairs(model))
 
 rho = biv_rho(model)
 tau = biv_tau(model)
