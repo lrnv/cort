@@ -82,6 +82,8 @@ Cort = function(x,
   a = matrix(0,ncol=d,nrow=1)
   b = matrix(1,ncol=d,nrow=1)
   number_max_dim = min(number_max_dim,d)
+  dd = list(1:n_obs) #index of the data points in each leave
+  ss = list(1:d) #dimensions of splits in each leave
 
   # Deal with solver parameters :
   DEFAULT_SLQP_OPTIONS = list(stopval = -Inf, xtol_rel = 1e-4, maxeval = 100000, ftol_rel = 1e-6, ftol_abs = 1e-6)
@@ -101,20 +103,13 @@ Cort = function(x,
     }
   }
 
-  # Now we start fitting.
   if(verbose_lvl>0) {cat("Splitting...\n")}
-
-  dd = list(1:n_obs)
-  ss = list(1:d) # the splitting dimensions
 
   # Loop until there are no more splittable leaves :
   continue = TRUE
   while(continue){
 
-    are_splittables = purrr::map_lgl(1:nrow(a),function(j){
-      (length(dd[[j]])>min_node_size) && (length(ss[[j]])>1)
-    })
-
+    are_splittables = purrr::map_lgl(1:nrow(a),~(length(dd[[.x]])>min_node_size) && (length(ss[[.x]])>1))
     if(!any(are_splittables)){
       continue = FALSE # we get out the while loop
     } else {
@@ -124,7 +119,7 @@ Cort = function(x,
         if(verbose_lvl>1){cat("\n")}
       }
 
-      i_leaf_to_remove = numeric()
+      leaves_to_remove = numeric()
       for(i_leaf in which(are_splittables)){
 
         # verbosity :
@@ -136,20 +131,19 @@ Cort = function(x,
             verb_df$p_value = rep(NaN,d)
             verb_df$action  = rep("",d)
             verb_df$reason  = rep("",d)
-            row.names(verb_df) = paste0("             ",1:nrow(verb_df))
+            row.names(verb_df) = paste0("             ",1:d)
           }
         }
 
         # Randomize splitting dimensions :
         if(length(ss[[i_leaf]]) > number_max_dim){
-          random_dims       = resample(x =ss[[i_leaf]], size=number_max_dim, replace=FALSE)
-          non_taken_dims    = ss[[i_leaf]][!(ss[[i_leaf]] %in% random_dims)]
-          ss[[i_leaf]] = random_dims
+          random_dims    = resample(x =ss[[i_leaf]], size=number_max_dim, replace=FALSE)
+          non_taken_dims = ss[[i_leaf]][!(ss[[i_leaf]] %in% random_dims)]
+          ss[[i_leaf]]   = random_dims
         } else{
           non_taken_dims = numeric()
         }
 
-        # verbosity :
         if(verbose_lvl>2){
           verb_df$action[non_taken_dims] = "Dissmissed"
           verb_df$reason[non_taken_dims] = "Randomly"
@@ -217,7 +211,6 @@ Cort = function(x,
             }
 
             if(length(ss[[i_leaf]]) == 1){
-              # we just keep the leaf as is :
               if(verbose_lvl>2){
                 verb_df$action[ss[[i_leaf]]] = "Dissmissed"
                 verb_df$reason[ss[[i_leaf]]] = "No one-dim split"
@@ -225,13 +218,13 @@ Cort = function(x,
               ss[[i_leaf]] = c(ss[[i_leaf]],non_taken_dims)
             } else {
               # NOW WE FINALY SPLIT
-              i_leaf_to_remove = c(i_leaf_to_remove,i_leaf)
+              leaves_to_remove = c(leaves_to_remove,i_leaf)
               if(verbose_lvl>2){verb_df$action[ss[[i_leaf]]] = "Splitted"}
 
               # remove the breakpoint from the data points if it's one of them :
               are_the_breakpoint  = (colSums(t(data[dd[[i_leaf]],ss[[i_leaf]],drop=FALSE]) == bp) == length(ss[[i_leaf]]))
               if(any(are_the_breakpoint)){
-                if(verbose_lvl>4){cat("be carrefull, we are splitting on a point.\n")}
+                if(verbose_lvl>4){cat("Be carrefull, we are splitting on a point.\n")}
                 dd[[i_leaf]] = dd[[i_leaf]][!are_the_breakpoint]
               }
 
@@ -265,11 +258,11 @@ Cort = function(x,
         }
       }
       # remove information from the splitted leaves :
-      if(length(i_leaf_to_remove) >= 1){
-        a = a[-i_leaf_to_remove,]
-        b = b[-i_leaf_to_remove,]
-        ss = ss[-i_leaf_to_remove]
-        dd = dd[-i_leaf_to_remove]
+      if(length(leaves_to_remove) >= 1){
+        a = a[-leaves_to_remove,]
+        b = b[-leaves_to_remove,]
+        ss = ss[-leaves_to_remove]
+        dd = dd[-leaves_to_remove]
       }
     }
   }
