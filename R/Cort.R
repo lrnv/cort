@@ -82,19 +82,14 @@ Cort = function(x,
   a = matrix(0,ncol=d,nrow=1)
   b = matrix(1,ncol=d,nrow=1)
   number_max_dim = min(number_max_dim,d)
-  dd = list(1:n_obs) #index of the data points in each leave
-  ss = list(1:d) #dimensions of splits in each leave
+  dd = list(1:n_obs) # index of the data points in each leave
+  ss = list(1:d) # dimensions of splits in each leave
 
   # Deal with solver parameters :
   DEFAULT_SLQP_OPTIONS = list(stopval = -Inf, xtol_rel = 1e-4, maxeval = 100000, ftol_rel = 1e-6, ftol_abs = 1e-6)
-  if(is.null(slsqp_options)){ slsqp_options = DEFAULT_SLQP_OPTIONS}
-  if(!is.null(slsqp_options)){
-    if(is.null(slsqp_options$stopval))  slsqp_options$stopval  = DEFAULT_SLQP_OPTIONS$stopval
-    if(is.null(slsqp_options$xtol_rel)) slsqp_options$xtol_rel = DEFAULT_SLQP_OPTIONS$xtol_rel
-    if(is.null(slsqp_options$maxeval))  slsqp_options$maxeval  = DEFAULT_SLQP_OPTIONS$maxeval
-    if(is.null(slsqp_options$ftol_rel)) slsqp_options$ftol_rel = DEFAULT_SLQP_OPTIONS$ftol_rel
-    if(is.null(slsqp_options$ftol_abs)) slsqp_options$ftol_abs = DEFAULT_SLQP_OPTIONS$ftol_abs
-  }
+  slsqp_options = purrr::map2(DEFAULT_SLQP_OPTIONS,names(DEFAULT_SLQP_OPTIONS),function(i,n){
+    ifelse(is.null(slsqp_options[[n]]),i,slsqp_options[[n]])
+  })
   if(is.null(osqp_options)){
     if (verbose_lvl>1) {
       osqp_options = osqp::osqpSettings(max_iter = 100000L, eps_abs = 0.000001, eps_rel = 0.000001, eps_prim_inf = 0.000001, eps_dual_inf = 0.000001, verbose = TRUE)
@@ -106,163 +101,154 @@ Cort = function(x,
   if(verbose_lvl>0) {cat("Splitting...\n")}
 
   # Loop until there are no more splittable leaves :
-  continue = TRUE
-  while(continue){
+  while(TRUE){
 
     are_splittables = purrr::map_lgl(1:nrow(a),~(length(dd[[.x]])>min_node_size) && (length(ss[[.x]])>1))
     if(!any(are_splittables)){
-      continue = FALSE # we get out the while loop
-    } else {
+      break # This is the only way out of the while loop
+    }
 
-      if(verbose_lvl>0){
-        cat("\n    ",sum(are_splittables),"leaves to split...")
-        if(verbose_lvl>1){cat("\n")}
+    if(verbose_lvl>0){
+      cat("\n    ",sum(are_splittables),"leaves to split...")
+      if(verbose_lvl>1){cat("\n")}
+    }
+
+    leaves_to_remove = numeric()
+    for(i_leaf in which(are_splittables)){
+
+      spltd = ss[[i_leaf]]
+      di = dd[[i_leaf]]
+
+      if(verbose_lvl>1){
+        cat(paste0("        Leaf with ",length(di)," points.\n"))
+        if(verbose_lvl>2){
+          verb_df = data.frame(min = a[i_leaf,], max = b[i_leaf,])
+          verb_df$bp      = rep(NaN,d)
+          verb_df$p_value = rep(NaN,d)
+          verb_df$action  = rep("",d)
+          verb_df$reason  = rep("",d)
+          row.names(verb_df) = paste0("             ",1:d)
+        }
       }
 
-      leaves_to_remove = numeric()
-      for(i_leaf in which(are_splittables)){
+      # Randomize splitting dimensions :
 
-        if(verbose_lvl>1){
-          cat(paste0("        Leaf with ",length(dd[[i_leaf]])," points.\n"))
-          if(verbose_lvl>2){
-            verb_df = data.frame(min = a[i_leaf,], max = b[i_leaf,])
-            verb_df$bp      = rep(NaN,d)
-            verb_df$p_value = rep(NaN,d)
-            verb_df$action  = rep("",d)
-            verb_df$reason  = rep("",d)
-            row.names(verb_df) = paste0("             ",1:d)
-          }
+      if(length(spltd) > number_max_dim){
+        random_dims    = resample(x =spltd, size=number_max_dim, replace=FALSE)
+        non_taken_dims = spltd[!(spltd %in% random_dims)]
+        spltd   = random_dims
+      } else{
+        non_taken_dims = numeric()
+      }
+
+      if(verbose_lvl>2){
+        verb_df$action[non_taken_dims] = "Dissmissed"
+        verb_df$reason[non_taken_dims] = "Randomly"
+      }
+
+      d_split = length(spltd)
+      if(d_split>1){
+
+        # Compute prerequisites for the optimisation of the breakpoint
+        n = length(di)
+        leaf_a = a[i_leaf,spltd]
+        leaf_b = b[i_leaf,spltd]
+        z = (t(data[di,spltd,drop=FALSE]) - leaf_a)/(leaf_b-leaf_a) # d*n
+        bin_repr = sapply(1:(2^d_split),number2binary,d_split)
+
+        #Launche optimisation routine for the breakpoint :
+        optimizer = nloptr::slsqp(
+          x0 = rowMeans(z),
+          fn = lossFunc, # coded in Rcpp
+          lower = rep(0,d_split),
+          upper = rep(1,d_split),
+          nl.info=verbose_lvl>3,
+          control=slsqp_options,
+          bin_repr = bin_repr,
+          z = z)
+
+        # Get the breakpoints and the final splitting :
+        z_bp = optimizer$par
+        bp = leaf_a + z_bp*(leaf_b-leaf_a)
+
+        if(force_grid){
+          bp = round(bp*2*(n_obs+1))/(n_obs+1)/2
+          z_bp = (bp-leaf_a)/(b-leaf_a)
         }
 
-        # Randomize splitting dimensions :
-        if(length(ss[[i_leaf]]) > number_max_dim){
-          random_dims    = resample(x =ss[[i_leaf]], size=number_max_dim, replace=FALSE)
-          non_taken_dims = ss[[i_leaf]][!(ss[[i_leaf]] %in% random_dims)]
-          ss[[i_leaf]]   = random_dims
-        } else{
-          non_taken_dims = numeric()
-        }
+        # Are we going to keep the breakpoint in every splitting dimensions ?
+        z_min                     = z_bp*bin_repr
+        z_max                     = z_bp^(1-bin_repr)
+        p_values                  = cortMonteCarlo(z,z_min,z_max,as.integer(N))
+        p_values[is.na(p_values)] = 0 # really usefull ?
+        p_val_too_big             = p_values > p_value_for_dim_red
+        threshold                 = 1/ifelse(force_grid,(n_obs+1)^2,min((length(di)+1)^2,1000))
+        close_to_bound            = (z_bp< threshold) + (z_bp > 1-threshold) > 0
+        to_be_removed             = p_val_too_big+close_to_bound>0
 
         if(verbose_lvl>2){
-          verb_df$action[non_taken_dims] = "Dissmissed"
-          verb_df$reason[non_taken_dims] = "Randomly"
+          verb_df$bp[spltd]                     = bp
+          verb_df$p_value[spltd]                = p_values
+          verb_df$action[spltd[p_val_too_big]]  = "Removed"
+          verb_df$reason[spltd[p_val_too_big]]  = "Independence test"
+          verb_df$action[spltd[close_to_bound]] = "Removed"
+          verb_df$reason[spltd[close_to_bound]] = "Close to boundary"
         }
 
-        if(length(ss[[i_leaf]])<=1){
-          ss[[i_leaf]] = c(ss[[i_leaf]],non_taken_dims)
-        } else {
+        spltd = spltd[!to_be_removed]
+        bp    = bp[!to_be_removed]
 
-          # Compute prerequisites for the optimisation of the breakpoint
-          n = length(dd[[i_leaf]])
-          d_split = length(ss[[i_leaf]])
-          leaf_a = a[i_leaf,ss[[i_leaf]]]
-          leaf_b = b[i_leaf,ss[[i_leaf]]]
-          z = (t(data[dd[[i_leaf]],ss[[i_leaf]],drop=FALSE]) - leaf_a)/(leaf_b-leaf_a) # d*n
-          bin_repr = sapply(1:(2^d_split),number2binary,d_split)
-
-          #Launche optimisation routine for the breakpoint :
-          optimizer = nloptr::slsqp(
-            x0 = rowMeans(z),
-            fn = lossFunc, # coded in Rcpp
-            lower = rep(0,d_split),
-            upper = rep(1,d_split),
-            nl.info=verbose_lvl>3,
-            control=slsqp_options,
-            bin_repr = bin_repr,
-            z = z)
-
-          # Get the breakpoints and the final splitting :
-          z_bp = optimizer$par
-          bp = leaf_a + z_bp*(leaf_b-leaf_a)
-
-          if(force_grid){
-            bp = round(bp*2*(n_obs+1))/(n_obs+1)/2
-            z_bp = (bp-leaf_a)/(b-leaf_a)
-          }
-
-          # Are we going to keep the breakpoint in every splitting dimensions ?
-          z_min = z_bp*bin_repr
-          z_max = z_bp^(1-bin_repr)
-          p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
-          p_values[is.na(p_values)] = 0 # really usefull ?
-          p_val_too_big  = p_values > p_value_for_dim_red
-          threshold      = 1/ifelse(force_grid,(n_obs+1)^2,min((length(dd[[i_leaf]])+1)^2,1000))
-          close_to_bound = (z_bp< threshold) + (z_bp > 1-threshold) > 0
-          to_be_removed = p_val_too_big+close_to_bound>0
-
+        if(length(spltd) < 2){
           if(verbose_lvl>2){
-            verb_df$bp[ss[[i_leaf]]]      <- bp
-            verb_df$p_value[ss[[i_leaf]]] <- p_values
-            verb_df$action[ss[[i_leaf]][p_val_too_big]] = "Removed"
-            verb_df$reason[ss[[i_leaf]][p_val_too_big]] = "Independence test"
-            verb_df$action[ss[[i_leaf]][close_to_bound]] = "Removed"
-            verb_df$reason[ss[[i_leaf]][close_to_bound]] = "Close to boundary"
+            verb_df$action[spltd] = "Dissmissed"
+            verb_df$reason[spltd] = "Split dim < 2"
+          }
+          ss[[i_leaf]] = c(spltd,non_taken_dims)
+        } else {
+          # NOW WE FINALY SPLIT
+          leaves_to_remove = c(leaves_to_remove,i_leaf)
+          if(verbose_lvl>2){verb_df$action[spltd] = "Splitted"}
+
+          # remove the breakpoint from the data points if it's one of them :
+          are_the_breakpoint  = (colSums(t(data[di,spltd,drop=FALSE]) == bp) == length(spltd))
+          if(any(are_the_breakpoint)){
+            if(verbose_lvl>4){cat("Be carrefull, we are splitting on a point.\n")}
+            di = di[!are_the_breakpoint]
           }
 
-          if(all(to_be_removed)){
-            # we just keep the leaf :
-            ss[[i_leaf]] = non_taken_dims
-          } else {
+          # construct new information for new leaves :
+          d_split       = length(spltd)
+          D             = 2^d_split
+          bin_repr      = sapply(1:D,number2binary,d_split)
+          new_a         = a[rep(i_leaf,D),]
+          new_b         = b[rep(i_leaf,D),]
+          new_a[,spltd] = t(bp^bin_repr * a[i_leaf,spltd]^(1-bin_repr))
+          new_b[,spltd] = t(bp^(1-bin_repr) * b[i_leaf,spltd]^bin_repr)
 
-            if(any(to_be_removed)){
-              ss[[i_leaf]] = ss[[i_leaf]][!to_be_removed]
-              bp = bp[!to_be_removed]
-            }
-
-            if(length(ss[[i_leaf]]) == 1){
-              if(verbose_lvl>2){
-                verb_df$action[ss[[i_leaf]]] = "Dissmissed"
-                verb_df$reason[ss[[i_leaf]]] = "No one-dim split"
-              }
-              ss[[i_leaf]] = c(ss[[i_leaf]],non_taken_dims)
-            } else {
-              # NOW WE FINALY SPLIT
-              leaves_to_remove = c(leaves_to_remove,i_leaf)
-              if(verbose_lvl>2){verb_df$action[ss[[i_leaf]]] = "Splitted"}
-
-              # remove the breakpoint from the data points if it's one of them :
-              are_the_breakpoint  = (colSums(t(data[dd[[i_leaf]],ss[[i_leaf]],drop=FALSE]) == bp) == length(ss[[i_leaf]]))
-              if(any(are_the_breakpoint)){
-                if(verbose_lvl>4){cat("Be carrefull, we are splitting on a point.\n")}
-                dd[[i_leaf]] = dd[[i_leaf]][!are_the_breakpoint]
-              }
-
-              # construct new information for new leaves :
-              sss = ss[[i_leaf]]
-              d_split = length(sss)
-              D = 2^d_split
-              bin_repr = sapply(1:D,number2binary,d_split)
-              new_a = a[rep(i_leaf,D),]
-              new_b = b[rep(i_leaf,D),]
-              new_a[,sss] = t(bp^bin_repr * a[i_leaf,sss]^(1-bin_repr))
-              new_b[,sss] = t(bp^(1-bin_repr) * b[i_leaf,sss]^bin_repr)
-
-              # store new edges and new split dims :
-              a = rbind(a,new_a)
-              b = rbind(b,new_b)
-              ss = c(ss,rep(list(c(sss,non_taken_dims)),D))
-              # store new points assignements :
-              for (i in 1:D){
-                dd = c(dd,list(dd[[i_leaf]][colSums((t(data[dd[[i_leaf]], sss, drop=FALSE]) >= new_a[i,sss]) *
-                                                      (t(data[dd[[i_leaf]], sss, drop=FALSE]) <  new_b[i,sss]))==d_split]))
-              }
-            }
+          # store new edges and new split dims :
+          a = rbind(a,new_a)
+          b = rbind(b,new_b)
+          ss = c(ss,rep(list(c(spltd,non_taken_dims)),D))
+          # store new points assignements :
+          for (i in 1:D){
+            dd = c(dd,list(di[colSums((t(data[di, spltd, drop=FALSE]) >= new_a[i,spltd]) *
+                                                  (t(data[di, spltd, drop=FALSE]) <  new_b[i,spltd]))==d_split]))
           }
         }
+      }
 
-        if(verbose_lvl>2) {
-          cat(toString.data.frame(verb_df,digits=8))
-          cat("\n")
-          cat("\n")
-        }
+      if(verbose_lvl>2) {
+        cat(toString.data.frame(verb_df,digits=8))
+        cat("\n")
+        cat("\n")
       }
-      # remove information from the splitted leaves :
-      if(length(leaves_to_remove) >= 1){
-        a = a[-leaves_to_remove,]
-        b = b[-leaves_to_remove,]
-        ss = ss[-leaves_to_remove]
-        dd = dd[-leaves_to_remove]
-      }
+    }
+    # remove information from the splitted leaves :
+    if(length(leaves_to_remove) >= 1){
+      a = a[-leaves_to_remove,]
+      b = b[-leaves_to_remove,]
+      ss = ss[-leaves_to_remove]
+      dd = dd[-leaves_to_remove]
     }
   }
 
