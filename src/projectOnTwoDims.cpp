@@ -68,7 +68,7 @@ Rcpp::List projectOnTwoDims(const NumericMatrix a,
         for(int d = 0; d < dim; d++){
           if(d  == (dims(0)-1)){
             prod *= std::max(std::min(b(d,m),new_b(i,0))-std::max(a(d,m),new_a(i,0)),0.0);
-          } else if((d == dims(1)-1)){
+          } else if(d == (dims(1)-1)){
             prod *= std::max(std::min(b(d,m),new_b(i,1))-std::max(a(d,m),new_a(i,1)),0.0);
           } else {
             prod *= b(d,m)-a(d,m);
