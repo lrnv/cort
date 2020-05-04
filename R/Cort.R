@@ -103,15 +103,16 @@ Cort = function(x,
 
   # Now we start fitting.
   if(verbose_lvl>0) {cat("Splitting...\n")}
-  dd = list(data)
-  splitd = list(1:d) # the splitting dimensions
+
+  dd = list(1:n_obs)
+  ss = list(1:d) # the splitting dimensions
 
   # Loop until there are no more splittable leaves :
   continue = TRUE
   while(continue){
 
     are_splittables = purrr::map_lgl(1:nrow(a),function(j){
-      (nrow(dd[[j]])>min_node_size) && (length(splitd[[j]])>1)
+      (length(dd[[j]])>min_node_size) && (length(ss[[j]])>1)
     })
 
     if(!any(are_splittables)){
@@ -128,7 +129,7 @@ Cort = function(x,
 
         # verbosity :
         if(verbose_lvl>1){
-          cat(paste0("        Leaf with ",nrow(dd[[i_leaf]])," points.\n"))
+          cat(paste0("        Leaf with ",length(dd[[i_leaf]])," points.\n"))
           if(verbose_lvl>2){
             verb_df = data.frame(min = a[i_leaf,], max = b[i_leaf,])
             verb_df$bp      = rep(NaN,d)
@@ -140,10 +141,10 @@ Cort = function(x,
         }
 
         # Randomize splitting dimensions :
-        if(length(splitd[[i_leaf]]) > number_max_dim){
-          random_dims       = resample(x =splitd[[i_leaf]], size=number_max_dim, replace=FALSE)
-          non_taken_dims    = splitd[[i_leaf]][!(splitd[[i_leaf]] %in% random_dims)]
-          splitd[[i_leaf]] = random_dims
+        if(length(ss[[i_leaf]]) > number_max_dim){
+          random_dims       = resample(x =ss[[i_leaf]], size=number_max_dim, replace=FALSE)
+          non_taken_dims    = ss[[i_leaf]][!(ss[[i_leaf]] %in% random_dims)]
+          ss[[i_leaf]] = random_dims
         } else{
           non_taken_dims = numeric()
         }
@@ -154,16 +155,16 @@ Cort = function(x,
           verb_df$reason[non_taken_dims] = "Randomly"
         }
 
-        if(length(splitd[[i_leaf]])<=1){
-          splitd[[i_leaf]] = c(splitd[[i_leaf]],non_taken_dims)
+        if(length(ss[[i_leaf]])<=1){
+          ss[[i_leaf]] = c(ss[[i_leaf]],non_taken_dims)
         } else {
 
           # Compute prerequisites for the optimisation of the breakpoint
-          n = nrow(dd[[i_leaf]])
-          d_split = length(splitd[[i_leaf]])
-          leaf_a = a[i_leaf,splitd[[i_leaf]]]
-          leaf_b = b[i_leaf,splitd[[i_leaf]]]
-          z = (t(dd[[i_leaf]][,splitd[[i_leaf]]]) - leaf_a)/(leaf_b-leaf_a) # d*n
+          n = length(dd[[i_leaf]])
+          d_split = length(ss[[i_leaf]])
+          leaf_a = a[i_leaf,ss[[i_leaf]]]
+          leaf_b = b[i_leaf,ss[[i_leaf]]]
+          z = (t(data[dd[[i_leaf]],ss[[i_leaf]],drop=FALSE]) - leaf_a)/(leaf_b-leaf_a) # d*n
           bin_repr = sapply(1:(2^d_split),number2binary,d_split)
 
           #Launche optimisation routine for the breakpoint :
@@ -192,66 +193,66 @@ Cort = function(x,
           p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
           p_values[is.na(p_values)] = 0
           p_val_too_big  = p_values > p_value_for_dim_red
-          threshold      = 1/ifelse(force_grid,(n_obs+1)^2,min((nrow(dd[[i_leaf]])+1)^2,1000))
+          threshold      = 1/ifelse(force_grid,(n_obs+1)^2,min((length(dd[[i_leaf]])+1)^2,1000))
           close_to_bound = (z_bp< threshold) + (z_bp > 1-threshold) > 0
           to_be_removed = p_val_too_big+close_to_bound>0
 
           if(verbose_lvl>2){
-            verb_df$bp[splitd[[i_leaf]]]      <- bp
-            verb_df$p_value[splitd[[i_leaf]]] <- p_values
-            verb_df$action[splitd[[i_leaf]][p_val_too_big]] = "Removed"
-            verb_df$reason[splitd[[i_leaf]][p_val_too_big]] = "Independence test"
-            verb_df$action[splitd[[i_leaf]][close_to_bound]] = "Removed"
-            verb_df$reason[splitd[[i_leaf]][close_to_bound]] = "Close to boundary"
+            verb_df$bp[ss[[i_leaf]]]      <- bp
+            verb_df$p_value[ss[[i_leaf]]] <- p_values
+            verb_df$action[ss[[i_leaf]][p_val_too_big]] = "Removed"
+            verb_df$reason[ss[[i_leaf]][p_val_too_big]] = "Independence test"
+            verb_df$action[ss[[i_leaf]][close_to_bound]] = "Removed"
+            verb_df$reason[ss[[i_leaf]][close_to_bound]] = "Close to boundary"
           }
 
           if(all(to_be_removed)){
             # we just keep the leaf :
-            splitd[[i_leaf]] = non_taken_dims
+            ss[[i_leaf]] = non_taken_dims
           } else {
 
             if(any(to_be_removed)){
-              splitd[[i_leaf]] = splitd[[i_leaf]][!to_be_removed]
+              ss[[i_leaf]] = ss[[i_leaf]][!to_be_removed]
               bp = bp[!to_be_removed]
             }
 
-            if(length(splitd[[i_leaf]]) == 1){
+            if(length(ss[[i_leaf]]) == 1){
               # we just keep the leaf as is :
               if(verbose_lvl>2){
-                verb_df$action[splitd[[i_leaf]]] = "Dissmissed"
-                verb_df$reason[splitd[[i_leaf]]] = "No one-dim split"
+                verb_df$action[ss[[i_leaf]]] = "Dissmissed"
+                verb_df$reason[ss[[i_leaf]]] = "No one-dim split"
               }
-              splitd[[i_leaf]] = c(splitd[[i_leaf]],non_taken_dims)
+              ss[[i_leaf]] = c(ss[[i_leaf]],non_taken_dims)
             } else {
               # NOW WE FINALY SPLIT
               i_leaf_to_remove = c(i_leaf_to_remove,i_leaf)
-              if(verbose_lvl>2){verb_df$action[splitd[[i_leaf]]] = "Splitted"}
+              if(verbose_lvl>2){verb_df$action[ss[[i_leaf]]] = "Splitted"}
 
               # remove the breakpoint from the data points if it's one of them :
-              are_the_breakpoint  = (colSums(t(dd[[i_leaf]][,splitd[[i_leaf]],drop=FALSE]) == bp) == length(splitd[[i_leaf]]))
+              are_the_breakpoint  = (colSums(t(data[dd[[i_leaf]],ss[[i_leaf]],drop=FALSE]) == bp) == length(ss[[i_leaf]]))
               if(any(are_the_breakpoint)){
                 if(verbose_lvl>4){cat("be carrefull, we are splitting on a point.\n")}
-                dd[[i_leaf]] = dd[[i_leaf]][!are_the_breakpoint,,drop=FALSE]
+                dd[[i_leaf]] = dd[[i_leaf]][!are_the_breakpoint]
               }
 
               # construct new information for new leaves :
-              d_split=length(splitd[[i_leaf]])
+              d_split=length(ss[[i_leaf]])
               D = 2^d_split
               for (i in 1:D){
                 # build the leaf :
                 bin = number2binary(i,d_split)
                 new_a = a[i_leaf,]
                 new_b = b[i_leaf,]
-                new_a[splitd[[i_leaf]]] = bp^bin * new_a[splitd[[i_leaf]]] ^ (1-bin)
-                new_b[splitd[[i_leaf]]] = bp^(1-bin) * new_b[splitd[[i_leaf]]] ^ bin
-                i_new_data = colSums((t(dd[[i_leaf]]) >= new_a)*(t(dd[[i_leaf]])<new_b))==d
-                new_data = dd[[i_leaf]][i_new_data, , drop=FALSE]
+                new_a[ss[[i_leaf]]] = bp^bin * new_a[ss[[i_leaf]]] ^ (1-bin)
+                new_b[ss[[i_leaf]]] = bp^(1-bin) * new_b[ss[[i_leaf]]] ^ bin
+                i_new_data = colSums((t(data[dd[[i_leaf]],,drop=FALSE]) >= new_a)*(t(data[dd[[i_leaf]],,drop=FALSE])<new_b))==d
+                new_dd = dd[[i_leaf]][i_new_data]
 
                 # imput the new information from the leaf :
                 a = rbind(a,new_a)
                 b = rbind(b,new_b)
-                splitd = c(splitd,list(c(splitd[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
-                dd = c(dd,list(new_data))
+                ss = c(ss,list(c(ss[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
+                dd = c(dd,list(new_dd))
               }
             }
           }
@@ -267,7 +268,7 @@ Cort = function(x,
       if(length(i_leaf_to_remove) >= 1){
         a = a[-i_leaf_to_remove,]
         b = b[-i_leaf_to_remove,]
-        splitd = splitd[-i_leaf_to_remove]
+        ss = ss[-i_leaf_to_remove]
         dd = dd[-i_leaf_to_remove]
       }
     }
@@ -276,7 +277,7 @@ Cort = function(x,
   if(verbose_lvl>0) {cat("\nEnforcing constraints...\n")}
   n_leaves = nrow(a)
   vols     = apply(b-a,1,prod)
-  f        = purrr::map_dbl(dd,~nrow(.x))/nrow(data)
+  f        = purrr::map_dbl(dd,~length(.x))/nrow(data)
   eval_pts = purrr::map(1:d,~unique((b+a)[,.x]/2))
   dims     = unlist(purrr::map2(eval_pts,1:d,function(x,y){rep(y,length(x))}))
   F_vec    = unlist(eval_pts)
