@@ -13,6 +13,7 @@
 * Fixed bug in pairs.Cort : dimensions were switched for leaves but not for points.
 * Fixed bug in pCopula values for cbCopula objects.
 * Adding four exemple datasets from the paper.
+* Cleaned up the code of the Cort algorithm.
 
 
 # cort 0.3.0
