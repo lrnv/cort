@@ -69,21 +69,19 @@ Cort = function(x,
   data= as.matrix(x)
   row.names(data) = NULL
   colnames(data) = NULL
-
   if(!pseudo_data){
     data = apply(data,2,rank,ties.method="random")/(nrow(data)+1)
   }
 
-  d = ncol(data)
-  n_obs = nrow(data)
-
   # initialisation
-  vols = f = p = 1
-  a = matrix(0,ncol=d,nrow=1)
-  b = matrix(1,ncol=d,nrow=1)
+  d              = ncol(data)
+  n_obs          = nrow(data)
+  vols = f = p   = 1
+  a              = matrix(0,ncol=d,nrow=1)
+  b              = matrix(1,ncol=d,nrow=1)
   number_max_dim = min(number_max_dim,d)
-  dd = list(1:n_obs) # index of the data points in each leave
-  ss = list(1:d) # dimensions of splits in each leave
+  dd             = list(1:n_obs) # index of the data points in each leave
+  ss             = list(1:d) # dimensions of splits in each leave
 
   # Deal with solver parameters :
   DEFAULT_SLQP_OPTIONS = list(stopval = -Inf, xtol_rel = 1e-4, maxeval = 100000, ftol_rel = 1e-6, ftol_abs = 1e-6)
@@ -117,16 +115,16 @@ Cort = function(x,
     for(i_leaf in which(are_splittables)){
 
       spltd = ss[[i_leaf]]
-      di = dd[[i_leaf]]
+      di    = dd[[i_leaf]]
 
       if(verbose_lvl>1){
         cat(paste0("        Leaf with ",length(di)," points.\n"))
         if(verbose_lvl>2){
-          verb_df = data.frame(min = a[i_leaf,], max = b[i_leaf,])
-          verb_df$bp      = rep(NaN,d)
-          verb_df$p_value = rep(NaN,d)
-          verb_df$action  = rep("",d)
-          verb_df$reason  = rep("",d)
+          verb_df            = data.frame(min = a[i_leaf,], max = b[i_leaf,])
+          verb_df$bp         = rep(NaN,d)
+          verb_df$p_value    = rep(NaN,d)
+          verb_df$action     = rep("",d)
+          verb_df$reason     = rep("",d)
           row.names(verb_df) = paste0("             ",1:d)
         }
       }
@@ -239,8 +237,7 @@ Cort = function(x,
 
       if(verbose_lvl>2) {
         cat(toString.data.frame(verb_df,digits=8))
-        cat("\n")
-        cat("\n")
+        cat("\n\n")
       }
     }
     # remove information from the splitted leaves :
@@ -266,34 +263,19 @@ Cort = function(x,
                         l=c(F_vec,1,rep(0,n_leaves)),
                         u=c(F_vec,1,rep(Inf,n_leaves)),
                         pars=osqp_options)
-
-  # Launching the solver
   model$WarmStart(x=f)
   rez = model$Solve()$x
   p = pmax(rez,0)/sum(pmax(rez,0)) # correction for small negative weights.
 
-  # remove names :
+  # remove unnecessary names :
   row.names(a) <- NULL
   row.names(b) <- NULL
   names(vols) <- NULL
 
-  # get object :
-  object = .Cort(
-    data = data,
-    p_value_for_dim_red = p_value_for_dim_red,
-    number_max_dim = number_max_dim,
-    min_node_size = min_node_size,
-    verbose_lvl=verbose_lvl,
-    dim = d,
-    vols = vols,
-    f = f,
-    p = p,
-    a = a,
-    b = b
-  )
-
   if(verbose_lvl>0){cat("Done !\n")}
-  return(object)
+  return(.Cort(data = data, p_value_for_dim_red = p_value_for_dim_red,
+               number_max_dim = number_max_dim, min_node_size = min_node_size,
+               verbose_lvl=verbose_lvl, dim = d, vols = vols, f = f, p = p, a = a, b = b))
 }
 
 setMethod(f = "show", signature = c(object = "Cort"), definition = function(object){
