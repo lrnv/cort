@@ -122,7 +122,6 @@ Cort = function(x,
       leaves_to_remove = numeric()
       for(i_leaf in which(are_splittables)){
 
-        # verbosity :
         if(verbose_lvl>1){
           cat(paste0("        Leaf with ",length(dd[[i_leaf]])," points.\n"))
           if(verbose_lvl>2){
@@ -181,11 +180,11 @@ Cort = function(x,
             z_bp = (bp-leaf_a)/(b-leaf_a)
           }
 
-          # Are we going to keep the breakpoint dimensions ?
+          # Are we going to keep the breakpoint in every splitting dimensions ?
           z_min = z_bp*bin_repr
           z_max = z_bp^(1-bin_repr)
           p_values = cortMonteCarlo(z,z_min,z_max,as.integer(N))
-          p_values[is.na(p_values)] = 0
+          p_values[is.na(p_values)] = 0 # really usefull ?
           p_val_too_big  = p_values > p_value_for_dim_red
           threshold      = 1/ifelse(force_grid,(n_obs+1)^2,min((length(dd[[i_leaf]])+1)^2,1000))
           close_to_bound = (z_bp< threshold) + (z_bp > 1-threshold) > 0
@@ -229,23 +228,23 @@ Cort = function(x,
               }
 
               # construct new information for new leaves :
-              d_split=length(ss[[i_leaf]])
+              sss = ss[[i_leaf]]
+              d_split = length(sss)
               D = 2^d_split
-              for (i in 1:D){
-                # build the leaf :
-                bin = number2binary(i,d_split)
-                new_a = a[i_leaf,]
-                new_b = b[i_leaf,]
-                new_a[ss[[i_leaf]]] = bp^bin * new_a[ss[[i_leaf]]] ^ (1-bin)
-                new_b[ss[[i_leaf]]] = bp^(1-bin) * new_b[ss[[i_leaf]]] ^ bin
-                i_new_data = colSums((t(data[dd[[i_leaf]],,drop=FALSE]) >= new_a)*(t(data[dd[[i_leaf]],,drop=FALSE])<new_b))==d
-                new_dd = dd[[i_leaf]][i_new_data]
+              bin_repr = sapply(1:D,number2binary,d_split)
+              new_a = a[rep(i_leaf,D),]
+              new_b = b[rep(i_leaf,D),]
+              new_a[,sss] = t(bp^bin_repr * a[i_leaf,sss]^(1-bin_repr))
+              new_b[,sss] = t(bp^(1-bin_repr) * b[i_leaf,sss]^bin_repr)
 
-                # imput the new information from the leaf :
-                a = rbind(a,new_a)
-                b = rbind(b,new_b)
-                ss = c(ss,list(c(ss[[i_leaf]],non_taken_dims))) # append new split dims to non-taken ones.
-                dd = c(dd,list(new_dd))
+              # store new edges and new split dims :
+              a = rbind(a,new_a)
+              b = rbind(b,new_b)
+              ss = c(ss,rep(list(c(sss,non_taken_dims)),D))
+              # store new points assignements :
+              for (i in 1:D){
+                dd = c(dd,list(dd[[i_leaf]][colSums((t(data[dd[[i_leaf]], sss, drop=FALSE]) >= new_a[i,sss]) *
+                                                      (t(data[dd[[i_leaf]], sss, drop=FALSE]) <  new_b[i,sss]))==d_split]))
               }
             }
           }
