@@ -27,7 +27,7 @@ boxes_from_points <- function(points,m){
 }
 
 quiet <- function(x) {
-  pdf(NULL)
+  grDevices::pdf(NULL)
   sink(tempfile())
   on.exit(sink())
   invisible(force(x))
