@@ -20,10 +20,9 @@
 * Fedora Linux (on R-Hub), R devel
 
 ## R CMD check results
+There were no ERRORs or WARNINGs
 
-0 errors | 0 warnings | 1 note
-
-The folloiwng note is produced on several checking engines : 
+There was 1 NOTE, produced on some (not all) check engines:
 
 #> * checking CRAN incoming feasibility ... NOTE
 #> Maintainer: 'Oskar Laverny '
@@ -31,4 +30,4 @@ The folloiwng note is produced on several checking engines :
 #> Laverny (10:602)
 #> Rullière (10:641)
 
-This two words are well-spelled names of authors from a cited paper in the Description field, so the note is irrelevant. However, i did not found out how to get rid of this note.
+These two words are well-spelled names of authors from a cited paper in the Description field.
