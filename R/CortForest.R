@@ -27,7 +27,7 @@
 
 #' CortForest class
 #'
-#' This class implements the bagging of CORT models, with an oob error minimisation in the weights.
+#' This class implements the bagging of CORT models, with an oob error minimisation in the weights. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
@@ -47,6 +47,9 @@
 #'
 #' @return a CortForest object that can be fitted easily to produce a copula estimate.
 #' @export
+#'
+#' @references
+#' \insertRef{laverny2020}{cort}
 #'
 #' @examples
 #' (CortForest(LifeCycleSavings[,1:3],number_max_dim=2,n_trees=2))

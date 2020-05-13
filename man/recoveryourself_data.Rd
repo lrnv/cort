@@ -4,7 +4,7 @@
 \name{recoveryourself_data}
 \alias{recoveryourself_data}
 \title{Dataset recoveryourself_data}
-\format{A matrix with 500 rows and 2 variables}
+\format{A matrix with 500 rows and 2 columns}
 \usage{
 recoveryourself_data
 }
@@ -12,6 +12,12 @@ recoveryourself_data
 This dataset is a simple test: we simulate random samples from a density inside the piecewise copula class,
 and test whether or not the estimator can recover it. For that, we will use a 2-dimensional sample with 500
 observations, uniform on the unit hypercube, and apply the following function:
-\deqn{h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})}
+\deqn{h(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})}
+}
+\details{
+This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\references{
+\insertRef{laverny2020}{cort}
 }
 \keyword{datasets}

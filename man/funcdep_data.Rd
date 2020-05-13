@@ -4,13 +4,19 @@
 \name{funcdep_data}
 \alias{funcdep_data}
 \title{Dataset funcdep_data}
-\format{A matrix with 500 rows and 3 variables}
+\format{A matrix with 500 rows and 3 columns}
 \usage{
 funcdep_data
 }
 \description{
 This dependence structure is constructed by applying the function :
-\deqn{h_3(u_1,u_2,u_3) = (u_1,\sin(2\pi u_1)-\frac{u_2}{\pi},(1+\frac{u_3}{\pi^{2}})(\frac{u_3}{2}\mathbb{1}_{\frac{1}{4} \ge u_1}  - \sin(\pi^{x_1})    \mathbb{1}_{\frac{1}{4} < u_1}))}
-to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \eqn{h_3(u)}.
+\deqn{h(u_1,u_2,u_3) = (u_1,\sin(2\pi u_1)-\frac{u_2}{\pi},(1+\frac{u_3}{\pi^{2}})(\frac{u_3}{2}\mathbb{1}_{\frac{1}{4} \ge u_1}  - \sin(\pi^{x_1})    \mathbb{1}_{\frac{1}{4} < u_1}))}
+to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \eqn{h(u)}.
+}
+\details{
+This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\references{
+\insertRef{laverny2020}{cort}
 }
 \keyword{datasets}

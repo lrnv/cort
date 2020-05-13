@@ -4,13 +4,19 @@
 \name{impossible_data}
 \alias{impossible_data}
 \title{Dataset impossible_data}
-\format{A matrix with 200 rows and 2 variables}
+\format{A matrix with 200 rows and 2 columns}
 \usage{
 impossible_data
 }
 \description{
 We simulate from a density inside the piecewise linear copula class, by applying the function:
-\deqn{h_2(u) = (u_1,          \frac{u_2}{2} + \frac{1}{2}\mathbb{1}_{u_1 \notin (\frac{1}{3}, \frac{2}{3})})}
+\deqn{h(u) = (u_1,          \frac{u_2}{2} + \frac{1}{2}\mathbb{1}_{u_1 \notin (\frac{1}{3}, \frac{2}{3})})}
 to a 200x2 uniform sample, and taking ranks.
+}
+\details{
+This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\references{
+\insertRef{laverny2020}{cort}
 }
 \keyword{datasets}

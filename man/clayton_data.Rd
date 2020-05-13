@@ -4,7 +4,7 @@
 \name{clayton_data}
 \alias{clayton_data}
 \title{Dataset clayton_data}
-\format{A matrix with 200 rows and 4 variables}
+\format{A matrix with 200 rows and 4 columns}
 \usage{
 clayton_data
 }
@@ -13,5 +13,11 @@ This dataset is a simulation of 200 points from a 3-dimensional clayton copula w
 hence highly dependent, for the first, third and fourth marginals. The second marginal is added
 as independent uniform draws. Lastly, the third marginal is flipped,
 inducing a negative dependence structure.
+}
+\details{
+This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\references{
+\insertRef{laverny2020}{cort}
 }
 \keyword{datasets}

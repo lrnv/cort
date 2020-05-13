@@ -31,7 +31,7 @@ NULL
 
 #' Cort class
 #'
-#' This class implements the CORT algorithm to a fit a multivariate copula using piece constant density.
+#' This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
@@ -51,6 +51,9 @@ NULL
 #'
 #' @return a Cort object that can be fitted easily to produce a copula estimate.
 #' @export
+#'
+#' @references
+#' \insertRef{laverny2020}{cort}
 #'
 #' @examples
 #' (Cort(LifeCycleSavings[,1:3]))
