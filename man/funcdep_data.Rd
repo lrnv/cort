@@ -10,7 +10,7 @@ funcdep_data
 }
 \description{
 This dependence structure is constructed by applying the function :
-\deqn{h(u_1,u_2,u_3) = (u_1,\sin(2\pi u_1)-\frac{u_2}{\pi},(1+\frac{u_3}{\pi^{2}})(\frac{u_3}{2}\mathbb{1}_{\frac{1}{4} \ge u_1}  - \sin(\pi^{x_1})    \mathbb{1}_{\frac{1}{4} < u_1}))}
+\deqn{h(u_1,u_2,u_3) = (u_{1},\sin(2\pi u_{1})-\frac{u_{2}}{\pi},(1+\frac{u_{3}}{\pi^{2}})(\frac{u_{3}}{2} I_{\frac{1}{4}\ge u_1}-\sin(\pi^{x_{1}}) I_{\frac{1}{4} < u_{1}}))}
 to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \eqn{h(u)}.
 }
 \details{

@@ -10,7 +10,7 @@ impossible_data
 }
 \description{
 We simulate from a density inside the piecewise linear copula class, by applying the function:
-\deqn{h(u) = (u_1,          \frac{u_2}{2} + \frac{1}{2}\mathbb{1}_{u_1 \notin (\frac{1}{3}, \frac{2}{3})})}
+\deqn{h(u) = (u_1,          \frac{u_2}{2} + \frac{1}{2}I_{u_1 \notin (\frac{1}{3}, \frac{2}{3})})}
 to a 200x2 uniform sample, and taking ranks.
 }
 \details{
