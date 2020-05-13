@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="Dataset funcdep_data — funcdep_data" />
 <meta property="og:description" content="This dependence structure is constructed by applying the function :
-$$h_3(u_1,u_2,u_3) = (u_1,\sin(2\pi u_1)-\frac{u_2}{\pi},(1+\frac{u_3}{\pi^{2}})(\frac{u_3}{2}\mathbb{1}_{\frac{1}{4} \ge u_1}  - \sin(\pi^{x_1})    \mathbb{1}_{\frac{1}{4} &amp;lt; u_1}))$$
-to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h_3(u)\)." />
+$$h(u_1,u_2,u_3) = (u_{1},\sin(2\pi u_{1})-\frac{u_{2}}{\pi},(1+\frac{u_{3}}{\pi^{2}})(\frac{u_{3}}{2} I_{\frac{1}{4}\ge u_1}-\sin(\pi^{x_{1}}) I_{\frac{1}{4} &amp;lt; u_{1}}))$$
+to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h(u)\)." />
 
 
 
@@ -141,8 +141,8 @@ to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h
 
     <div class="ref-description">
     <p>This dependence structure is constructed by applying the function :
-$$h_3(u_1,u_2,u_3) = (u_1,\sin(2\pi u_1)-\frac{u_2}{\pi},(1+\frac{u_3}{\pi^{2}})(\frac{u_3}{2}\mathbb{1}_{\frac{1}{4} \ge u_1}  - \sin(\pi^{x_1})    \mathbb{1}_{\frac{1}{4} &lt; u_1}))$$
-to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h_3(u)\).</p>
+$$h(u_1,u_2,u_3) = (u_{1},\sin(2\pi u_{1})-\frac{u_{2}}{\pi},(1+\frac{u_{3}}{\pi^{2}})(\frac{u_{3}}{2} I_{\frac{1}{4}\ge u_1}-\sin(\pi^{x_{1}}) I_{\frac{1}{4} &lt; u_{1}}))$$
+to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h(u)\).</p>
     </div>
 
     <pre class="usage"><span class='no'>funcdep_data</span></pre>
@@ -150,7 +150,15 @@ to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \(h
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A matrix with 500 rows and 3 variables</p>
+    <p>A matrix with 500 rows and 3 columns</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020).
+&#8220;Dependence Structure Estimation Using Copula Recursive Trees.&#8221;
+<em>arXiv preprint arXiv:2005.02912</em>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

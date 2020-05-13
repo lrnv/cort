@@ -43,7 +43,7 @@
 <meta property="og:description" content="This dataset is a simple test: we simulate random samples from a density inside the piecewise copula class,
 and test whether or not the estimator can recover it. For that, we will use a 2-dimensional sample with 500
 observations, uniform on the unit hypercube, and apply the following function:
-$$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})$$" />
+$$h(u) = (u_1, \frac{u_2 + I_{u_1 \le \frac{1}{4}} + 2I_{u_1 \le \frac{1}{2}} + I_{\frac{3}{4} \le u_1}}{4})$$" />
 
 
 
@@ -144,7 +144,7 @@ $$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1
     <p>This dataset is a simple test: we simulate random samples from a density inside the piecewise copula class,
 and test whether or not the estimator can recover it. For that, we will use a 2-dimensional sample with 500
 observations, uniform on the unit hypercube, and apply the following function:
-$$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1 \le \frac{1}{2}} + \mathbb{1}_{\frac{3}{4} \le u_1}}{4})$$</p>
+$$h(u) = (u_1, \frac{u_2 + I_{u_1 \le \frac{1}{4}} + 2I_{u_1 \le \frac{1}{2}} + I_{\frac{3}{4} \le u_1}}{4})$$</p>
     </div>
 
     <pre class="usage"><span class='no'>recoveryourself_data</span></pre>
@@ -152,7 +152,15 @@ $$h_1(u) = (u_1, \frac{u_2 + \mathbb{1}_{u_1 \le \frac{1}{4}} + 2\mathbb{1}_{u_1
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A matrix with 500 rows and 2 variables</p>
+    <p>A matrix with 500 rows and 2 columns</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020).
+&#8220;Dependence Structure Estimation Using Copula Recursive Trees.&#8221;
+<em>arXiv preprint arXiv:2005.02912</em>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
