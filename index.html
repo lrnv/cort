@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Some Empiric and Nonparametric Copula Models">
-<meta property="og:description" content="Provides S4 classes and methods to fit several copula models: The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) &lt;doi:10.1080/03610926.2019.1586936&gt; are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. The last model consist of the implementation of the Copula Recursive Tree algorithm proposed by Laverny, Maume-Deschamps, Masiello and Rullière (2020) &lt;arxiv:2005.02912&gt;, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. We also provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a copula.">
+<meta property="og:description" content="Provides S4 classes and methods to fit several copula models: The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) &lt;doi:10.1080/03610926.2019.1586936&gt; are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension. The last model consist of the implementation of the Copula Recursive Tree algorithm proposed by Laverny, Maume-Deschamps, Masiello and Rullière (2020) &lt;arXiv:2005.02912&gt;, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain. We also provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a copula.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -94,18 +94,24 @@
 
 <p>The <code>cort</code> package provides S4 classes and methods to fit several copula models:</p>
 <ul>
-<li><p>The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) <a href="doi:10.1080/03610926.2019.1586936" class="uri">doi:10.1080/03610926.2019.1586936</a> are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension.</p></li>
-<li><p>The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain.</p></li>
+<li><p>The classic empirical checkerboard copula and the empirical checkerboard copula with known margins, see Cuberos, Masiello and Maume-Deschamps (2019) are proposed. These two models allow to fit copulas in high dimension with a small number of observations, and they are always proper copulas. Some flexibility is added via a possibility to differentiate the checkerboard parameter by dimension.</p></li>
+<li><p>The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain, see Laverny, Maume-Deschamps, Masiello and Rullière (2020).</p></li>
 <li><p>We finally provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.</p></li>
 </ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>cort</code> is Now on <a href="https://CRAN.R-project.org">CRAN</a>! You can install the sable version with:</p>
+<p><code>cort</code> is Now on <a href="https://CRAN.R-project.org">CRAN</a>! You can install the stable version with:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"cort"</span>)</pre></div>
 <p>The upstream development version can also be installed with :</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"lrnv/cort"</span>)</pre></div>
 <p>The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is useful. Please read them for more details.</p>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<p>Cuberos A, Masiello E, Maume-Deschamps V (2019). “Copulas Checker-Type Approximations: Application to Quantiles Estimation of Sums of Dependent Random Variables.” <em>Communications in Statistics - Theory and Methods, 1–19. ISSN 0361-0926, 1532-415X.</em></p>
+<p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020). “Dependence Structure Estimation Using Copula Recursive Trees.” <em>arXiv preprint arXiv:2005.02912</em></p>
 </div>
 
   </div>
