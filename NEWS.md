@@ -12,7 +12,7 @@
 * Fixed bug when there is only one leave in the tree.
 * Fixed bug in pairs.Cort : dimensions were switched for leaves but not for points.
 * Fixed bug in pCopula values for cbCopula objects.
-* Adding four exemple datasets from the paper.
+* Adding four example datasets from the paper.
 * Cleaned up the code of the Cort algorithm.
 
 

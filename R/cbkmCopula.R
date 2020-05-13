@@ -28,7 +28,7 @@ NULL
 #'
 #' Given some empirical data, and given some known copula estimation on a sub-vector of this data,
 #' the checkerboard with known margins construction consist in
-#' a conditional pattern where the checkerboard part is conditional on the known part of the copula.
+#' a conditional pattern where the checkerboard part is conditional on the known part of the copula. See the corresponding vignette for more details.
 #'
 #'
 #' @param x the data to be used
