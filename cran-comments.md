@@ -21,7 +21,14 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 note
+0 errors | 0 warnings | 1 note
 
+The folloiwng note is produced on several checking engines : 
 
+#> * checking CRAN incoming feasibility ... NOTE
+#> Maintainer: 'Oskar Laverny '
+#> Possibly mis-spelled words in DESCRIPTION:
+#> Laverny (10:602)
+#> Rullière (10:641)
 
+This two words are well-spelled names of authors from a cited paper in the Description field, so the note is irrelevant. However, i did not found out how to get rid of this note.
