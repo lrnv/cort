@@ -142,16 +142,16 @@
     </div>
 
     <pre class="usage"><span class='fu'>Cort</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>p_value_for_dim_red</span> <span class='kw'>=</span> <span class='fl'>0.75</span>,
-  <span class='kw'>min_node_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>pseudo_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>number_max_dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose_lvl</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>slsqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>osqp_options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>999</span>,
-  <span class='kw'>force_grid</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>x</span>,
+  p_value_for_dim_red = <span class='fl'>0.75</span>,
+  min_node_size = <span class='fl'>1</span>,
+  pseudo_data = <span class='fl'>FALSE</span>,
+  number_max_dim = <span class='kw'>NULL</span>,
+  verbose_lvl = <span class='fl'>1</span>,
+  slsqp_options = <span class='kw'>NULL</span>,
+  osqp_options = <span class='kw'>NULL</span>,
+  N = <span class='fl'>999</span>,
+  force_grid = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -212,7 +212,8 @@
 <em>arXiv preprint arXiv:2005.02912</em>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='fu'>Cort</span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Splitting...
+    <pre class="examples"><div class='input'>(<span class='fu'>Cort</span>(<span class='kw'>LifeCycleSavings</span>[,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>]))
+</div><div class='output co'>#&gt; Splitting...
 #&gt; 
 #&gt;      1 leaves to split...
 #&gt;      5 leaves to split...
@@ -235,7 +236,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -141,10 +141,10 @@
     <p>Compute the quadratic product with the empirical density from the data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quad_prod_with_data</span>(<span class='no'>object</span>)
+    <pre class="usage"><span class='fu'>quad_prod_with_data</span>(<span class='kw'>object</span>)
 
 <span class='co'># S4 method for Cort</span>
-<span class='fu'>quad_prod_with_data</span>(<span class='no'>object</span>)</pre>
+<span class='fu'>quad_prod_with_data</span>(<span class='kw'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,14 +166,16 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span>(<span class='no'>LifeCycleSavings</span>[,<span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='output co'>#&gt; Splitting...
+    <pre class="examples"><div class='input'><span class='kw'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span>(<span class='kw'>LifeCycleSavings</span>[,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>])
+</div><div class='output co'>#&gt; Splitting...
 #&gt; 
 #&gt;      1 leaves to split...
 #&gt;      5 leaves to split...
 #&gt;      10 leaves to split...
 #&gt;      1 leaves to split...
 #&gt; Enforcing constraints...
-#&gt; Done !</div><div class='input'><span class='fu'>quad_prod_with_data</span>(<span class='no'>cop</span>)</div><div class='output co'>#&gt; [1] 12.67742</div><div class='input'>
+#&gt; Done !</div><div class='input'><span class='fu'>quad_prod_with_data</span>(<span class='kw'>cop</span>)
+</div><div class='output co'>#&gt; [1] 12.67742</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -190,7 +192,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

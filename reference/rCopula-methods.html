@@ -141,22 +141,22 @@
     <p>This function simulate random variables from a copula.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for numeric,ConvexCombCopula</span>
-<span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>)
+<span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>)
 
 <span class='co'># S4 method for numeric,Cort</span>
-<span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>)
+<span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>)
 
 <span class='co'># S4 method for numeric,CortForest</span>
-<span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>)
+<span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>)
 
 <span class='co'># S4 method for numeric,cbCopula</span>
-<span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>)
+<span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>)
 
 <span class='co'># S4 method for numeric,cbkmCopula</span>
-<span class='fu'>rCopula</span>(<span class='no'>n</span>, <span class='no'>copula</span>)</pre>
+<span class='fu'>rCopula</span>(<span class='kw'>n</span>, <span class='kw'>copula</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,8 +190,10 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span>(<span class='no'>LifeCycleSavings</span>,<span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='no'>xx</span> <span class='kw'>&lt;-</span> <span class='fu'>rCopula</span>(<span class='fl'>1000</span>,<span class='no'>cop</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span>(<span class='kw'>LifeCycleSavings</span>,m = <span class='fl'>5</span>)
+<span class='kw'>xx</span> <span class='op'>&lt;-</span> <span class='fu'>rCopula</span>(<span class='fl'>1000</span>,<span class='kw'>cop</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -207,7 +209,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
