@@ -1,6 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 1.6.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-12T04:30Z
+articles:
+  vignette01_ecb: vignette01_ecb.html
+  vignette02_cort_clayton: vignette02_cort_clayton.html
+  vignette03_ecbkm: vignette03_ecbkm.html
+  vignette04_bootstrap_varying_m: vignette04_bootstrap_varying_m.html
+last_built: 2020-09-13T04:32Z
 
