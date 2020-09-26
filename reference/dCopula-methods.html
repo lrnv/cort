@@ -141,16 +141,16 @@
     <p>This function returns the density of a given copula on given observations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dCopula</span>(<span class='kw'>u</span>, <span class='kw'>copula</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>dCopula</span><span class='op'>(</span><span class='va'>u</span>, <span class='va'>copula</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for matrix,Cort</span>
-<span class='fu'>dCopula</span>(<span class='kw'>u</span>, <span class='kw'>copula</span>)
+<span class='fu'>dCopula</span><span class='op'>(</span><span class='va'>u</span>, <span class='va'>copula</span><span class='op'>)</span>
 
 <span class='co'># S4 method for matrix,CortForest</span>
-<span class='fu'>dCopula</span>(<span class='kw'>u</span>, <span class='kw'>copula</span>)
+<span class='fu'>dCopula</span><span class='op'>(</span><span class='va'>u</span>, <span class='va'>copula</span><span class='op'>)</span>
 
 <span class='co'># S4 method for matrix,cbCopula</span>
-<span class='fu'>dCopula</span>(<span class='kw'>u</span>, <span class='kw'>copula</span>)</pre>
+<span class='fu'>dCopula</span><span class='op'>(</span><span class='va'>u</span>, <span class='va'>copula</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,10 +182,10 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span>(<span class='kw'>LifeCycleSavings</span>,m = <span class='fl'>5</span>)
-<span class='fu'>dCopula</span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>,<span class='fl'>5</span>),<span class='kw'>cop</span>)
-</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0.5</span>,<span class='fl'>5</span>),<span class='kw'>cop</span>)
-</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>,<span class='fl'>5</span>),<span class='kw'>cop</span>)
+    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span>,m <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0</div><div class='input'>
 </div></pre>
   </div>

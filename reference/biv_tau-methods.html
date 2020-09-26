@@ -141,10 +141,10 @@
     <p>Computes the bivariate Kendall's tau matrix for a copula.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>biv_tau</span>(<span class='kw'>copula</span>)
+    <pre class="usage"><span class='fu'>biv_tau</span><span class='op'>(</span><span class='va'>copula</span><span class='op'>)</span>
 
 <span class='co'># S4 method for Cort</span>
-<span class='fu'>biv_tau</span>(<span class='kw'>copula</span>)</pre>
+<span class='fu'>biv_tau</span><span class='op'>(</span><span class='va'>copula</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,7 +166,7 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span>(<span class='kw'>LifeCycleSavings</span>[,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>])
+    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Splitting...
 #&gt; 
 #&gt;      1 leaves to split...
@@ -175,7 +175,7 @@
 #&gt;      3 leaves to split...
 #&gt;      2 leaves to split...
 #&gt; Enforcing constraints...
-#&gt; Done !</div><div class='input'><span class='fu'>biv_tau</span>(<span class='kw'>cop</span>)
+#&gt; Done !</div><div class='input'><span class='fu'>biv_tau</span><span class='op'>(</span><span class='va'>cop</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;            [,1]       [,2]       [,3]
 #&gt; [1,]  1.0000000 -0.3649240  0.3909218
 #&gt; [2,] -0.3649240  1.0000000 -0.5511666

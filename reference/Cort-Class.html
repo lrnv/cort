@@ -141,18 +141,18 @@
     <p>Cort class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Cort</span>(
-  <span class='kw'>x</span>,
-  p_value_for_dim_red = <span class='fl'>0.75</span>,
-  min_node_size = <span class='fl'>1</span>,
-  pseudo_data = <span class='fl'>FALSE</span>,
-  number_max_dim = <span class='kw'>NULL</span>,
-  verbose_lvl = <span class='fl'>1</span>,
-  slsqp_options = <span class='kw'>NULL</span>,
-  osqp_options = <span class='kw'>NULL</span>,
-  N = <span class='fl'>999</span>,
-  force_grid = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>Cort</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  p_value_for_dim_red <span class='op'>=</span> <span class='fl'>0.75</span>,
+  min_node_size <span class='op'>=</span> <span class='fl'>1</span>,
+  pseudo_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  number_max_dim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose_lvl <span class='op'>=</span> <span class='fl'>1</span>,
+  slsqp_options <span class='op'>=</span> <span class='cn'>NULL</span>,
+  osqp_options <span class='op'>=</span> <span class='cn'>NULL</span>,
+  N <span class='op'>=</span> <span class='fl'>999</span>,
+  force_grid <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,7 +212,7 @@
 <em>arXiv preprint arXiv:2005.02912</em>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='fu'>Cort</span>(<span class='kw'>LifeCycleSavings</span>[,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>]))
+    <pre class="examples"><div class='input'><span class='op'>(</span><span class='fu'>Cort</span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Splitting...
 #&gt; 
 #&gt;      1 leaves to split...

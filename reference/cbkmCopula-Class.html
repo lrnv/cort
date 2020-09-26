@@ -141,13 +141,13 @@
     <p>cbkmCopula contructor</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cbkmCopula</span>(
-  <span class='kw'>x</span>,
-  m = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>x</span>), <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='kw'>x</span>)),
-  pseudo = <span class='fl'>FALSE</span>,
-  margins_numbers = <span class='kw'>NULL</span>,
-  known_cop = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>cbkmCopula</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  m <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>,
+  pseudo <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  margins_numbers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  known_cop <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,13 +184,13 @@ the checkerboard with known margins construction consist in
 a conditional pattern where the checkerboard part is conditional on the known part of the copula. See the corresponding vignette for more details.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dataset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='kw'>rank</span>)<span class='op'>/</span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>LifeCycleSavings</span>)<span class='op'>+</span><span class='fl'>1</span>)
-<span class='kw'>known_copula</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span>(<span class='kw'>dataset</span>[,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>],m=<span class='fl'>10</span>)
-(<span class='kw'>cop</span> <span class='op'>&lt;-</span> <span class='fu'>cbkmCopula</span>(x = <span class='kw'>dataset</span>,
-                  m = <span class='fl'>5</span>,
-                  pseudo = <span class='fl'>TRUE</span>,
-                  margins_numbers = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>),
-                  known_cop = <span class='kw'>known_copula</span>))
+    <pre class="examples"><div class='input'><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='va'>rank</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>known_copula</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span><span class='op'>(</span><span class='va'>dataset</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>,m<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'>cbkmCopula</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>dataset</span>,
+                  m <span class='op'>=</span> <span class='fl'>5</span>,
+                  pseudo <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                  margins_numbers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
+                  known_cop <span class='op'>=</span> <span class='va'>known_copula</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; This is a cbkmCopula , with : 
 #&gt;    dim = 5 
 #&gt;    n = 50 

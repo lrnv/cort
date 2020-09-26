@@ -141,18 +141,18 @@
     <p>CortForest class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CortForest</span>(
-  <span class='kw'>x</span>,
-  p_value_for_dim_red = <span class='fl'>0.75</span>,
-  n_trees = <span class='fl'>10</span>,
-  compte_loo_weights = <span class='fl'>FALSE</span>,
-  min_node_size = <span class='fl'>1</span>,
-  pseudo_data = <span class='fl'>FALSE</span>,
-  number_max_dim = <span class='kw'>NULL</span>,
-  verbose_lvl = <span class='fl'>2</span>,
-  force_grid = <span class='fl'>FALSE</span>,
-  oob_weighting = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>CortForest</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  p_value_for_dim_red <span class='op'>=</span> <span class='fl'>0.75</span>,
+  n_trees <span class='op'>=</span> <span class='fl'>10</span>,
+  compte_loo_weights <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  min_node_size <span class='op'>=</span> <span class='fl'>1</span>,
+  pseudo_data <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  number_max_dim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose_lvl <span class='op'>=</span> <span class='fl'>2</span>,
+  force_grid <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  oob_weighting <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,7 +212,7 @@
 <em>arXiv preprint arXiv:2005.02912</em>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='fu'>CortForest</span>(<span class='kw'>LifeCycleSavings</span>[,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>],number_max_dim=<span class='fl'>2</span>,n_trees=<span class='fl'>2</span>))
+    <pre class="examples"><div class='input'><span class='op'>(</span><span class='fu'>CortForest</span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>,number_max_dim<span class='op'>=</span><span class='fl'>2</span>,n_trees<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ======================== Computing trees...</div><div class='output co'>#&gt; <span class='warning'>Warning: UNRELIABLE VALUE: Future (‘&lt;none&gt;’) unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".</span></div><div class='output co'>#&gt; ======================== Computing statistics...
 #&gt;      Computing pmf...
 #&gt;      Computing norm matrix...
@@ -233,8 +233,8 @@
 #&gt; Termination conditions:  stopval: -Inf	xtol_rel: 1e-10	maxeval: 1e+06	ftol_rel: 1e-10	ftol_abs: 1e-10 
 #&gt; Number of inequality constraints:  0 
 #&gt; Number of equality constraints:    1 
-#&gt; Optimal value of objective function:  -0.166276932736475 
-#&gt; Optimal value of controls: 0.7655558 0.2344442
+#&gt; Optimal value of objective function:  -0.16632244970922 
+#&gt; Optimal value of controls: 0.7653411 0.2346589
 #&gt; 
 #&gt; 
 #&gt;      Computing oob stats...

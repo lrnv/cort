@@ -94,7 +94,7 @@
       <h1 data-toc-skip>1. Empirical Checkerboard Copula</h1>
                         <h4 class="author">Oskar Laverny</h4>
             
-            <h4 class="date">2020-09-25</h4>
+            <h4 class="date">2020-09-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/vignette01_ecb.Rmd"><code>vignettes/vignette01_ecb.Rmd</code></a></small>
       <div class="hidden name"><code>vignette01_ecb.Rmd</code></div>
@@ -134,11 +134,10 @@
 <p><span class="math display">\[\forall x \in [0,1]^d, \hat{C}(x) = \sum\limits_{\mathbf{i}\in\mathcal{I}} { \hat{\mu}(B_{\mathbf{i}}) \lambda([0,\mathbf{x}]\cap B_{\mathbf{i}})\prod\limits_{p=1}^{d}m_p}\]</span></p>
 <p>You need to provide a dataset, defining <span class="math inline">\(\hat{\mu}\)</span>, to construct the model. For the matter of this vignette, we will use the <code>LifeCycleSavings</code> dataset, which has following pairs dependencies plot :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"LifeCycleSavings"</span>)
-<span class="kw">pseudo_data</span> <span class="op">&lt;-</span> (<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="kw">rank</span>,ties.method=<span class="st">"max"</span>)<span class="op">/</span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">LifeCycleSavings</span>)<span class="op">+</span><span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="kw">pseudo_data</span>,lower.panel=<span class="kw">NULL</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"LifeCycleSavings"</span><span class="op">)</span>
+<span class="va">pseudo_data</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span>,ties.method<span class="op">=</span><span class="st">"max"</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">pseudo_data</span>,lower.panel<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></pre></div>
 <div class="figure">
 <img src="vignette01_ecb_files/figure-html/unnamed-chunk-1-1.png" alt="Pairs-plot of original peusdo-observation from the data" width="672"><p class="caption">
 Pairs-plot of original peusdo-observation from the data
@@ -146,21 +145,19 @@ Pairs-plot of original peusdo-observation from the data
 </div>
 <p>You can see that the variable 2 to 4 have dependencies, while the first and fifth variable seems to be (marginally) independent. The dataset having <span class="math inline">\(n=50\)</span> rows, we will pick a value of <span class="math inline">\(m\)</span> dividing <span class="math inline">\(50\)</span>, e.g <span class="math inline">\(m=5\)</span>, and use the function <code>cbCopula</code> to build our copula model. Since we are already providing the pseudo observations, we will set <code>pseudo = TRUE</code>. Providing a single value for the <span class="math inline">\(m\)</span> parameter will set all <span class="math inline">\(m_i\)</span>’s equal to that value (the default is the proper checkerboard copula).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-(<span class="kw">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbCopula-Class.html">cbCopula</a></span>(x = <span class="kw">pseudo_data</span>,m = <span class="fl">5</span>,pseudo = <span class="fl">TRUE</span>))
+<span class="op">(</span><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbCopula-Class.html">cbCopula</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pseudo_data</span>,m <span class="op">=</span> <span class="fl">5</span>,pseudo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; This is a cbCopula , with : </span>
 <span class="co">#&gt;    dim = 5 </span>
 <span class="co">#&gt;    n = 50 </span>
 <span class="co">#&gt;    m = 5 5 5 5 5 </span>
-<span class="co">#&gt; The variables names are :  sr pop15 pop75 dpi ddpi</span>
-</pre></div>
+<span class="co">#&gt; The variables names are :  sr pop15 pop75 dpi ddpi</span></pre></div>
 <p>For the moment, only some methods exist for this copula. We can calculate it’s values via the <code>pCopula</code> method, or simulate from it via the <code>rCopula</code> method. the <code>dCopula</code> methods gives it’s density. Here is an example of simulation from this model :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">simu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rCopula.html">rCopula</a></span>(n = <span class="fl">1000</span>,copula = <span class="kw">cop</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">simu</span>,<span class="kw">pseudo_data</span>),
-      col=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">simu</span>)),<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">pseudo_data</span>))),
-      gap=<span class="fl">0</span>,
-      lower.panel=<span class="kw">NULL</span>,cex=<span class="fl">0.5</span>)
-</pre></div>
+<span class="va">simu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rCopula.html">rCopula</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>,copula <span class="op">=</span> <span class="va">cop</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">pseudo_data</span><span class="op">)</span>,
+      col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pseudo_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+      gap<span class="op">=</span><span class="fl">0</span>,
+      lower.panel<span class="op">=</span><span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></pre></div>
 <div class="figure">
 <img src="vignette01_ecb_files/figure-html/unnamed-chunk-3-1.png" alt="Pairs-plot of original peusdo-observation from the data (red) with simulated pseudo_observation (black)" width="672"><p class="caption">
 Pairs-plot of original peusdo-observation from the data (red) with simulated pseudo_observation (black)
