@@ -29,8 +29,22 @@ The upstream development version can also be installed with :
 devtools::install_github("lrnv/cort")
 ```
 
+Note that the installation from github will require the system to have a compiler: 
+
+- Windows: Rtools
+- macOS: Xcode CLI
+- Linux: r-base-dev (debian)
+
 
 The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is useful. Please read them for more details. 
+
+## How to report bugs and get support
+
+To report a bug, feel free to open an issue on the github repository. Support can also be provided thorugh the same chanel if you need it.
+
+## How to contribute
+
+Every contribution is welcome, on the form of pull requests on the github repository. For large modifications, please open an issue for discussions firsts. 
 
 
 ## References
