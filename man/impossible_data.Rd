@@ -4,7 +4,11 @@
 \name{impossible_data}
 \alias{impossible_data}
 \title{Dataset impossible_data}
-\format{A matrix with 200 rows and 2 columns}
+\format{
+A matrix with 200 rows and 2 columns
+
+The example section below gives the code to re-generate this data if needed.
+}
 \usage{
 impossible_data
 }
@@ -15,6 +19,22 @@ to a 200x2 uniform sample, and taking ranks.
 }
 \details{
 This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\examples{
+set.seed(seed = 12, kind = "Mersenne-Twister", normal.kind = "Inversion")
+x = matrix(runif(400),200,2)
+x = t(apply(x, 1,function(u){
+  if(u[1]< 1/3){
+    u[2] = 1/2 + u[2]/2
+  } else{ if(u[1]<2/3){
+    u[2] = u[2]/2
+  } else {
+    u[2] = 1/2 + u[2]/2
+  }}
+  return(u)
+}))
+impossible_data = apply(x,2,function(x){return(rank(x,ties.method = "max"))})/(201)
+
 }
 \references{
 \insertRef{laverny2020}{cort}

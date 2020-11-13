@@ -4,7 +4,11 @@
 \name{funcdep_data}
 \alias{funcdep_data}
 \title{Dataset funcdep_data}
-\format{A matrix with 500 rows and 3 columns}
+\format{
+A matrix with 500 rows and 3 columns
+
+The example section below gives the code to re-generate this data if needed.
+}
 \usage{
 funcdep_data
 }
@@ -15,6 +19,14 @@ to uniformly drawn 3-dimensional random vectors. The dataset is the ranks of \eq
 }
 \details{
 This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\examples{
+set.seed(seed = 12,kind = "Mersenne-Twister",normal.kind = "Inversion")
+x = matrix(runif(1500),500,3)
+x[,2] = sin(2*pi*x[,1])-x[,2]/pi
+x[,3] = (x[,3]*(x[,1]<1/4)/2 - sin(pi**(x[,1]))*(x[,1]>1/4))*(1+x[,3]/(pi^2))
+funcdep_data = apply(x,2,function(x){return(rank(x,ties.method = "max"))})/(501)
+
 }
 \references{
 \insertRef{laverny2020}{cort}

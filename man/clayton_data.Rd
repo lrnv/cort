@@ -4,7 +4,11 @@
 \name{clayton_data}
 \alias{clayton_data}
 \title{Dataset clayton_data}
-\format{A matrix with 200 rows and 4 columns}
+\format{
+A matrix with 200 rows and 4 columns
+
+The example section below gives the code to re-generate this data if needed.
+}
 \usage{
 clayton_data
 }
@@ -16,6 +20,21 @@ inducing a negative dependence structure.
 }
 \details{
 This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\examples{
+psi <- function(t,alpha) (1 + sign(alpha)*t) ^ (-1/alpha) # generator
+rClayton <- function(n,dim,alpha){
+  val <- matrix(runif(n * dim), nrow = n)
+  gam <- rgamma(n, shape = 1/alpha, rate = 1)
+  gam <- matrix(gam, nrow = n, ncol = dim)
+  psi(- log(val) / gam,alpha)
+}
+set.seed(12,kind = "Mersenne-Twister",normal.kind = "Inversion")
+clayton_data <- matrix(nrow=200,ncol=4)
+clayton_data[,c(1,4,3)] = rClayton(n=200,dim=3,alpha=7)
+clayton_data[,2] = runif(200)
+clayton_data[,3] <- 1 - clayton_data[,3]
+
 }
 \references{
 \insertRef{laverny2020}{cort}
