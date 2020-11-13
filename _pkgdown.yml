@@ -1,1 +1,38 @@
 destination: docs
+reference:
+- title: "Copula constructors"
+  desc: >
+    Functions that construct a copula object (and corresponding S4 classes),
+    that can be (generally) builded from data and parameters.
+- contents:
+  - Cort
+  - CortForest
+  - ConvexCombCopula
+  - cbCopula
+  - cbkmCopula
+- title: "(r/d/p/v)Copula functions"
+  desc: "Random number generation, density, cdf, and volume functions for the copulas."
+- contents:
+  - rCopula
+  - dCopula
+  - pCopula
+  - vCopula
+- title: "Usefull methods"
+  desc: "Some S4 methods that are included as convenience functions"
+- contents:
+  - biv_rho
+  - biv_tau
+  - kendall_func
+  - loss
+  - project_on_dims
+  - quad_norm
+  - quad_prod
+  - quad_prod_with_data
+  - constraint_infl
+- title: "Datasets"
+  desc: "Four simulated datasets are included for testing and demonstration purposes"
+- contents:
+  - funcdep_data
+  - clayton_data
+  - impossible_data
+  - recoveryourself_data
