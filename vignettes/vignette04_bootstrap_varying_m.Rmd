@@ -97,19 +97,11 @@ pEmpCop <- function(points,data=df){
 
 Now, we also need to calculate the errors that our copulas made compared to the empirical copula (our benchmark).
 ```{r}
-
-# We need to calculate for each copula it's error.
-
-
 error <- function(cop,i,j){
-  
   test <- samples[[i]]$test
-  
-  
   return(sum((pCopula(test,cop) - pEmpCop(test))^2))
   
 }
-
 
 errors <- sapply(1:(nb_replicates*nb_fold),function(i){
   sapply(1:nb_cop,function(j){
