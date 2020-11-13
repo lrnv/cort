@@ -31,7 +31,12 @@ NULL
 
 #' Cort class
 #'
-#' This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
+#' This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. Given a dataset `x`, the function will produce an estimator for the copula of this dataset
+#' that is tree-shaped, by recursive partitioning of the unit hypercube. the `min_node_size` parameter controls the stopping conditions for the splitting procedure. Once the space is splitted,
+#' we ran a quadratic solver, which options can be tweaked via the `osqp_options` parameter, to ensure that the weights respect the copula conditions.
+#'
+#'
+#' See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
@@ -46,7 +51,7 @@ NULL
 #' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.
 #'
 #' @name Cort-Class
-#' @title The Cort estimator
+#' @title Cort copulas
 #' @rdname Cort-Class
 #'
 #' @return a Cort object that can be fitted easily to produce a copula estimate.

@@ -3,7 +3,7 @@
 \name{quad_prod_with_data}
 \alias{quad_prod_with_data}
 \alias{quad_prod_with_data,Cort-method}
-\title{Quadratic product with data of the model}
+\title{Quadratic product with data of the model (if it has one)}
 \usage{
 quad_prod_with_data(object)
 
@@ -16,6 +16,7 @@ quad_prod_with_data(object)
 the quad_prod_with_data of the model
 }
 \description{
+Currently only implemented for Cort models.
 Compute the quadratic product with the empirical density from the data
 }
 \section{Functions}{

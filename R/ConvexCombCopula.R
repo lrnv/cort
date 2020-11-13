@@ -34,7 +34,7 @@ NULL
 #' @title Convex Combination of copulas.
 #'
 #' @name ConvexCombCopula-Class
-#' @title Convex combination of copulas
+#' @title Convex Combinations of copulas
 #' @rdname ConvexCombCopula-Class
 #'
 #' @return a ConvexCombCopula object

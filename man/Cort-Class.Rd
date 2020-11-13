@@ -3,7 +3,7 @@
 \name{Cort-Class}
 \alias{Cort-Class}
 \alias{Cort}
-\title{The Cort estimator}
+\title{Cort copulas}
 \usage{
 Cort(
   x,
@@ -46,7 +46,11 @@ a Cort object that can be fitted easily to produce a copula estimate.
 Cort class
 }
 \details{
-This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
+This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. Given a dataset \code{x}, the function will produce an estimator for the copula of this dataset
+that is tree-shaped, by recursive partitioning of the unit hypercube. the \code{min_node_size} parameter controls the stopping conditions for the splitting procedure. Once the space is splitted,
+we ran a quadratic solver, which options can be tweaked via the \code{osqp_options} parameter, to ensure that the weights respect the copula conditions.
+
+See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure.
 }
 \examples{
 (Cort(LifeCycleSavings[,1:3]))

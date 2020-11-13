@@ -8,7 +8,7 @@
 \alias{rCopula,numeric,CortForest-method}
 \alias{rCopula,numeric,cbCopula-method}
 \alias{rCopula,numeric,cbkmCopula-method}
-\title{Copula random variables simulation}
+\title{Copula random generation}
 \usage{
 rCopula(n, copula, ...)
 
@@ -49,7 +49,7 @@ This function simulate random variables from a copula.
 }}
 
 \examples{
-cop <- cbCopula(LifeCycleSavings,m = 5)
+cop <- cbCopula(Cort::clayton_data,m = 5)
 xx <- rCopula(1000,cop)
 
 }

@@ -3,7 +3,7 @@
 \name{project_on_dims}
 \alias{project_on_dims}
 \alias{project_on_dims,Cort-method}
-\title{Projection on smaller dimensions}
+\title{Projection on smaller dimensions of a copula (if implemented)}
 \usage{
 project_on_dims(object, dims)
 
@@ -18,7 +18,8 @@ project_on_dims(object, dims)
 other cort object
 }
 \description{
-Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree.
+Currently only implemented for Cort models.
+Compute, as a Cort object, the projection on a smaller set of dimensions of a Cort object.
 }
 \section{Functions}{
 \itemize{

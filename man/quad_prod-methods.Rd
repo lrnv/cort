@@ -3,7 +3,7 @@
 \name{quad_prod}
 \alias{quad_prod}
 \alias{quad_prod,Cort,Cort-method}
-\title{Quadratic product of 2 trees}
+\title{Quadratic product of two copulas (if they have one)}
 \usage{
 quad_prod(object, other_tree)
 
@@ -18,6 +18,7 @@ quad_prod(object, other_tree)
 the quadratic product between the trees
 }
 \description{
+Currently only implemented for Cort models.
 Compute the L2 quadratic product of 2 trees
 }
 \section{Functions}{
@@ -27,6 +28,6 @@ Compute the L2 quadratic product of 2 trees
 
 \examples{
 cop <- Cort(LifeCycleSavings[,1:3])
-quad_prod(cop,cop) == quad_norm(cop)
+all.equal(quad_prod(cop,cop),quad_norm(cop))
 
 }

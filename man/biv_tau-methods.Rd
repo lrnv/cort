@@ -24,7 +24,7 @@ Computes the bivariate Kendall's tau matrix for a copula.
 }}
 
 \examples{
-cop <- Cort(LifeCycleSavings[,1:3])
+cop <- Cort(Cort::funcdep_data[,1:3])
 biv_tau(cop)
 
 }

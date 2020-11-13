@@ -58,7 +58,7 @@ setGeneric("vCopula", function(u, v, copula, ...) {
 #' @rdname dCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' cop <- cbCopula(Cort::funcdep_data[1:10,1:2], m = 5)
 #' dCopula(rep(0,5),cop)
 #' dCopula(rep(0.5,5),cop)
 #' dCopula(rep(1,5),cop)
@@ -68,7 +68,7 @@ setGeneric("dCopula", function(u, copula, ...) {
   standardGeneric("dCopula")
 })
 
-#' Copula density
+#' Copula cdf
 #'
 #' This function returns the value of the copula itself on given points.
 #'
@@ -83,7 +83,7 @@ setGeneric("dCopula", function(u, copula, ...) {
 #' @rdname pCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' cop <- cbCopula(Cort::recoveryourself_data,m = 5)
 #' pCopula(rep(0,5),cop) == 0
 #' pCopula(rep(0.5,5),cop)
 #' pCopula(rep(1,5),cop) == 1
@@ -128,7 +128,7 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
           })
 
 
-#' Copula random variables simulation
+#' Copula random generation
 #'
 #' This function simulate random variables from a copula.
 #'
@@ -143,7 +143,7 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' @rdname rCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(LifeCycleSavings,m = 5)
+#' cop <- cbCopula(Cort::clayton_data,m = 5)
 #' xx <- rCopula(1000,cop)
 #'
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
@@ -180,7 +180,7 @@ setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 #' @rdname biv_tau-methods
 #'
 #' @examples
-#' cop <- Cort(LifeCycleSavings[,1:3])
+#' cop <- Cort(Cort::funcdep_data[,1:3])
 #' biv_tau(cop)
 #'
 setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
@@ -188,8 +188,9 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 
 
 
-#' Loss of the model
+#' Loss of a copula estimation (if the model has one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the loss of the model
 #'
 #'
@@ -201,14 +202,15 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' @rdname loss-methods
 #'
 #' @examples
-#' cop <- Cort(LifeCycleSavings[,1:3])
+#' cop <- Cort(Cort::recoveryourself_data)
 #' loss(cop)
 #'
 setGeneric("loss", function(object) standardGeneric("loss"))
 
 
-#' Constraint influence of the model
+#' Constraint influence of the model (if it has one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the constraint influence of the model
 #'
 #'
@@ -220,13 +222,14 @@ setGeneric("loss", function(object) standardGeneric("loss"))
 #' @rdname constraint_infl-methods
 #'
 #' @examples
-#' cop <- Cort(LifeCycleSavings[,1:3])
+#' cop <- Cort(Cort::funcdep_data[,1:3])
 #' constraint_infl(cop)
 #'
 setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
 
-#' Quadratic norm of the model
+#' Quadratic norm of the model (if it has one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the L2 norm of the model
 #'
 #'
@@ -238,13 +241,14 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #' @rdname quad_norm-methods
 #'
 #' @examples
-#' cop <- Cort(LifeCycleSavings[,1:3])
+#' cop <- Cort(Cort::impossible_data)
 #' quad_norm(cop)
 #'
 setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 
-#' Quadratic product with data of the model
+#' Quadratic product with data of the model (if it has one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the quadratic product with the empirical density from the data
 #'
 #'
@@ -261,8 +265,9 @@ setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))
 #'
 setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_with_data"))
 
-#' Quadratic product of 2 trees
+#' Quadratic product of two copulas (if they have one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the L2 quadratic product of 2 trees
 #'
 #'
@@ -276,13 +281,14 @@ setGeneric("quad_prod_with_data", function(object) standardGeneric("quad_prod_wi
 #'
 #' @examples
 #' cop <- Cort(LifeCycleSavings[,1:3])
-#' quad_prod(cop,cop) == quad_norm(cop)
+#' all.equal(quad_prod(cop,cop),quad_norm(cop))
 #'
 setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod"))
 
 
-#' Kendall function
+#' Kendall function of a copula (if it has one)
 #'
+#' Currently only implemented for Cort models.
 #' Compute the kendall cdf from the model in a point t
 #'
 #'
@@ -303,9 +309,10 @@ setGeneric("kendall_func", function(object,t,...) {
   standardGeneric("kendall_func")
 })
 
-#' Projection on smaller dimensions
+#' Projection on smaller dimensions of a copula (if implemented)
 #'
-#' Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree.
+#' Currently only implemented for Cort models.
+#' Compute, as a Cort object, the projection on a smaller set of dimensions of a Cort object.
 #'
 #'
 #' @param object : the tree

@@ -3,7 +3,7 @@
 \name{cbkmCopula-Class}
 \alias{cbkmCopula-Class}
 \alias{cbkmCopula}
-\title{Checkerboard with known margins}
+\title{Checkerboards with known margins}
 \usage{
 cbkmCopula(
   x,

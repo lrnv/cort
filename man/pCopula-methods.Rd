@@ -8,7 +8,7 @@
 \alias{pCopula,matrix,CortForest-method}
 \alias{pCopula,matrix,cbCopula-method}
 \alias{pCopula,matrix,cbkmCopula-method}
-\title{Copula density}
+\title{Copula cdf}
 \usage{
 pCopula(u, copula, ...)
 
@@ -49,7 +49,7 @@ This function returns the value of the copula itself on given points.
 }}
 
 \examples{
-cop <- cbCopula(LifeCycleSavings,m = 5)
+cop <- cbCopula(Cort::recoveryourself_data,m = 5)
 pCopula(rep(0,5),cop) == 0
 pCopula(rep(0.5,5),cop)
 pCopula(rep(1,5),cop) == 1
