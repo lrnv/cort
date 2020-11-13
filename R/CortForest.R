@@ -64,6 +64,9 @@ CortForest = function(x,
                 force_grid = FALSE,
                 oob_weighting = TRUE) {
 
+  # Furrr options to set seed :
+  FO = furrr::furrr_options(seed=TRUE)
+
   # Deal with verbosity :
   showing = ifelse(verbose_lvl <= 1,"","========================")
 
@@ -88,7 +91,7 @@ CortForest = function(x,
          pseudo_data=TRUE,
          number_max_dim=number_max_dim,
          verbose_lvl=0,
-         force_grid = force_grid)},.progress=TRUE)
+         force_grid = force_grid)},.progress=TRUE,.options = FO)
 
   # Compute the stats
   if(verbose_lvl>0){cat(showing,"Computing statistics...\n")}
@@ -106,7 +109,7 @@ CortForest = function(x,
   norm_matrix = diag(purrr::map_dbl(trees,quad_norm))/2
   idx = data.frame(nrow = rep(1:n_trees,n_trees),ncol=rep(1:n_trees,each=n_trees))
   idx = idx[idx$nrow < idx$ncol,]
-  norm_matrix[as.matrix(idx)] <- furrr::future_map_dbl(1:nrow(idx),function(i){quad_prod(trees[[idx[i,1]]],trees[[idx[i,2]]])},.progress=TRUE)
+  norm_matrix[as.matrix(idx)] <- furrr::future_map_dbl(1:nrow(idx),function(i){quad_prod(trees[[idx[i,1]]],trees[[idx[i,2]]])},.progress=TRUE,.options = FO)
   norm_matrix = norm_matrix + t(norm_matrix)
 
   # Fitting weights
