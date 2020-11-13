@@ -4,7 +4,11 @@
 \name{recoveryourself_data}
 \alias{recoveryourself_data}
 \title{Dataset recoveryourself_data}
-\format{A matrix with 500 rows and 2 columns}
+\format{
+A matrix with 500 rows and 2 columns
+
+The example section below gives the code to re-generate this data if needed.
+}
 \usage{
 recoveryourself_data
 }
@@ -16,6 +20,23 @@ observations, uniform on the unit hypercube, and apply the following function:
 }
 \details{
 This dataset is studied in O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020).
+}
+\examples{
+set.seed(seed = 12, kind = "Mersenne-Twister", normal.kind = "Inversion")
+x = matrix(runif(1000),500,2)
+recoveryourself_data = t(apply(x, 1,function(u){
+  if(u[1]< 1/4){
+    u[2] = 3/4 + u[2]/4
+  } else{ if(u[1]<1/2){
+    u[2] = 1/2 + u[2]/4
+  } else { if(u[1]<3/4){
+    u[2] = u[2]/4
+  } else {
+    u[2] = 1/4 + u[2]/4
+  }}}
+  return(u)
+}))
+
 }
 \references{
 \insertRef{laverny2020}{cort}
