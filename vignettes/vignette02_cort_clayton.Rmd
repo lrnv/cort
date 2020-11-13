@@ -54,7 +54,6 @@ data[,c(1,4,3)] = rClayton(n=n,dim=d-1,alpha=7)
 data[,2] = runif(n)
 data[,3] <- 1 - data[,3]
 
-
 pairs(data,cex=0.6)
   
 ```
