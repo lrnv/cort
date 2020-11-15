@@ -95,7 +95,7 @@
       <h1 data-toc-skip>4. Convex mixture of m-randomized checkerboards</h1>
                         <h4 class="author">Oskar Laverny</h4>
             
-            <h4 class="date">2020-11-12</h4>
+            <h4 class="date">2020-11-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/vignette04_bootstrap_varying_m.Rmd"><code>vignettes/vignette04_bootstrap_varying_m.Rmd</code></a></small>
       <div class="hidden name"><code>vignette04_bootstrap_varying_m.Rmd</code></div>
@@ -171,19 +171,11 @@
 <span class="op">}</span></code></pre></div>
 <p>Now, we also need to calculate the errors that our copulas made compared to the empirical copula (our benchmark).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># We need to calculate for each copula it's error.</span>
-
-
-<span class="va">error</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cop</span>,<span class="va">i</span>,<span class="va">j</span><span class="op">)</span><span class="op">{</span>
-  
+<code class="sourceCode R"><span class="va">error</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cop</span>,<span class="va">i</span>,<span class="va">j</span><span class="op">)</span><span class="op">{</span>
   <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">samples</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">test</span>
-  
-  
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="../reference/pCopula.html">pCopula</a></span><span class="op">(</span><span class="va">test</span>,<span class="va">cop</span><span class="op">)</span> <span class="op">-</span> <span class="fu">pEmpCop</span><span class="op">(</span><span class="va">test</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
   
 <span class="op">}</span>
-
 
 <span class="va">errors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">nb_replicates</span><span class="op">*</span><span class="va">nb_fold</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nb_cop</span>,<span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">{</span>

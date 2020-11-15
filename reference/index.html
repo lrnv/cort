@@ -145,8 +145,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-copula-constructors" class="hasAnchor"><a href="#section-copula-constructors" class="anchor"></a>Copula constructors</h2>
+          <p class="section-desc"><p>Functions that construct a copula object (and corresponding S4 classes), that can be (generally) builded from data and parameters.</p></p>
         </th>
       </tr>
       
@@ -155,12 +155,6 @@
       
       
       <tr>
-        
-        <td>
-          <p><code><a href="ConvexCombCopula-class.html">ConvexCombCopula()</a></code> </p>
-        </td>
-        <td><p>Convex Combination of copulas.</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="Cort-Class.html">Cort()</a></code> </p>
@@ -175,15 +169,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="biv_rho-methods.html">biv_rho()</a></code> </p>
+          <p><code><a href="ConvexCombCopula-class.html">ConvexCombCopula()</a></code> </p>
         </td>
-        <td><p>Spearman's rho matrix of a copula</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="biv_tau-methods.html">biv_tau()</a></code> </p>
-        </td>
-        <td><p>Kendall's tau matrix of a copula</p></td>
+        <td><p>Convex Combination of copulas.</p></td>
       </tr><tr>
         
         <td>
@@ -196,18 +184,25 @@
           <p><code><a href="cbkmCopula-Class.html">cbkmCopula()</a></code> </p>
         </td>
         <td><p>Checkerboard with known margins</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section--r-d-p-v-copula-functions" class="hasAnchor"><a href="#section--r-d-p-v-copula-functions" class="anchor"></a>(r/d/p/v)Copula functions</h2>
+          <p class="section-desc"><p>Random number generation, density, cdf, and volume functions for the copulas.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
-          <p><code><a href="clayton_data.html">clayton_data</a></code> </p>
+          <p><code><a href="rCopula-methods.html">rCopula()</a></code> </p>
         </td>
-        <td><p>Dataset clayton_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="constraint_infl-methods.html">constraint_infl()</a></code> </p>
-        </td>
-        <td><p>Constraint influence of the model</p></td>
+        <td><p>Copula random variables simulation</p></td>
       </tr><tr>
         
         <td>
@@ -217,15 +212,40 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="funcdep_data.html">funcdep_data</a></code> </p>
+          <p><code><a href="pCopula-methods.html">pCopula()</a></code> </p>
         </td>
-        <td><p>Dataset funcdep_data</p></td>
+        <td><p>Copula density</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="impossible_data.html">impossible_data</a></code> </p>
+          <p><code><a href="vCopula-methods.html">vCopula()</a></code> </p>
         </td>
-        <td><p>Dataset impossible_data</p></td>
+        <td><p>Copula volume on hyper-boxes</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-usefull-methods" class="hasAnchor"><a href="#section-usefull-methods" class="anchor"></a>Usefull methods</h2>
+          <p class="section-desc"><p>Some S4 methods that are included as convenience functions</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="biv_rho-methods.html">biv_rho()</a></code> </p>
+        </td>
+        <td><p>Spearman's rho matrix of a copula</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="biv_tau-methods.html">biv_tau()</a></code> </p>
+        </td>
+        <td><p>Kendall's tau matrix of a copula</p></td>
       </tr><tr>
         
         <td>
@@ -238,12 +258,6 @@
           <p><code><a href="loss-methods.html">loss()</a></code> </p>
         </td>
         <td><p>Loss of the model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pCopula-methods.html">pCopula()</a></code> </p>
-        </td>
-        <td><p>Copula density</p></td>
       </tr><tr>
         
         <td>
@@ -271,21 +285,46 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="rCopula-methods.html">rCopula()</a></code> </p>
+          <p><code><a href="constraint_infl-methods.html">constraint_infl()</a></code> </p>
         </td>
-        <td><p>Copula random variables simulation</p></td>
+        <td><p>Constraint influence of the model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-datasets" class="hasAnchor"><a href="#section-datasets" class="anchor"></a>Datasets</h2>
+          <p class="section-desc"><p>Four simulated datasets are included for testing and demonstration purposes</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="funcdep_data.html">funcdep_data</a></code> </p>
+        </td>
+        <td><p>Dataset funcdep_data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="clayton_data.html">clayton_data</a></code> </p>
+        </td>
+        <td><p>Dataset clayton_data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="impossible_data.html">impossible_data</a></code> </p>
+        </td>
+        <td><p>Dataset impossible_data</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="recoveryourself_data.html">recoveryourself_data</a></code> </p>
         </td>
         <td><p>Dataset recoveryourself_data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="vCopula-methods.html">vCopula()</a></code> </p>
-        </td>
-        <td><p>Copula volume on hyper-boxes</p></td>
       </tr>
     </tbody>
     </table>

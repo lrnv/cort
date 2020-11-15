@@ -94,7 +94,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>2. The Copula Recursive Tree</h1>
             
-            <h4 class="date">2020-11-12</h4>
+            <h4 class="date">2020-11-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/vignette02_cort_clayton.Rmd"><code>vignettes/vignette02_cort_clayton.Rmd</code></a></small>
       <div class="hidden name"><code>vignette02_cort_clayton.Rmd</code></div>
@@ -120,19 +120,9 @@
   <span class="va">gam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">gam</span>, nrow <span class="op">=</span> <span class="va">n</span>, ncol <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
   <span class="fu">psi</span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">val</span><span class="op">)</span> <span class="op">/</span> <span class="va">gam</span>,<span class="va">alpha</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p>For reproducibility reasons, we set the random number generator. This vignette has been compiled on a version of R &gt; 3.6, so the fix of the random number generator added in this version is used. To reproduce results from an earlier version, just use <code>sample.kind = "Rounding"</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">set_seed</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seed</span><span class="op">)</span><span class="op">{</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">minor</span><span class="op">)</span><span class="op">&lt;</span><span class="fl">6</span><span class="op">)</span><span class="op">{</span>
-    <span class="co"># the way of specifying the random number generation changed. </span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="va">seed</span>,kind <span class="op">=</span> <span class="st">"Mersenne-Twister"</span>,normal.kind <span class="op">=</span> <span class="st">"Inversion"</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="va">seed</span>,kind <span class="op">=</span> <span class="st">"Mersenne-Twister"</span>,normal.kind <span class="op">=</span> <span class="st">"Inversion"</span>,sample.kind <span class="op">=</span> <span class="st">"Rejection"</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre></div>
 <p>The following code simulates a dataset and then visualise it :</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">set_seed</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
 <span class="va">n</span> <span class="op">=</span> <span class="fl">200</span> <span class="co"># taken small to reduce runtime of the vignette.</span>
 <span class="va">d</span> <span class="op">=</span> <span class="fl">4</span>
 <span class="va">n_trees</span> <span class="op">=</span> <span class="fl">5</span> <span class="co"># taken small to reduce runtime of the vignette.</span>
@@ -143,7 +133,6 @@
 <span class="va">data</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
 <span class="va">data</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">data</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>
 
-
 <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">data</span>,cex<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span></code></pre></div>
 <p><img src="vignette02_cort_clayton_files/figure-html/dataset-1.png" width="672"></p>
 <p>We can clearly see that the second marginal is independent form the rest. In the following we will use this package to fit this dependence structure.</p>
@@ -152,7 +141,7 @@
 <h1 class="hasAnchor">
 <a href="#fitting-the-cort-copula" class="anchor"></a>Fitting the Cort copula</h1>
 <p>Now that we have a dataset, we can run the Cort algorithm on it. In the implementation proposed here, this is done via the <code><a href="../reference/Cort-Class.html">cort::Cort()</a></code> function, passing first the dataset, and then various parameters. See <code><a href="../reference/Cort-Class.html">?Cort</a></code> for a detailed list of parameters. Note that the verbosity level is quite progressive: We will here put it on 4 to see the splitting decisions that the algorithm is making.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
 <span class="op">(</span><span class="va">model</span> <span class="op">=</span> <span class="fu"><a href="../reference/Cort-Class.html">Cort</a></span><span class="op">(</span><span class="va">data</span>,verbose_lvl <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Splitting...</span>
@@ -172,14 +161,14 @@
 <span class="co">#&gt; Done !</span>
 <span class="co">#&gt; Cort copula model: 200x4-dataset and 432 leaves.</span></code></pre></div>
 <p>Looking at the top of the output, we see that the first thing the algorithm did was removing the second dimension due to the independence test. Now that the copula is fitted, we have access to numerous of it’s methods. Two plotting functions are exported with this model, the <code>pairs</code> function is implemented at a very low level in the class hierarchy and hence is working with almost all copulas of this package, but the <code>plot</code> function is only implemented for Cort.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="vignette02_cort_clayton_files/figure-html/unnamed-chunk-1-1.png" alt="Pairs-plot of original data (in black, bottom-left corner) versus a simulation from the model (in red, top-right corner)" width="672"><p class="caption">
 Pairs-plot of original data (in black, bottom-left corner) versus a simulation from the model (in red, top-right corner)
 </p>
 </div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="vignette02_cort_clayton_files/figure-html/unnamed-chunk-2-1.png" alt="Gray boxes representing 2-d projections of the fitted density. In red, the imputed data points." width="672"><p class="caption">
