@@ -23,7 +23,7 @@ the quadratic product between the trees
 }
 \description{
 Currently only implemented for Cort models.
-Compute the kendall cdf from the model in a point t
+Compute the Kendall cdf from the model in a point t
 }
 \section{Functions}{
 \itemize{

@@ -27,9 +27,9 @@ u must be piecewise smaller than v, otherwise the function will return an error.
 }
 \details{
 A method is currently implemented for the main virtual class 'Copula', but it assumes
-that a pCopula method is avaliable for the given copula.
+that a pCopula method is avaliable for the given copula. This method could be used with Copulas that are not from this package, assuming that pCopula(u,cop) works.
 
-This function computes the measure of the copula according to the algorithm proposed by the referenced paper.
+This function computes the measure of the copula according to the algorithm proposed by Cherubini U, Romagnoli S (2009-oct).
 }
 \examples{
 cop <- cbCopula(LifeCycleSavings,m = 5)

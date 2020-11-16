@@ -17,7 +17,7 @@ the Integrated square error loss of the model
 }
 \description{
 Currently only implemented for Cort models.
-Compute the loss of the model
+Compute the loss of the model.
 }
 \section{Functions}{
 \itemize{

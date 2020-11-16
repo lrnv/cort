@@ -30,7 +30,7 @@ pCopula(u, copula, ...)
 \item{...}{other parameter to be passed to methods for this generic.}
 }
 \value{
-the density of the copula on each observation
+The value of the copula on each observation
 }
 \description{
 This function returns the value of the copula itself on given points.

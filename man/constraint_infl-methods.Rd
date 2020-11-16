@@ -30,7 +30,7 @@ Compute the constraint influence of the model
 }}
 
 \examples{
-cop <- Cort(cort::recover_yourself[1:10,])
+cop <- Cort(cort::recoveryourself_data[1:10,])
 constraint_infl(cop)
 
 }

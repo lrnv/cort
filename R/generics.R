@@ -10,9 +10,9 @@ NULL
 #' u must be piecewise smaller than v, otherwise the function will return an error.
 #'
 #' A method is currently implemented for the main virtual class 'Copula', but it assumes
-#' that a pCopula method is avaliable for the given copula.
+#' that a pCopula method is avaliable for the given copula. This method could be used with Copulas that are not from this package, assuming that pCopula(u,cop) works.
 #'
-#' This function computes the measure of the copula according to the algorithm proposed by the referenced paper.
+#' This function computes the measure of the copula according to the algorithm proposed by Cherubini U, Romagnoli S (2009-oct).
 #'
 #'
 #' @param u numeric matrix : minimum point of the hyper-rectangles, one row per observation.
@@ -52,7 +52,7 @@ setGeneric("vCopula", function(u, v, copula, ...) {
 #' @param copula the copula object
 #' @param ... other parameter to be passed to methods for this generic.
 #'
-#' @return the density of the copula on each observation
+#' @return The density of the copula on each observation
 #' @exportMethod dCopula
 #' @name dCopula
 #' @rdname dCopula-methods
@@ -77,7 +77,7 @@ setGeneric("dCopula", function(u, copula, ...) {
 #' @param copula the copula object
 #' @param ... other parameter to be passed to methods for this generic.
 #'
-#' @return the density of the copula on each observation
+#' @return The value of the copula on each observation
 #' @exportMethod pCopula
 #' @name pCopula
 #' @rdname pCopula-methods
@@ -130,14 +130,14 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 
 #' Copula random generation
 #'
-#' This function simulate random variables from a copula.
+#' Random number generation following the given copula. This function performs the simulation of random vectors following the copula.
 #'
 #'
 #' @param n the number of simulations
 #' @param copula the copula object
 #' @param ... other parameter to be passed to methods for this generic.
 #'
-#' @return the density of the copula on each observation
+#' @return A matrix with `n` rows, each representing a random vetor generated from the provided copula.
 #' @exportMethod rCopula
 #' @name rCopula
 #' @rdname rCopula-methods
@@ -191,7 +191,7 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' Loss of a copula estimation (if the model has one)
 #'
 #' Currently only implemented for Cort models.
-#' Compute the loss of the model
+#' Compute the loss of the model.
 #'
 #'
 #' @param object the copula object
@@ -222,7 +222,7 @@ setGeneric("loss", function(object) standardGeneric("loss"))
 #' @rdname constraint_infl-methods
 #'
 #' @examples
-#' cop <- Cort(cort::recover_yourself[1:10,])
+#' cop <- Cort(cort::recoveryourself_data[1:10,])
 #' constraint_infl(cop)
 #'
 setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
@@ -289,7 +289,7 @@ setGeneric("quad_prod", function(object,other_tree) standardGeneric("quad_prod")
 #' Kendall function of a copula (if it has one)
 #'
 #' Currently only implemented for Cort models.
-#' Compute the kendall cdf from the model in a point t
+#' Compute the Kendall cdf from the model in a point t
 #'
 #'
 #' @param object : the tree
