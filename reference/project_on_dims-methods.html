@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Projection on smaller dimensions — project_on_dims • cort</title>
+<title>Projection on smaller dimensions of a copula (if implemented) — project_on_dims • cort</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Projection on smaller dimensions — project_on_dims" />
-<meta property="og:description" content="Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree." />
+<meta property="og:title" content="Projection on smaller dimensions of a copula (if implemented) — project_on_dims" />
+<meta property="og:description" content="Currently only implemented for Cort models.
+Compute, as a Cort object, the projection on a smaller set of dimensions of a Cort object." />
 
 
 
@@ -132,13 +133,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Projection on smaller dimensions</h1>
+    <h1>Projection on smaller dimensions of a copula (if implemented)</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
     <div class="hidden name"><code>project_on_dims-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute, as a cort tree, the projection on a smaller set of dimensions of a cort tree.</p>
+    <p>Currently only implemented for Cort models.
+Compute, as a Cort object, the projection on a smaller set of dimensions of a Cort object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>project_on_dims</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>dims</span><span class='op'>)</span>
@@ -176,8 +178,8 @@
 #&gt;      1 leaves to split...
 #&gt;      5 leaves to split...
 #&gt;      10 leaves to split...
-#&gt;      2 leaves to split...
-#&gt;      3 leaves to split...
+#&gt;      6 leaves to split...
+#&gt;      1 leaves to split...
 #&gt; Enforcing constraints...
 #&gt; Done !</div><div class='input'><span class='va'>projection</span> <span class='op'>=</span> <span class='fu'>project_on_dims</span><span class='op'>(</span><span class='va'>cop</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 

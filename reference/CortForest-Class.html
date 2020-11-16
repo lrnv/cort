@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bagged Cort estimates — CortForest-Class • cort</title>
+<title>Bagged Cort copulas — CortForest-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Bagged Cort estimates — CortForest-Class" />
+<meta property="og:title" content="Bagged Cort copulas — CortForest-Class" />
 <meta property="og:description" content="CortForest class" />
 
 
@@ -132,7 +132,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bagged Cort estimates</h1>
+    <h1>Bagged Cort copulas</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/CortForest.R'><code>R/CortForest.R</code></a></small>
     <div class="hidden name"><code>CortForest-Class.Rd</code></div>
     </div>
@@ -201,10 +201,11 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a CortForest object that can be fitted easily to produce a copula estimate.</p>
+    <p>An instance of the <code>CortForest</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This class implements the bagging of CORT models, with an oob error minimisation in the weights. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.</p>
+    <p>This class implements the bagging of CORT models, with an out-of-bag error minimisation in the weights.</p>
+<p>See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure, and <code><a href='https://rdrr.io/r/utils/vignette.html'>vignettes(package='cort')</a></code> for examples of usecases.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020).

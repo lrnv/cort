@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checkerboard with known margins — cbkmCopula-Class • cort</title>
+<title>Checkerboards with known margins — cbkmCopula-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Checkerboard with known margins — cbkmCopula-Class" />
+<meta property="og:title" content="Checkerboards with known margins — cbkmCopula-Class" />
 <meta property="og:description" content="cbkmCopula contructor" />
 
 
@@ -132,7 +132,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Checkerboard with known margins</h1>
+    <h1>Checkerboards with known margins</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/cbkmCopula.R'><code>R/cbkmCopula.R</code></a></small>
     <div class="hidden name"><code>cbkmCopula-Class.Rd</code></div>
     </div>
@@ -176,12 +176,13 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a cbkmCopula object</p>
+    <p>An instance of the <code>cbkmCopula</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Given some empirical data, and given some known copula estimation on a sub-vector of this data,
 the checkerboard with known margins construction consist in
-a conditional pattern where the checkerboard part is conditional on the known part of the copula. See the corresponding vignette for more details.</p>
+a conditional pattern where a checkerboard copula is fitted (similar the the <code>cbCopula</code> algorithm), but conditionally on some known margins.</p>
+<p>See the corresponding vignette for more details.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='va'>rank</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span>

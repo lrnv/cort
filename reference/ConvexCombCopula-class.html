@@ -158,13 +158,14 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ConvexCombCopula object</p>
+    <p>An instance of the <code>ConvexCombCopula</code> S4 class. The object represent the copula that results from a convex combinaison of other copulas, and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The ConvexCombcopula class is used to build convex combinations of copulas,
 with given positives weights. The rCopula and pCopula functions works for
 those copulas, assuming they work for the given copulas that we combined
 in a convex way.</p>
+<p>See the corresponding vignette for more details about the implementation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span>,<span class='fl'>2</span>,<span class='va'>rank</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span>

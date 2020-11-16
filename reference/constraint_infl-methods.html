@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Constraint influence of the model — constraint_infl • cort</title>
+<title>Constraint influence of the model (if it has one) — constraint_infl • cort</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Constraint influence of the model — constraint_infl" />
-<meta property="og:description" content="Compute the constraint influence of the model" />
+<meta property="og:title" content="Constraint influence of the model (if it has one) — constraint_infl" />
+<meta property="og:description" content="Currently only implemented for Cort models.
+Compute the constraint influence of the model" />
 
 
 
@@ -132,13 +133,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Constraint influence of the model</h1>
+    <h1>Constraint influence of the model (if it has one)</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/CortForest.R'><code>R/CortForest.R</code></a></small>
     <div class="hidden name"><code>constraint_infl-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute the constraint influence of the model</p>
+    <p>Currently only implemented for Cort models.
+Compute the constraint influence of the model</p>
     </div>
 
     <pre class="usage"><span class='fu'>constraint_infl</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
@@ -170,17 +172,15 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Cort-Class.html'>Cort</a></span><span class='op'>(</span><span class='fu'>cort</span><span class='fu'>::</span><span class='va'><a href='recoveryourself_data.html'>recoveryourself_data</a></span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Splitting...
 #&gt; 
 #&gt;      1 leaves to split...
-#&gt;      5 leaves to split...
-#&gt;      10 leaves to split...
+#&gt;      2 leaves to split...
 #&gt;      3 leaves to split...
-#&gt;      1 leaves to split...
 #&gt; Enforcing constraints...
 #&gt; Done !</div><div class='input'><span class='fu'>constraint_infl</span><span class='op'>(</span><span class='va'>cop</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 10.42247</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 1.078108</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

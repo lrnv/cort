@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Quadratic product with data of the model — quad_prod_with_data • cort</title>
+<title>Quadratic product with data of the model (if it has one) — quad_prod_with_data • cort</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Quadratic product with data of the model — quad_prod_with_data" />
-<meta property="og:description" content="Compute the quadratic product with the empirical density from the data" />
+<meta property="og:title" content="Quadratic product with data of the model (if it has one) — quad_prod_with_data" />
+<meta property="og:description" content="Currently only implemented for Cort models.
+Compute the quadratic product with the empirical density from the data" />
 
 
 
@@ -132,13 +133,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Quadratic product with data of the model</h1>
+    <h1>Quadratic product with data of the model (if it has one)</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/generics.R'><code>R/generics.R</code></a>, <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
     <div class="hidden name"><code>quad_prod_with_data-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute the quadratic product with the empirical density from the data</p>
+    <p>Currently only implemented for Cort models.
+Compute the quadratic product with the empirical density from the data</p>
     </div>
 
     <pre class="usage"><span class='fu'>quad_prod_with_data</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span>
@@ -172,11 +174,10 @@
 #&gt;      1 leaves to split...
 #&gt;      5 leaves to split...
 #&gt;      10 leaves to split...
-#&gt;      2 leaves to split...
-#&gt;      2 leaves to split...
+#&gt;      3 leaves to split...
 #&gt; Enforcing constraints...
 #&gt; Done !</div><div class='input'><span class='fu'>quad_prod_with_data</span><span class='op'>(</span><span class='va'>cop</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 16.92788</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 28.38589</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

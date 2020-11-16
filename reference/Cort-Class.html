@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Cort estimator — Cort-Class • cort</title>
+<title>Cort copulas — Cort-Class • cort</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="The Cort estimator — Cort-Class" />
+<meta property="og:title" content="Cort copulas — Cort-Class" />
 <meta property="og:description" content="Cort class" />
 
 
@@ -132,7 +132,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The Cort estimator</h1>
+    <h1>Cort copulas</h1>
     <small class="dont-index">Source: <a href='https://github.com/lrnv/cort/blob/master/R/Cort.R'><code>R/Cort.R</code></a></small>
     <div class="hidden name"><code>Cort-Class.Rd</code></div>
     </div>
@@ -163,11 +163,11 @@
     </tr>
     <tr>
       <th>p_value_for_dim_red</th>
-      <td><p>a p_value for the localised dimension reduction test</p></td>
+      <td><p>a p_value for the localized dimension reduction test</p></td>
     </tr>
     <tr>
       <th>min_node_size</th>
-      <td><p>The minimum number of observation avaliable in a leaf to initialise a split.</p></td>
+      <td><p>The minimum number of observation available in a leaf to initialize a split.</p></td>
     </tr>
     <tr>
       <th>pseudo_data</th>
@@ -179,7 +179,7 @@
     </tr>
     <tr>
       <th>verbose_lvl</th>
-      <td><p>numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.</p></td>
+      <td><p>numeric. set the verbosity. 0 for no output and bigger you set it the most output you get.</p></td>
     </tr>
     <tr>
       <th>slsqp_options</th>
@@ -195,16 +195,20 @@
     </tr>
     <tr>
       <th>force_grid</th>
-      <td><p>boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.</p></td>
+      <td><p>Set to TRUE to force breakpoints to be on the n-checkerboard grid.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a Cort object that can be fitted easily to produce a copula estimate.</p>
+    <p>An instance of the <code>Cort</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.</p>
+    <p>This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. Given a dataset <code>x</code>, the function will produce an estimator for the copula of this dataset
+that is tree-shaped, by recursive partitioning of the unit hypercube. the <code>min_node_size</code> parameter controls the stopping conditions for the splitting procedure. Once the space is splitted,
+we ran a quadratic solver, which options can be tweaked via the <code>osqp_options</code> parameter, to ensure that the weights respect the copula conditions.</p>
+<p>Once the model is fitted, it can be used through the classical (r/d/p/v)Copula functions to compute, respectively, random number generations, the density, the cdf and the volume function of the copula.</p>
+<p>See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and <code><a href='https://rdrr.io/r/utils/vignette.html'>vignettes(package='cort')</a></code> for examples of usecases.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020).

@@ -171,7 +171,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the density of the copula on each observation</p>
+    <p>The density of the copula on each observation</p>
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
@@ -182,10 +182,10 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span><span class='op'>(</span><span class='va'>LifeCycleSavings</span>,m <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>5</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>cop</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cbCopula-Class.html'>cbCopula</a></span><span class='op'>(</span><span class='fu'>cort</span><span class='fu'>::</span><span class='va'><a href='funcdep_data.html'>funcdep_data</a></span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, m <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>2</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>dCopula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>,<span class='va'>cop</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0</div><div class='input'>
 </div></pre>
   </div>
