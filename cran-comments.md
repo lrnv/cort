@@ -18,14 +18,4 @@
 * Fedora Linux (on R-Hub), R devel
 
 ## R CMD check results
-There were no ERRORs or WARNINGs
-
-There was 1 NOTE, produced on some (not all) check engines:
-
-#> * checking CRAN incoming feasibility ... NOTE
-#> Maintainer: 'Oskar Laverny '
-#> Possibly mis-spelled words in DESCRIPTION:
-#> Laverny (10:602)
-#> Rullière (10:641)
-
-These two words are well-spelled names of authors from a cited paper in the Description field.
+There were no NOTEs, ERRORs or WARNINGs
