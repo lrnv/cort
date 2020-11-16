@@ -30,7 +30,7 @@ rCopula(n, copula, ...)
 \item{...}{other parameter to be passed to methods for this generic.}
 }
 \value{
-A matrix with \code{n} rows, each representing a random vetor generated from the provided copula.
+A matrix with \code{n} rows, each representing a random vector generated from the provided copula.
 }
 \description{
 Random number generation following the given copula. This function performs the simulation of random vectors following the copula.

@@ -137,7 +137,7 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' @param copula the copula object
 #' @param ... other parameter to be passed to methods for this generic.
 #'
-#' @return A matrix with `n` rows, each representing a random vetor generated from the provided copula.
+#' @return A matrix with `n` rows, each representing a random vector generated from the provided copula.
 #' @exportMethod rCopula
 #' @name rCopula
 #' @rdname rCopula-methods
@@ -202,7 +202,7 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' @rdname loss-methods
 #'
 #' @examples
-#' cop <- Cort(cort::recoveryourself_data)
+#' cop <- Cort(cort::recoveryourself_data[1:10,])
 #' loss(cop)
 #'
 setGeneric("loss", function(object) standardGeneric("loss"))

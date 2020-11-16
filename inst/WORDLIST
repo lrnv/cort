@@ -1,6 +1,7 @@
 AppVeyor
 Assymptotics
 CLI
+Cherubini
 Codecov
 ConvexCombCopula
 ConvexCombcopula
@@ -20,7 +21,9 @@ Masiello
 Maume
 Neslehova
 Quesada
+README
 Rcpp
+Romagnoli
 Rtools
 Rullière
 Sempi
@@ -73,12 +76,14 @@ multiprocess
 neq
 nloptr
 notin
+oct
 oob
 optimisation
 osqp
 osqpSettings
 pCopula
 pkgdowm
+pkgdown
 plateform
 preprint
 priori
