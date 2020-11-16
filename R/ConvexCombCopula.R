@@ -29,15 +29,17 @@ NULL
 #' those copulas, assuming they work for the given copulas that we combined
 #' in a convex way.
 #'
+#' See the corresponding vignette for more details about the implementation.
+#'
 #' @param copulas a list of copulas of same dimension
 #' @param alpha a vector of (positive) weights
 #' @title Convex Combination of copulas.
 #'
 #' @name ConvexCombCopula-Class
-#' @title Convex combination of copulas
+#' @title Convex Combinations of copulas
 #' @rdname ConvexCombCopula-Class
 #'
-#' @return a ConvexCombCopula object
+#' @return An instance of the `ConvexCombCopula` S4 class. The object represent the copula that results from a convex combinaison of other copulas, and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 #' @export
 #'
 #' @examples

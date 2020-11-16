@@ -4,7 +4,7 @@
 \alias{constraint_infl}
 \alias{constraint_infl,Cort-method}
 \alias{constraint_infl,CortForest-method}
-\title{Constraint influence of the model}
+\title{Constraint influence of the model (if it has one)}
 \usage{
 constraint_infl(object)
 
@@ -19,6 +19,7 @@ constraint_infl(object)
 The constraint influence statistic of the model
 }
 \description{
+Currently only implemented for Cort models.
 Compute the constraint influence of the model
 }
 \section{Functions}{
@@ -29,7 +30,7 @@ Compute the constraint influence of the model
 }}
 
 \examples{
-cop <- Cort(LifeCycleSavings[,1:3])
+cop <- Cort(cort::recoveryourself_data[1:10,])
 constraint_infl(cop)
 
 }

@@ -8,7 +8,7 @@
 \alias{pCopula,matrix,CortForest-method}
 \alias{pCopula,matrix,cbCopula-method}
 \alias{pCopula,matrix,cbkmCopula-method}
-\title{Copula density}
+\title{Copula cdf}
 \usage{
 pCopula(u, copula, ...)
 
@@ -30,7 +30,7 @@ pCopula(u, copula, ...)
 \item{...}{other parameter to be passed to methods for this generic.}
 }
 \value{
-the density of the copula on each observation
+The value of the copula on each observation
 }
 \description{
 This function returns the value of the copula itself on given points.
@@ -49,9 +49,9 @@ This function returns the value of the copula itself on given points.
 }}
 
 \examples{
-cop <- cbCopula(LifeCycleSavings,m = 5)
-pCopula(rep(0,5),cop) == 0
-pCopula(rep(0.5,5),cop)
-pCopula(rep(1,5),cop) == 1
+cop <- cbCopula(cort::recoveryourself_data,m = 5)
+pCopula(rep(0,2),cop) == 0
+pCopula(rep(0.5,2),cop)
+pCopula(rep(1,2),cop) == 1
 
 }

@@ -3,7 +3,7 @@
 \name{cbkmCopula-Class}
 \alias{cbkmCopula-Class}
 \alias{cbkmCopula}
-\title{Checkerboard with known margins}
+\title{Checkerboards with known margins}
 \usage{
 cbkmCopula(
   x,
@@ -25,7 +25,7 @@ cbkmCopula(
 \item{known_cop}{Copula a copula object representing the known copula for the selected margins.}
 }
 \value{
-a cbkmCopula object
+An instance of the \code{cbkmCopula} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 }
 \description{
 cbkmCopula contructor
@@ -33,7 +33,9 @@ cbkmCopula contructor
 \details{
 Given some empirical data, and given some known copula estimation on a sub-vector of this data,
 the checkerboard with known margins construction consist in
-a conditional pattern where the checkerboard part is conditional on the known part of the copula. See the corresponding vignette for more details.
+a conditional pattern where a checkerboard copula is fitted (similar the the \code{cbCopula} algorithm), but conditionally on some known margins.
+
+See the corresponding vignette for more details.
 }
 \examples{
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)

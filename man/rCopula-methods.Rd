@@ -8,7 +8,7 @@
 \alias{rCopula,numeric,CortForest-method}
 \alias{rCopula,numeric,cbCopula-method}
 \alias{rCopula,numeric,cbkmCopula-method}
-\title{Copula random variables simulation}
+\title{Copula random generation}
 \usage{
 rCopula(n, copula, ...)
 
@@ -30,10 +30,10 @@ rCopula(n, copula, ...)
 \item{...}{other parameter to be passed to methods for this generic.}
 }
 \value{
-the density of the copula on each observation
+A matrix with \code{n} rows, each representing a random vetor generated from the provided copula.
 }
 \description{
-This function simulate random variables from a copula.
+Random number generation following the given copula. This function performs the simulation of random vectors following the copula.
 }
 \section{Functions}{
 \itemize{
@@ -49,7 +49,7 @@ This function simulate random variables from a copula.
 }}
 
 \examples{
-cop <- cbCopula(LifeCycleSavings,m = 5)
+cop <- cbCopula(cort::clayton_data,m = 5)
 xx <- rCopula(1000,cop)
 
 }

@@ -16,7 +16,7 @@ cbCopula(x, m = rep(nrow(x), ncol(x)), pseudo = FALSE)
 providing pseudo data into the \code{x} argument.}
 }
 \value{
-a cbCopula object
+An instance of the \code{cbCopula} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 }
 \description{
 cbCopula contructor

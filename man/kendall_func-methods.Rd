@@ -3,7 +3,7 @@
 \name{kendall_func}
 \alias{kendall_func}
 \alias{kendall_func,Cort-method}
-\title{Kendall function}
+\title{Kendall function of a copula (if it has one)}
 \usage{
 kendall_func(object, t, ...)
 
@@ -22,7 +22,8 @@ kendall_func(object, t, ...)
 the quadratic product between the trees
 }
 \description{
-Compute the kendall cdf from the model in a point t
+Currently only implemented for Cort models.
+Compute the Kendall cdf from the model in a point t
 }
 \section{Functions}{
 \itemize{

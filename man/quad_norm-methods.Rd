@@ -4,7 +4,7 @@
 \alias{quad_norm}
 \alias{quad_norm,Cort-method}
 \alias{quad_norm,CortForest-method}
-\title{Quadratic norm of the model}
+\title{Quadratic norm of the model (if it has one)}
 \usage{
 quad_norm(object)
 
@@ -19,6 +19,7 @@ quad_norm(object)
 the Integrated square error quad_norm of the model
 }
 \description{
+Currently only implemented for Cort models.
 Compute the L2 norm of the model
 }
 \section{Functions}{
@@ -29,7 +30,7 @@ Compute the L2 norm of the model
 }}
 
 \examples{
-cop <- Cort(LifeCycleSavings[,1:3])
+cop <- Cort(cort::impossible_data)
 quad_norm(cop)
 
 }

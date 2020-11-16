@@ -3,7 +3,7 @@
 \name{loss}
 \alias{loss}
 \alias{loss,Cort-method}
-\title{Loss of the model}
+\title{Loss of a copula estimation (if the model has one)}
 \usage{
 loss(object)
 
@@ -16,7 +16,8 @@ loss(object)
 the Integrated square error loss of the model
 }
 \description{
-Compute the loss of the model
+Currently only implemented for Cort models.
+Compute the loss of the model.
 }
 \section{Functions}{
 \itemize{
@@ -24,7 +25,7 @@ Compute the loss of the model
 }}
 
 \examples{
-cop <- Cort(LifeCycleSavings[,1:3])
+cop <- Cort(cort::recoveryourself_data)
 loss(cop)
 
 }

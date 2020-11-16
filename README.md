@@ -40,7 +40,7 @@ The vignettes are quite expressive. They give a clear overview of what can be do
 
 ## How to report bugs and get support
 
-To report a bug, feel free to open an issue on the github repository. Support can also be provided thorugh the same chanel if you need it.
+To report a bug, feel free to open an issue on the github repository. Support can also be provided through the same chanel if you need it.
 
 ## How to contribute
 

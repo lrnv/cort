@@ -28,7 +28,9 @@ NULL
 #'
 #' Given some empirical data, and given some known copula estimation on a sub-vector of this data,
 #' the checkerboard with known margins construction consist in
-#' a conditional pattern where the checkerboard part is conditional on the known part of the copula. See the corresponding vignette for more details.
+#' a conditional pattern where a checkerboard copula is fitted (similar the the `cbCopula` algorithm), but conditionally on some known margins.
+#'
+#' See the corresponding vignette for more details.
 #'
 #'
 #' @param x the data to be used
@@ -38,10 +40,10 @@ NULL
 #' @param known_cop Copula a copula object representing the known copula for the selected margins.
 #'
 #' @name cbkmCopula-Class
-#' @title Checkerboard with known margins
+#' @title Checkerboards with known margins
 #' @rdname cbkmCopula-Class
 #'
-#' @return a cbkmCopula object
+#' @return An instance of the `cbkmCopula` S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 #' @export
 #'
 #' @examples
