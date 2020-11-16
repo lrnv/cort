@@ -13,7 +13,7 @@ ConvexCombCopula(copulas, alpha = rep(1, length(copulas)))
 \item{alpha}{a vector of (positive) weights}
 }
 \value{
-a ConvexCombCopula object
+An instance of the \code{ConvexCombCopula} S4 class. The object represent the copula that results from a convex combinaison of other copulas, and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 }
 \description{
 ConvexCombCopula class
@@ -23,6 +23,8 @@ The ConvexCombcopula class is used to build convex combinations of copulas,
 with given positives weights. The rCopula and pCopula functions works for
 those copulas, assuming they work for the given copulas that we combined
 in a convex way.
+
+See the corresponding vignette for more details about the implementation.
 }
 \examples{
 dataset <- apply(LifeCycleSavings,2,rank)/(nrow(LifeCycleSavings)+1)

@@ -40,7 +40,7 @@ Cort(
 \item{force_grid}{Set to TRUE to force breakpoints to be on the n-checkerboard grid.}
 }
 \value{
-a Cort object that can be fitted easily to produce a copula estimate.
+An instance of the \code{Cort} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
 }
 \description{
 Cort class
@@ -52,7 +52,7 @@ we ran a quadratic solver, which options can be tweaked via the \code{osqp_optio
 
 Once the model is fitted, it can be used through the classical (r/d/p/v)Copula functions to compute, respectively, random number generations, the density, the cdf and the volume function of the copula.
 
-See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and \code{vignettes('cort')} for examples of usecases.
+See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and \code{vignettes(package='cort')} for examples of usecases.
 }
 \examples{
 (Cort(LifeCycleSavings[,1:3]))

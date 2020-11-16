@@ -41,6 +41,7 @@ cbkmCopula
 cdf
 chanel
 clayton
+combinaison
 contructor
 cran
 cuberos
@@ -76,7 +77,6 @@ oob
 optimisation
 osqp
 osqpSettings
-ouptut
 pCopula
 pkgdowm
 plateform
@@ -91,4 +91,5 @@ slsqp
 splitted
 thoose
 travis
+usecases
 visualise

@@ -58,7 +58,7 @@ NULL
 #' @title Checkerboard copulas
 #' @rdname cbCopula-Class
 #'
-#' @return a cbCopula object
+#' @return An instance of the `cbCopula` S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, etc.
 #' @export
 #'
 #' @references

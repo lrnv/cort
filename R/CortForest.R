@@ -30,7 +30,7 @@
 #' This class implements the bagging of CORT models, with an out-of-bag error minimisation in the weights.
 #'
 #'
-#' See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
+#' See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure, and `vignettes(package='cort')` for examples of usecases.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
@@ -48,7 +48,7 @@
 #' @title Bagged Cort copulas
 #' @rdname CortForest-Class
 #'
-#' @return a CortForest object that can be fitted easily to produce a copula estimate.
+#' @return An instance of the `CortForest` S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
 #' @export
 #'
 #' @references

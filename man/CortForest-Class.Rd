@@ -40,7 +40,7 @@ CortForest(
 \item{oob_weighting}{boolean (default : TRUE) option to weight the trees with an oob criterion (otherwise they are equally weighted)}
 }
 \value{
-a CortForest object that can be fitted easily to produce a copula estimate.
+An instance of the \code{CortForest} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
 }
 \description{
 CortForest class
@@ -48,7 +48,7 @@ CortForest class
 \details{
 This class implements the bagging of CORT models, with an out-of-bag error minimisation in the weights.
 
-See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure.
+See O. Laverny, V. Maume-Deschamps, E. Masiello and D. Rullière (2020) for the details of this density estimation procedure, and \code{vignettes(package='cort')} for examples of usecases.
 }
 \examples{
 (CortForest(LifeCycleSavings[,1:3],number_max_dim=2,n_trees=2))

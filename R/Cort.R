@@ -39,7 +39,7 @@ NULL
 #' Once the model is fitted, it can be used through the classical (r/d/p/v)Copula functions to compute, respectively, random number generations, the density, the cdf and the volume function of the copula.
 #'
 #'
-#' See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and `vignettes('cort')` for examples of usecases.
+#' See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and `vignettes(package='cort')` for examples of usecases.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
@@ -57,7 +57,7 @@ NULL
 #' @title Cort copulas
 #' @rdname Cort-Class
 #'
-#' @return a Cort object that can be fitted easily to produce a copula estimate.
+#' @return An instance of the `Cort` S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
 #' @export
 #'
 #' @references
