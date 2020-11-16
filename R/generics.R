@@ -58,10 +58,10 @@ setGeneric("vCopula", function(u, v, copula, ...) {
 #' @rdname dCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(Cort::funcdep_data[1:10,1:2], m = 5)
-#' dCopula(rep(0,5),cop)
-#' dCopula(rep(0.5,5),cop)
-#' dCopula(rep(1,5),cop)
+#' cop <- cbCopula(cort::funcdep_data[1:10,1:2], m = 5)
+#' dCopula(rep(0,2),cop)
+#' dCopula(rep(0.5,2),cop)
+#' dCopula(rep(1,2),cop)
 #'
 setGeneric("dCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
@@ -83,10 +83,10 @@ setGeneric("dCopula", function(u, copula, ...) {
 #' @rdname pCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(Cort::recoveryourself_data,m = 5)
-#' pCopula(rep(0,5),cop) == 0
-#' pCopula(rep(0.5,5),cop)
-#' pCopula(rep(1,5),cop) == 1
+#' cop <- cbCopula(cort::recoveryourself_data,m = 5)
+#' pCopula(rep(0,2),cop) == 0
+#' pCopula(rep(0.5,2),cop)
+#' pCopula(rep(1,2),cop) == 1
 #'
 setGeneric("pCopula", function(u, copula, ...) {
   u <- normalise_data(u,copula@dim)
@@ -143,7 +143,7 @@ setMethod("vCopula", signature = c(u = "matrix", v = "matrix"),
 #' @rdname rCopula-methods
 #'
 #' @examples
-#' cop <- cbCopula(Cort::clayton_data,m = 5)
+#' cop <- cbCopula(cort::clayton_data,m = 5)
 #' xx <- rCopula(1000,cop)
 #'
 setGeneric("rCopula", function(n, copula, ...) standardGeneric("rCopula"))
@@ -180,7 +180,7 @@ setGeneric("biv_rho", function(copula) standardGeneric("biv_rho"))
 #' @rdname biv_tau-methods
 #'
 #' @examples
-#' cop <- Cort(Cort::funcdep_data[,1:3])
+#' cop <- Cort(cort::funcdep_data[1:10,1:3])
 #' biv_tau(cop)
 #'
 setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
@@ -202,7 +202,7 @@ setGeneric("biv_tau", function(copula) standardGeneric("biv_tau"))
 #' @rdname loss-methods
 #'
 #' @examples
-#' cop <- Cort(Cort::recoveryourself_data)
+#' cop <- Cort(cort::recoveryourself_data)
 #' loss(cop)
 #'
 setGeneric("loss", function(object) standardGeneric("loss"))
@@ -222,7 +222,7 @@ setGeneric("loss", function(object) standardGeneric("loss"))
 #' @rdname constraint_infl-methods
 #'
 #' @examples
-#' cop <- Cort(Cort::funcdep_data[,1:3])
+#' cop <- Cort(cort::recover_yourself[1:10,])
 #' constraint_infl(cop)
 #'
 setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"))
@@ -241,7 +241,7 @@ setGeneric("constraint_infl", function(object) standardGeneric("constraint_infl"
 #' @rdname quad_norm-methods
 #'
 #' @examples
-#' cop <- Cort(Cort::impossible_data)
+#' cop <- Cort(cort::impossible_data)
 #' quad_norm(cop)
 #'
 setGeneric("quad_norm", function(object) standardGeneric("quad_norm"))

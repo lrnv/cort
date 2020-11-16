@@ -21,15 +21,15 @@ Cort(
 \arguments{
 \item{x}{The data, must be provided as a matrix with each row as an observation.}
 
-\item{p_value_for_dim_red}{a p_value for the localised dimension reduction test}
+\item{p_value_for_dim_red}{a p_value for the localized dimension reduction test}
 
-\item{min_node_size}{The minimum number of observation avaliable in a leaf to initialise a split.}
+\item{min_node_size}{The minimum number of observation available in a leaf to initialize a split.}
 
 \item{pseudo_data}{set to True if you are already providing data on the copula space.}
 
 \item{number_max_dim}{The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.}
 
-\item{verbose_lvl}{numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.}
+\item{verbose_lvl}{numeric. set the verbosity. 0 for no output and bigger you set it the most output you get.}
 
 \item{slsqp_options}{options for nloptr::slsqp to find breakpoints : you can change defaults.}
 
@@ -37,7 +37,7 @@ Cort(
 
 \item{N}{The number of bootstrap resamples for p_values computations.}
 
-\item{force_grid}{boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.}
+\item{force_grid}{Set to TRUE to force breakpoints to be on the n-checkerboard grid.}
 }
 \value{
 a Cort object that can be fitted easily to produce a copula estimate.
@@ -50,7 +50,9 @@ This class implements the CORT algorithm to a fit a multivariate copula using pi
 that is tree-shaped, by recursive partitioning of the unit hypercube. the \code{min_node_size} parameter controls the stopping conditions for the splitting procedure. Once the space is splitted,
 we ran a quadratic solver, which options can be tweaked via the \code{osqp_options} parameter, to ensure that the weights respect the copula conditions.
 
-See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure.
+Once the model is fitted, it can be used through the classical (r/d/p/v)Copula functions to compute, respectively, random number generations, the density, the cdf and the volume function of the copula.
+
+See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and \code{vignettes('cort')} for examples of usecases.
 }
 \examples{
 (Cort(LifeCycleSavings[,1:3]))

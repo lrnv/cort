@@ -49,7 +49,7 @@ This function simulate random variables from a copula.
 }}
 
 \examples{
-cop <- cbCopula(Cort::clayton_data,m = 5)
+cop <- cbCopula(cort::clayton_data,m = 5)
 xx <- rCopula(1000,cop)
 
 }

@@ -30,7 +30,7 @@ Compute the L2 norm of the model
 }}
 
 \examples{
-cop <- Cort(Cort::impossible_data)
+cop <- Cort(cort::impossible_data)
 quad_norm(cop)
 
 }

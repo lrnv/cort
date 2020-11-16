@@ -36,19 +36,22 @@ NULL
 #' we ran a quadratic solver, which options can be tweaked via the `osqp_options` parameter, to ensure that the weights respect the copula conditions.
 #'
 #'
-#' See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure.
+#' Once the model is fitted, it can be used through the classical (r/d/p/v)Copula functions to compute, respectively, random number generations, the density, the cdf and the volume function of the copula.
+#'
+#'
+#' See O. Laverny, E. Masiello, V. Maume-Deschamps and D. Rullière (2020) for the details of this density estimation procedure, and `vignettes('cort')` for examples of usecases.
 #'
 #'
 #' @param x The data, must be provided as a matrix with each row as an observation.
-#' @param p_value_for_dim_red a p_value for the localised dimension reduction test
-#' @param min_node_size The minimum number of observation avaliable in a leaf to initialise a split.
+#' @param p_value_for_dim_red a p_value for the localized dimension reduction test
+#' @param min_node_size The minimum number of observation available in a leaf to initialize a split.
 #' @param pseudo_data set to True if you are already providing data on the copula space.
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param slsqp_options options for nloptr::slsqp to find breakpoints : you can change defaults.
-#' @param verbose_lvl numeric. set the verbosity. 0 for no ouptut and bigger you set it the most output you get.
+#' @param verbose_lvl numeric. set the verbosity. 0 for no output and bigger you set it the most output you get.
 #' @param N The number of bootstrap resamples for p_values computations.
 #' @param osqp_options options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.
-#' @param force_grid boolean. set to TRUE to force breakpoint to be on the n-checkerboard grid.
+#' @param force_grid Set to TRUE to force breakpoints to be on the n-checkerboard grid.
 #'
 #' @name Cort-Class
 #' @title Cort copulas

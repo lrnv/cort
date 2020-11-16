@@ -52,7 +52,7 @@ toString.data.frame = function (object, ..., digits=NULL, quote=FALSE, right=TRU
   return(paste(m, collapse="\n"));
 }
 
-str_pad <- function(string,width,side){ # retro-engeniered from stringr::str_pad to remove the dependence
+str_pad <- function(string,width,side){ # retro-engeniered from stringr::str_pad to remove the dependency
   mapply(function(str,width){
     n = nchar(str)
     if(side == "left")  return(paste0(paste0(rep(" ",max(width-n,0)),collapse=""),str))

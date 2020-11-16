@@ -39,9 +39,9 @@ This function returns the density of a given copula on given observations.
 }}
 
 \examples{
-cop <- cbCopula(Cort::funcdep_data[1:10,1:2], m = 5)
-dCopula(rep(0,5),cop)
-dCopula(rep(0.5,5),cop)
-dCopula(rep(1,5),cop)
+cop <- cbCopula(cort::funcdep_data[1:10,1:2], m = 5)
+dCopula(rep(0,2),cop)
+dCopula(rep(0.5,2),cop)
+dCopula(rep(1,2),cop)
 
 }

@@ -25,7 +25,7 @@ Compute the loss of the model
 }}
 
 \examples{
-cop <- Cort(Cort::recoveryourself_data)
+cop <- Cort(cort::recoveryourself_data)
 loss(cop)
 
 }
