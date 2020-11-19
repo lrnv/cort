@@ -26,7 +26,7 @@ Copulas are functions that describe dependence structure of a given dataset, or 
 
 Copulas are distributions functions on the unit hypercube that have uniform margins (what we call the 'copula constraints'), and hence this package can be classified in 'density estimation software'. Although the estimation of copulas is a wide-treated subject, most performing estimators available in the literature are based on restricted, parametric estimation: vine copulas [@nagler2016evading] and graphical models [@li2018panda] for example are potential solutions but under restrictive assumptions. Classical density estimators such as kernels or wavelets do not satisfy marginal copula constraints. There also exist several tree-structured piecewise constant density estimators, but they do not always lead to proper copulas when applied on pseudo-observations or true copula samples. The new models that are implemented in this package try to solve these issues.
 
-We note that a lot of tools are avaliable in R for copula modelling  through the excellent package [copula](https://cran.r-project.org/web/packages/copula/index.html). Most of these tools however focus on parametric estimation. We start to bridge the gap by providing some tools for non-parametric estimation.
+We note that a lot of tools are avaliable in R for copula modelling  through the excellent package `copula` [@cop1],[@cop2],[@cop3],[@cop4]. Most of these tools however focus on parametric estimation. We start to bridge the gap by providing some tools for non-parametric estimation.
 
 
 # Statement of need 

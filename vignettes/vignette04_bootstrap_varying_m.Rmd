@@ -52,8 +52,6 @@ make_k_fold_samples <- function(data,k = nb_fold,n_repeat = 1){
       
       sapply(1:k,function(i){
         test_index <- which(folds==i,arr.ind=TRUE)
-        test <- 
-        train <- 
         return(list(train = data[-test_index,], 
                     test = data[test_index,]))
       },simplify=FALSE)

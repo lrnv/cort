@@ -44,7 +44,7 @@ To report a bug, feel free to open an issue on the github repository. Support ca
 
 ## How to contribute
 
-Every contribution is welcome, on the form of pull requests on the github repository. For large modifications, please open an issue for discussions firsts. 
+Every contribution is welcome, on the form of pull requests on the github repository. For large modifications, please open an issue for discussions firsts. Concerning the naming convention, the CamelCase functions usually designate classes and constructors of these classes, and all other methods are in snake_case.
 
 
 ## References
