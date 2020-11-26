@@ -201,7 +201,20 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An instance of the <code>CortForest</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.</p>
+    <p>An instance of the <code>CortForest</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+Beside returning some inputted parameters, notable slots are :</p>
+<ul>
+<li><p><code>trees</code> A list of Cort objects representing each fitted tree in the forest.</p></li>
+<li><p><code>weights</code> The weigths of each tree.</p></li>
+<li><p><code>indexes</code> The indexes of data points that were selected for fitting the trees</p></li>
+<li><p><code>pmf</code> The density of each tree on data points</p></li>
+<li><p><code>norm_matrix</code> The matrix of scalar product between trees</p></li>
+<li><p><code>oob_pmf</code> The density of each tree on data points it did not see during fitting</p></li>
+<li><p><code>oob_kl</code> The out-of-bag Kullback-Leibler divergence of each tree</p></li>
+<li><p><code>oob_ise</code> The out-of-bag Integrated Square Error of each tree</p></li>
+</ul>
+
+<p>More details about these slots can be found in the reference.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This class implements the bagging of CORT models, with an out-of-bag error minimisation in the weights.</p>

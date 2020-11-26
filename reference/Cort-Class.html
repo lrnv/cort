@@ -187,11 +187,11 @@
     </tr>
     <tr>
       <th>osqp_options</th>
-      <td><p>options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.</p></td>
+      <td><p>options for the weights optimization. You can pass a call to osqp::osqpSettings, or NULL for defaults.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>The number of bootstrap resamples for p_values computations.</p></td>
+      <td><p>The number of bootstrap samples for p_values computations.</p></td>
     </tr>
     <tr>
       <th>force_grid</th>
@@ -201,7 +201,19 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An instance of the <code>Cort</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.</p>
+    <p>An instance of the <code>Cort</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+Beside returning some inputted parameters, notable slots are :</p>
+<ul>
+<li><p><code>data</code> Your original data</p></li>
+<li><p><code>dim</code> The dimension of problem, number of columns of your dataset</p></li>
+<li><p><code>f</code> The empirical frequency in the leaves</p></li>
+<li><p><code>p</code> The fitted probabilities of each leaf</p></li>
+<li><p><code>a</code> Minimum points of leaves</p></li>
+<li><p><code>b</code> Maximum points of leaves</p></li>
+<li><p><code>vols</code> Volume of the leaves</p></li>
+</ul>
+
+<p>More details about these slots can be found in the reference.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This class implements the CORT algorithm to a fit a multivariate copula using piece constant density. Given a dataset <code>x</code>, the function will produce an estimator for the copula of this dataset
