@@ -33,14 +33,27 @@ Cort(
 
 \item{slsqp_options}{options for nloptr::slsqp to find breakpoints : you can change defaults.}
 
-\item{osqp_options}{options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.}
+\item{osqp_options}{options for the weights optimization. You can pass a call to osqp::osqpSettings, or NULL for defaults.}
 
-\item{N}{The number of bootstrap resamples for p_values computations.}
+\item{N}{The number of bootstrap samples for p_values computations.}
 
 \item{force_grid}{Set to TRUE to force breakpoints to be on the n-checkerboard grid.}
 }
 \value{
 An instance of the \code{Cort} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+Beside returning some inputted parameters, notable slots are :
+
+\itemize{
+\item{\code{data} }{Your original data}
+\item{\code{dim} }{The dimension of problem, number of columns of your dataset}
+\item{\code{f} }{The empirical frequency in the leaves}
+\item{\code{p} }{The fitted probabilities of each leaf}
+\item{\code{a} }{Minimum points of leaves}
+\item{\code{b} }{Maximum points of leaves}
+\item{\code{vols} }{Volume of the leaves}
+}
+
+More details about these slots can be found in the reference.
 }
 \description{
 Cort class

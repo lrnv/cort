@@ -41,6 +41,20 @@ CortForest(
 }
 \value{
 An instance of the \code{CortForest} S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+Beside returning some inputted parameters, notable slots are :
+
+\itemize{
+\item{\code{trees} }{A list of Cort objects representing each fitted tree in the forest.}
+\item{\code{weights} }{The weigths of each tree.}
+\item{\code{indexes} }{The indexes of data points that were selected for fitting the trees}
+\item{\code{pmf} }{The density of each tree on data points}
+\item{\code{norm_matrix} }{The matrix of scalar product between trees}
+\item{\code{oob_pmf} }{The density of each tree on data points it did not see during fitting}
+\item{\code{oob_kl} }{The out-of-bag Kullback-Leibler divergence of each tree }
+\item{\code{oob_ise} }{The out-of-bag Integrated Square Error of each tree}
+}
+
+More details about these slots can be found in the reference.
 }
 \description{
 CortForest class
