@@ -49,8 +49,8 @@ NULL
 #' @param number_max_dim The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.
 #' @param slsqp_options options for nloptr::slsqp to find breakpoints : you can change defaults.
 #' @param verbose_lvl numeric. set the verbosity. 0 for no output and bigger you set it the most output you get.
-#' @param N The number of bootstrap resamples for p_values computations.
-#' @param osqp_options options for the weights optimisation. You can pass a call to osqp::osqpSettings, or NULL for defaults.
+#' @param N The number of bootstrap samples for p_values computations.
+#' @param osqp_options options for the weights optimization. You can pass a call to osqp::osqpSettings, or NULL for defaults.
 #' @param force_grid Set to TRUE to force breakpoints to be on the n-checkerboard grid.
 #'
 #' @name Cort-Class
@@ -58,6 +58,20 @@ NULL
 #' @rdname Cort-Class
 #'
 #' @return An instance of the `Cort` S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+#' Beside returning some inputted parameters, notable slots are :
+#'
+#' \itemize{
+#'  \item{`data` }{Your original data}
+#'  \item{`dim` }{The dimension of problem, number of columns of your dataset}
+#'  \item{`f` }{The empirical frequency in the leaves}
+#'  \item{`p` }{The fitted probabilities of each leaf}
+#'  \item{`a` }{Minimum points of leaves}
+#'  \item{`b` }{Maximum points of leaves}
+#'  \item{`vols` }{Volume of the leaves}
+#' }
+#'
+#' More details about these slots can be found in the reference.
+#'
 #' @export
 #'
 #' @references

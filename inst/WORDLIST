@@ -1,6 +1,7 @@
 AppVeyor
 Assymptotics
 CLI
+CamelCase
 Cherubini
 Codecov
 ConvexCombCopula
@@ -16,6 +17,8 @@ Finalised
 Genest
 Github
 ISSN
+Kullback
+Leibler
 LifeCycleSavings
 Masiello
 Maume
@@ -78,7 +81,6 @@ nloptr
 notin
 oct
 oob
-optimisation
 osqp
 osqpSettings
 pCopula
@@ -98,3 +100,4 @@ thoose
 travis
 usecases
 visualise
+weigths
