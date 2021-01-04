@@ -6,6 +6,7 @@
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/lrnv/cort?label=Windows&logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/lrnv/cort)
 [![Codecov test coverage](https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg)](https://codecov.io/gh/lrnv/cort?branch=master)
 [![DOI](https://zenodo.org/badge/247063359.svg)](https://zenodo.org/badge/latestdoi/247063359)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02653/status.svg)](https://doi.org/10.21105/joss.02653)
 <!-- badges: end -->
 
 The `cort` package provides S4 classes and methods to fit several copula models: 
