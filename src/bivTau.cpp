@@ -24,6 +24,9 @@ double B(const double ak,
 Rcpp::NumericMatrix bivTau(const NumericMatrix a,
                            const NumericMatrix b,
                            const NumericVector p) {
+  if((a.ncol() != b.ncol()) || (a.nrow() != b.nrow()) || (p.length() != a.nrow())){
+    stop("Matrices a and b should have same size");
+  }
   int dim = a.ncol();
   int n_leaves = a.nrow();
   double rez;

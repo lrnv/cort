@@ -7,6 +7,9 @@ Rcpp::NumericMatrix bivRho(const NumericMatrix a,
                            const NumericVector p) {
 
   int dim = a.ncol();
+  if((a.ncol() != b.ncol()) || (a.nrow() != b.nrow()) || (p.length() != a.nrow())){
+    stop("Matrices a and b should have same size");
+  }
   Rcpp::NumericMatrix rho(dim,dim);
 
   for(int i = 0; i < (dim-1); i++){
