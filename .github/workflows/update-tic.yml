@@ -37,9 +37,11 @@ jobs:
             sudo apt install libcurl4-openssl-dev libsodium-dev libharfbuzz-dev libfribidi-dev libgit2-dev
             Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
             Rscript -e "remotes::install_github('ropensci/tic', dependencies = TRUE)"
+
       - name: "[Stage] Update YAMLs"
         run: |
             Rscript -e "tic::update_yml()"
+
       - name: "[Stage] Create Pull Request"
         uses: peter-evans/create-pull-request@master
         with:
@@ -49,4 +51,3 @@ jobs:
           commit-message: "update tic templates"
           body: "{tic} templates can be updated :rocket: :robot:"
           branch: update-tic
-          base: master
