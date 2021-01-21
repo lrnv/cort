@@ -1,7 +1,6 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/cort)](https://CRAN.R-project.org/package=cort)
 [![CRAN number of downloads](https://cranlogs.r-pkg.org/badges/grand-total/cort)](https://cranlogs.r-pkg.org/badges/grand-total/cort)
-[![Github Build status](https://img.shields.io/github/workflow/status/lrnv/cort/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&label=Github%20build&style=flat-square)](https://github.com/lrnv/cort/actions)
 [![Codecov test coverage](https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg)](https://codecov.io/gh/lrnv/cort?branch=master)
 [![DOI](https://zenodo.org/badge/247063359.svg)](https://zenodo.org/badge/latestdoi/247063359)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02653/status.svg)](https://doi.org/10.21105/joss.02653)
