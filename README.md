@@ -47,8 +47,34 @@ To report a bug, feel free to open an issue on the github repository. Support ca
 Every contribution is welcome, on the form of pull requests on the github repository. For large modifications, please open an issue for discussions firsts. Concerning the naming convention, the CamelCase functions usually designate classes and constructors of these classes, and all other methods are in snake_case.
 
 
-## References
+## Citation
 
-Cuberos A, Masiello E, Maume-Deschamps V (2019). “Copulas Checker-Type Approximations: Application to Quantiles Estimation of Sums of Dependent Random Variables.” *Communications in Statistics - Theory and Methods, 1--19. ISSN 0361-0926, 1532-415X.*
+If you use this work, you may cite the following references. To refer to the theory of the CORT estimator, you may cite : 
 
-Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020). “Dependence Structure Estimation Using Copula Recursive Trees.” *arXiv preprint arXiv:2005.02912*
+```bib
+@article{laverny2021dependence,
+  title = {Dependence structure estimation using Copula Recursive Trees},
+  journal = {Journal of Multivariate Analysis},
+  volume = {185},
+  pages = {104776},
+  year = {2021},
+  issn = {0047-259X},
+  doi = {10.1016/j.jmva.2021.104776},
+  author = {Oskar Laverny and Esterina Masiello and Véronique Maume-Deschamps and Didier Rullière}
+```
+
+To refer to the package itself, you may cite: 
+
+```bib
+@article{laverny2020empirical,
+  doi = {10.21105/joss.02653},
+  year = {2020},
+  publisher = {The Open Journal},
+  volume = {5},
+  number = {56},
+  pages = {2653},
+  author = {Oskar Laverny},
+  title = {Empirical and non-parametric copula models with the {cort R} package},
+  journal = {Journal of Open Source Software}
+}
+```
