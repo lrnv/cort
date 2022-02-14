@@ -61,6 +61,7 @@ If you use this work, you may cite the following references. To refer to the the
   issn = {0047-259X},
   doi = {10.1016/j.jmva.2021.104776},
   author = {Oskar Laverny and Esterina Masiello and Véronique Maume-Deschamps and Didier Rullière}
+}
 ```
 
 To refer to the package itself, you may cite: 
