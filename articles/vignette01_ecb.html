@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lrnv/cort/">
+  <a href="https://github.com/lrnv/cort/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -92,11 +88,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>1. Empirical Checkerboard Copula</h1>
-                        <h4 class="author">Oskar Laverny</h4>
+                        <h4 data-toc-skip class="author">Oskar Laverny</h4>
             
-            <h4 class="date">2021-05-04</h4>
+            <h4 data-toc-skip class="date">2022-02-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/vignette01_ecb.Rmd"><code>vignettes/vignette01_ecb.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/HEAD/vignettes/vignette01_ecb.Rmd" class="external-link"><code>vignettes/vignette01_ecb.Rmd</code></a></small>
       <div class="hidden name"><code>vignette01_ecb.Rmd</code></div>
 
     </div>
@@ -104,9 +100,9 @@
     
     
 <p>The empirical checkerboard copula is a model for copula defined by <span class="citation">(Cuberos, Masiello, and Maume-Deschamps 2019)</span>. It provides a fast and easy way to model a copula in high-dimensional settings (more columns than rows in the dataset). It only requires one parameter, <span class="math inline">\(m\)</span>, the so-called checkerboard parameter. In the first section of this vignette, we will set notations and define the model. The second section will discuss and demonstrate the implementation made in the package.</p>
-<div id="definition-of-the-empirical-checkerboard-copula" class="section level2">
-<h2 class="hasAnchor">
-<a href="#definition-of-the-empirical-checkerboard-copula" class="anchor"></a>Definition of the empirical checkerboard copula</h2>
+<div class="section level2">
+<h2 id="definition-of-the-empirical-checkerboard-copula">Definition of the empirical checkerboard copula<a class="anchor" aria-label="anchor" href="#definition-of-the-empirical-checkerboard-copula"></a>
+</h2>
 <p>Suppose that we have a dataset with <span class="math inline">\(n\)</span> i.i.d observation of a <span class="math inline">\(d\)</span>-dimentional copula (or pseudo-observations). Take the checkerboard parameter <span class="math inline">\(m\)</span> to be an integer dividing <span class="math inline">\(n\)</span>.</p>
 <p>Let’s consider the ensemble of multi-indexes <span class="math inline">\(\mathcal{I} = \{\mathbf{i} = (i_1,..,i_d) \subset \{1,...,m \}^d\}\)</span> which indexes the boxes :</p>
 <p><span class="math display">\[B_{\mathbf{i}} = \left]\frac{\mathbf{i}-1}{m},\frac{\mathbf{i}}{m}\right]\]</span></p>
@@ -127,18 +123,18 @@
 <p>A known result is that this is a copula if and only if <span class="math inline">\(m\)</span> divides <span class="math inline">\(n\)</span> (see cuberos). In this case, some theoretical assymptotics are avaliables.</p>
 <p>The next section discuss the implementation.</p>
 </div>
-<div id="implementation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#implementation" class="anchor"></a>Implementation</h2>
+<div class="section level2">
+<h2 id="implementation">Implementation<a class="anchor" aria-label="anchor" href="#implementation"></a>
+</h2>
 <p>In this package, this empirical checkerboard copula is implemented in the <code>cbCopula</code> class. This class is a little more general as it allows for a vector <span class="math inline">\(m = (m_1,...,m_d)\)</span> instead of a single value. Each of the <span class="math inline">\(m_i\)</span>’s must divide <span class="math inline">\(n\)</span> for this to be a proper copula. With the same train of thoughts as before, we have the following expression for this model :</p>
 <p><span class="math display">\[\forall x \in [0,1]^d, \hat{C}(x) = \sum\limits_{\mathbf{i}\in\mathcal{I}} { \hat{\mu}(B_{\mathbf{i}}) \lambda([0,\mathbf{x}]\cap B_{\mathbf{i}})\prod\limits_{p=1}^{d}m_p}\]</span></p>
 <p>You need to provide a dataset, defining <span class="math inline">\(\hat{\mu}\)</span>, to construct the model. For the matter of this vignette, we will use the <code>LifeCycleSavings</code> dataset, which has following pairs dependencies plot :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"LifeCycleSavings"</span><span class="op">)</span>
-<span class="va">pseudo_data</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span>,ties.method<span class="op">=</span><span class="st">"max"</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"LifeCycleSavings"</span><span class="op">)</span>
+<span class="va">pseudo_data</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span>,ties.method<span class="op">=</span><span class="st">"max"</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">pseudo_data</span>,lower.panel<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">pseudo_data</span>,lower.panel<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="vignette01_ecb_files/figure-html/unnamed-chunk-1-1.png" alt="Pairs-plot of original peusdo-observation from the data" width="672"><p class="caption">
 Pairs-plot of original peusdo-observation from the data
@@ -154,10 +150,10 @@ Pairs-plot of original peusdo-observation from the data
 <span class="co">#&gt; The variables names are :  sr pop15 pop75 dpi ddpi</span></code></pre></div>
 <p>For the moment, only some methods exist for this copula. We can calculate it’s values via the <code>pCopula</code> method, or simulate from it via the <code>rCopula</code> method. the <code>dCopula</code> methods gives it’s density. Here is an example of simulation from this model :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">simu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rCopula.html">rCopula</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>,copula <span class="op">=</span> <span class="va">cop</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">simu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rCopula-methods.html">rCopula</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>,copula <span class="op">=</span> <span class="va">cop</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">pseudo_data</span><span class="op">)</span>,
-      col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pseudo_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">pseudo_data</span><span class="op">)</span>,
+      col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pseudo_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
       gap<span class="op">=</span><span class="fl">0</span>,
       lower.panel<span class="op">=</span><span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -166,9 +162,8 @@ Pairs-plot of original peusdo-observation from the data (red) with simulated pse
 </p>
 </div>
 </div>
-<div id="about-the-value-of-m" class="section level2">
-<h2 class="hasAnchor">
-<a href="#about-the-value-of-m" class="anchor"></a>About the value of <span class="math inline">\(m\)</span>
+<div class="section level2">
+<h2 id="about-the-value-of-m">About the value of <span class="math inline">\(m\)</span><a class="anchor" aria-label="anchor" href="#about-the-value-of-m"></a>
 </h2>
 <p>The value of the checkerboard parameter <span class="math inline">\(m\)</span> condition heavily the copula itself. See the vignette about convex mixtures of m-randomized checkerboards for more details.</p>
 <div id="refs" class="references">
@@ -190,11 +185,13 @@ Pairs-plot of original peusdo-observation from the data (red) with simulated pse
 
 
       <footer><div class="copyright">
-  <p>Developed by Oskar Laverny.</p>
+  <p></p>
+<p>Developed by Oskar Laverny.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -202,6 +199,8 @@ Pairs-plot of original peusdo-observation from the data (red) with simulated pse
 
   
 
+
+  
 
   </body>
 </html>

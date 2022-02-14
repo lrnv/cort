@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lrnv/cort/">
+  <a href="https://github.com/lrnv/cort/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -98,12 +94,12 @@
 <li><p>The last model consist of the implementation of the Copula Recursive Tree algorithm, aka. CORT, including the localised dimension reduction, which fits a copula by recursive splitting of the copula domain, see Laverny, Maume-Deschamps, Masiello and Rullière (2020).</p></li>
 <li><p>We finally provide an efficient way of mixing copulas, allowing to bag the algorithm into a forest, and a generic way of measuring d-dimensional boxes with a given copula.</p></li>
 </ul>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>cort</code> is Now on <a href="https://CRAN.R-project.org">CRAN</a>! You can install the stable version with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p><code>cort</code> is Now on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a>! You can install the stable version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cort"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cort"</span><span class="op">)</span></code></pre></div>
 <p>The upstream development version can also be installed with :</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lrnv/cort"</span><span class="op">)</span></code></pre></div>
@@ -115,72 +111,103 @@
 </ul>
 <p>The vignettes are quite expressive. They give a clear overview of what can be done with this package, how it is coded and why it is useful. Please read them for more details.</p>
 </div>
-<div id="how-to-report-bugs-and-get-support" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-report-bugs-and-get-support" class="anchor"></a>How to report bugs and get support</h2>
+<div class="section level2">
+<h2 id="how-to-report-bugs-and-get-support">How to report bugs and get support<a class="anchor" aria-label="anchor" href="#how-to-report-bugs-and-get-support"></a>
+</h2>
 <p>To report a bug, feel free to open an issue on the github repository. Support can also be provided through the same chanel if you need it.</p>
 </div>
-<div id="how-to-contribute" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-to-contribute" class="anchor"></a>How to contribute</h2>
+<div class="section level2">
+<h2 id="how-to-contribute">How to contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
+</h2>
 <p>Every contribution is welcome, on the form of pull requests on the github repository. For large modifications, please open an issue for discussions firsts. Concerning the naming convention, the CamelCase functions usually designate classes and constructors of these classes, and all other methods are in snake_case.</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p>Cuberos A, Masiello E, Maume-Deschamps V (2019). “Copulas Checker-Type Approximations: Application to Quantiles Estimation of Sums of Dependent Random Variables.” <em>Communications in Statistics - Theory and Methods, 1–19. ISSN 0361-0926, 1532-415X.</em></p>
-<p>Laverny O, Maume-Deschamps V, Masiello E, Rullière D (2020). “Dependence Structure Estimation Using Copula Recursive Trees.” <em>arXiv preprint arXiv:2005.02912</em></p>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use this work, you may cite the following references. To refer to the theory of the CORT estimator, you may cite :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bib"><code class="sourceCode bibtex"><span id="cb3-1"><a href="#cb3-1"></a><span class="va">@article</span>{<span class="ot">laverny2021dependence</span>,</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="dt">title</span> = {Dependence structure estimation using Copula Recursive Trees},</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">journal</span> = {Journal of Multivariate Analysis},</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">volume</span> = {185},</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="dt">pages</span> = {104776},</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">year</span> = {2021},</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="dt">issn</span> = {0047-259X},</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="dt">doi</span> = {10.1016/j.jmva.2021.104776},</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  <span class="dt">author</span> = {Oskar Laverny and Esterina Masiello and Véronique Maume-Deschamps and Didier Rullière}</span>
+<span id="cb3-10"><a href="#cb3-10"></a>}</span></code></pre></div>
+<p>To refer to the package itself, you may cite:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bib"><code class="sourceCode bibtex"><span id="cb4-1"><a href="#cb4-1"></a><span class="va">@article</span>{<span class="ot">laverny2020empirical</span>,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="dt">doi</span> = {10.21105/joss.02653},</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">year</span> = {2020},</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">publisher</span> = {The Open Journal},</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">volume</span> = {5},</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">number</span> = {56},</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="dt">pages</span> = {2653},</span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="dt">author</span> = {Oskar Laverny},</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="dt">title</span> = {Empirical and non-parametric copula models with the {cort R} package},</span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="dt">journal</span> = {Journal of Open Source Software}</span>
+<span id="cb4-11"><a href="#cb4-11"></a>}</span></code></pre></div>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=cort">https://​cloud.r-project.org/​package=cort</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/lrnv/cort/">https://​github.com/​lrnv/​cort/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/lrnv/cort/issues">https://​github.com/​lrnv/​cort/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Oskar Laverny <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7508-999X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://cloud.r-project.org/package=cort" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/lrnv/cort/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/lrnv/cort/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=cort"><img src="https://www.r-pkg.org/badges/version/cort" alt="CRAN status"></a></li>
-<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/cort"><img src="https://cranlogs.r-pkg.org/badges/grand-total/cort" alt="CRAN number of downloads"></a></li>
-<li><a href="https://codecov.io/gh/lrnv/cort?branch=master"><img src="https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://zenodo.org/badge/latestdoi/247063359"><img src="https://zenodo.org/badge/247063359.svg" alt="DOI"></a></li>
-<li><a href="https://doi.org/10.21105/joss.02653"><img src="https://joss.theoj.org/papers/10.21105/joss.02653/status.svg" alt="DOI"></a></li>
-<li><a href="https://github.com/lrnv/cort/actions"><img src="https://github.com/lrnv/cort/workflows/tic/badge.svg?branch=master" alt="tic"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing cort</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Oskar Laverny <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7508-999X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=cort" class="external-link"><img src="https://www.r-pkg.org/badges/version/cort" alt="CRAN status"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/cort" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/cort" alt="CRAN number of downloads"></a></li>
+<li><a href="https://codecov.io/gh/lrnv/cort?branch=master" class="external-link"><img src="https://codecov.io/gh/lrnv/cort/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://zenodo.org/badge/latestdoi/247063359" class="external-link"><img src="https://zenodo.org/badge/247063359.svg" alt="DOI"></a></li>
+<li><a href="https://doi.org/10.21105/joss.02653" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02653/status.svg" alt="DOI"></a></li>
+<li><a href="https://github.com/lrnv/cort/actions" class="external-link"><img src="https://github.com/lrnv/cort/workflows/tic/badge.svg?branch=master" alt="tic"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Oskar Laverny.</p>
+  <p></p>
+<p>Developed by Oskar Laverny.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -188,6 +215,8 @@
 
   
 
+
+  
 
   </body>
 </html>

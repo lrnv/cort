@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cort</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lrnv/cort/">
+  <a href="https://github.com/lrnv/cort/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -92,96 +88,96 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>4. Convex mixture of m-randomized checkerboards</h1>
-                        <h4 class="author">Oskar Laverny</h4>
+                        <h4 data-toc-skip class="author">Oskar Laverny</h4>
             
-            <h4 class="date">2021-05-04</h4>
+            <h4 data-toc-skip class="date">2022-02-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/master/vignettes/vignette04_bootstrap_varying_m.Rmd"><code>vignettes/vignette04_bootstrap_varying_m.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/HEAD/vignettes/vignette04_bootstrap_varying_m.Rmd" class="external-link"><code>vignettes/vignette04_bootstrap_varying_m.Rmd</code></a></small>
       <div class="hidden name"><code>vignette04_bootstrap_varying_m.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>In this vignette, we will demonstrate how the checkerboard parameters <span class="math inline">\(m\)</span> can be used to produce an efficient meta-model. We will construct <span class="math inline">\(m\)</span>-randomized checkerboard copulas, and based on some fit statistics we will then combine them in a convex mixture. Our model here will use all possibles <span class="math inline">\(m_i\)</span>’s values for checkerboard copulas and aggregate all those values by optimizing a quadratic loss under resampling condition. As usual, we will work on the LifeCycleSavings dataset :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
-<span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
+<span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>
 <span class="va">nb_replicates</span> <span class="op">=</span> <span class="fl">20</span> <span class="co"># number of replication of the resampling.</span>
 <span class="va">nb_fold</span> <span class="op">=</span> <span class="fl">5</span> <span class="co"># "k" value for the k-fold resampling method.</span>
 <span class="va">nb_cop</span> <span class="op">=</span> <span class="fl">50</span> <span class="co"># the number of m-randomized checkerboard copulas we will test.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">df</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">df</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/getting%20data%20and%20parameters-1.png" width="672"></p>
 </div>
-<div id="fitting-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fitting-function" class="anchor"></a>Fitting function</h1>
+<div class="section level2">
+<h2 id="fitting-function">Fitting function<a class="anchor" aria-label="anchor" href="#fitting-function"></a>
+</h2>
 <p>The following functions proposes a fit :</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">make_k_fold_samples</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,<span class="va">k</span> <span class="op">=</span> <span class="va">nb_fold</span>,<span class="va">n_repeat</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span>
   
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_repeat</span>,<span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_repeat</span>,<span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span>
       <span class="co"># shuffle data : </span>
-      <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>
+      <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>
     
       <span class="co"># create k folds : </span>
-      <span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,breaks<span class="op">=</span><span class="va">k</span>,labels<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
+      <span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,breaks<span class="op">=</span><span class="va">k</span>,labels<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
       
-      <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">k</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
-        <span class="va">test_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">folds</span><span class="op">==</span><span class="va">i</span>,arr.ind<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-        <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>train <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="op">-</span><span class="va">test_index</span>,<span class="op">]</span>, 
+      <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">k</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
+        <span class="va">test_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">folds</span><span class="op">==</span><span class="va">i</span>,arr.ind<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>train <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="op">-</span><span class="va">test_index</span>,<span class="op">]</span>, 
                     test <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="va">test_index</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span>
       <span class="op">}</span>,simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">build_random_m</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">how_much</span><span class="op">=</span><span class="fl">1</span>,<span class="va">dim</span> <span class="op">=</span> <span class="va">d</span>,<span class="va">nrow_data</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">how_much</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">m_pos</span> <span class="op">=</span> <span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="va">nrow_data</span><span class="op">)</span><span class="op">[</span><span class="va">nrow_data</span><span class="op">%%</span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="va">nrow_data</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">m_pos</span>,<span class="va">d</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">how_much</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">m_pos</span> <span class="op">=</span> <span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="va">nrow_data</span><span class="op">)</span><span class="op">[</span><span class="va">nrow_data</span><span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="va">nrow_data</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">m_pos</span>,<span class="va">d</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">build_all_checkerboard</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">sampled_data</span>,<span class="va">m</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">sampled_data</span>,<span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">m</span>,<span class="fl">1</span>,<span class="kw">function</span><span class="op">(</span><span class="va">m_</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sampled_data</span>,<span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">m</span>,<span class="fl">1</span>,<span class="kw">function</span><span class="op">(</span><span class="va">m_</span><span class="op">)</span><span class="op">{</span>
       <span class="fu"><a href="../reference/cbCopula-Class.html">cbCopula</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">train</span>,m <span class="op">=</span> <span class="va">m_</span>,pseudo<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
     <span class="op">}</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">make_k_fold_samples</span><span class="op">(</span><span class="va">df</span>,k<span class="op">=</span><span class="va">nb_fold</span>,n_repeat<span class="op">=</span><span class="va">nb_replicates</span><span class="op">)</span>
-<span class="va">rand_m</span> <span class="op">&lt;-</span> <span class="fu">build_random_m</span><span class="op">(</span><span class="va">nb_cop</span>,<span class="va">d</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">train</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rand_m</span> <span class="op">&lt;-</span> <span class="fu">build_random_m</span><span class="op">(</span><span class="va">nb_cop</span>,<span class="va">d</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">train</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cops</span> <span class="op">&lt;-</span> <span class="fu">build_all_checkerboard</span><span class="op">(</span><span class="va">samples</span>,<span class="va">rand_m</span><span class="op">)</span></code></pre></div>
 <p>Let’s first calculate the empirical copula values :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pEmpCop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">points</span>,<span class="va">data</span><span class="op">=</span><span class="va">df</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">points</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">points</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="va">d</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">points</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">points</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="va">d</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>Now, we also need to calculate the errors that our copulas made compared to the empirical copula (our benchmark).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">error</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cop</span>,<span class="va">i</span>,<span class="va">j</span><span class="op">)</span><span class="op">{</span>
   <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">samples</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">test</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="../reference/pCopula.html">pCopula</a></span><span class="op">(</span><span class="va">test</span>,<span class="va">cop</span><span class="op">)</span> <span class="op">-</span> <span class="fu">pEmpCop</span><span class="op">(</span><span class="va">test</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="../reference/pCopula-methods.html">pCopula</a></span><span class="op">(</span><span class="va">test</span>,<span class="va">cop</span><span class="op">)</span> <span class="op">-</span> <span class="fu">pEmpCop</span><span class="op">(</span><span class="va">test</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
   
 <span class="op">}</span>
 
-<span class="va">errors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">nb_replicates</span><span class="op">*</span><span class="va">nb_fold</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nb_cop</span>,<span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">{</span>
+<span class="va">errors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">nb_replicates</span><span class="op">*</span><span class="va">nb_fold</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nb_cop</span>,<span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">{</span>
    <span class="fu">error</span><span class="op">(</span><span class="va">cops</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span>,<span class="va">i</span>,<span class="va">j</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
-<span class="va">rmse_by_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span><span class="op">(</span><span class="va">errors</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rmse_by_model</span><span class="op">)</span></code></pre></div>
+<span class="va">rmse_by_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">errors</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rmse_by_model</span><span class="op">)</span></code></pre></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 <p>Each point on the graph correspond to the rmse of a model. We recall the values of <span class="math inline">\(m\)</span> used by those models :</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -238,9 +234,9 @@
 <span class="co">#&gt; [49,]   40   40   20   20   10</span>
 <span class="co">#&gt; [50,]    5   40    4    8    2</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">convex_combination</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConvexCombCopula-Class.html">ConvexCombCopula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">cops</span>,recursive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>,alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">rmse_by_model</span>,<span class="va">nb_replicates</span><span class="op">*</span><span class="va">nb_fold</span><span class="op">)</span><span class="op">)</span>
-<span class="va">simu</span> <span class="op">=</span> <span class="fu"><a href="../reference/rCopula.html">rCopula</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="va">convex_combination</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">simu</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">convex_combination</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ConvexCombCopula-class.html">ConvexCombCopula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">cops</span>,recursive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>,alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">rmse_by_model</span>,<span class="va">nb_replicates</span><span class="op">*</span><span class="va">nb_fold</span><span class="op">)</span><span class="op">)</span>
+<span class="va">simu</span> <span class="op">=</span> <span class="fu"><a href="../reference/rCopula-methods.html">rCopula</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="va">convex_combination</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simu</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>Which is quite good compared to the dataset we started with. This process is really fast and useful, and can of course be used for high-dimensional datasets.</p>
 <p>The parameters <code>nb_fold</code>, <code>nb_repeats</code>, <code>nb_cop</code> could be further optimized. Furthermore, if some multivariate margins are known, the same thing could be done using <code><a href="../reference/cbkmCopula-Class.html">cbkmCopula()</a></code> instead of <code><a href="../reference/cbCopula-Class.html">cbCopula()</a></code> models.</p>
@@ -258,11 +254,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Oskar Laverny.</p>
+  <p></p>
+<p>Developed by Oskar Laverny.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -270,6 +268,8 @@
 
   
 
+
+  
 
   </body>
 </html>
