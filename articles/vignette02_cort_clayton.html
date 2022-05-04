@@ -89,7 +89,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>2. The Copula Recursive Tree</h1>
             
-            <h4 data-toc-skip class="date">2022-05-03</h4>
+            <h4 data-toc-skip class="date">2022-05-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/HEAD/vignettes/vignette02_cort_clayton.Rmd" class="external-link"><code>vignettes/vignette02_cort_clayton.Rmd</code></a></small>
       <div class="hidden name"><code>vignette02_cort_clayton.Rmd</code></div>
@@ -143,18 +143,20 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;      1 leaves to split...</span>
 <span class="co">#&gt;      7 leaves to split...</span>
-<span class="co">#&gt;      16 leaves to split...</span>
-<span class="co">#&gt;      8 leaves to split...</span>
-<span class="co">#&gt;      6 leaves to split...</span>
-<span class="co">#&gt;      4 leaves to split...</span>
-<span class="co">#&gt;      7 leaves to split...</span>
-<span class="co">#&gt;      9 leaves to split...</span>
 <span class="co">#&gt;      13 leaves to split...</span>
-<span class="co">#&gt;      18 leaves to split...</span>
+<span class="co">#&gt;      6 leaves to split...</span>
+<span class="co">#&gt;      3 leaves to split...</span>
 <span class="co">#&gt;      2 leaves to split...</span>
+<span class="co">#&gt;      3 leaves to split...</span>
+<span class="co">#&gt;      8 leaves to split...</span>
+<span class="co">#&gt;      15 leaves to split...</span>
+<span class="co">#&gt;      18 leaves to split...</span>
+<span class="co">#&gt;      14 leaves to split...</span>
+<span class="co">#&gt;      5 leaves to split...</span>
+<span class="co">#&gt;      1 leaves to split...</span>
 <span class="co">#&gt; Enforcing constraints...</span>
 <span class="co">#&gt; Done !</span>
-<span class="co">#&gt; Cort copula model: 200x4-dataset and 357 leaves.</span></code></pre></div>
+<span class="co">#&gt; Cort copula model: 200x4-dataset and 392 leaves.</span></code></pre></div>
 <p>Looking at the top of the output, we see that the first thing the algorithm did was removing the second dimension due to the independence test. Now that the copula is fitted, we have access to numerous of it’s methods. Two plotting functions are exported with this model, the <code>pairs</code> function is implemented at a very low level in the class hierarchy and hence is working with almost all copulas of this package, but the <code>plot</code> function is only implemented for Cort.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
