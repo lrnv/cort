@@ -90,29 +90,53 @@
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>The data, must be provided as a matrix with each row as an observation.</p></dd>
+
+
 <dt>p_value_for_dim_red</dt>
 <dd><p>a p_value for the localized dimension reduction test</p></dd>
+
+
 <dt>min_node_size</dt>
 <dd><p>The minimum number of observation available in a leaf to initialize a split.</p></dd>
+
+
 <dt>pseudo_data</dt>
 <dd><p>set to True if you are already providing data on the copula space.</p></dd>
+
+
 <dt>number_max_dim</dt>
 <dd><p>The maximum number of dimension a split occurs in. Defaults to be all of the dimensions.</p></dd>
+
+
 <dt>verbose_lvl</dt>
 <dd><p>numeric. set the verbosity. 0 for no output and bigger you set it the most output you get.</p></dd>
+
+
 <dt>slsqp_options</dt>
 <dd><p>options for nloptr::slsqp to find breakpoints : you can change defaults.</p></dd>
+
+
 <dt>osqp_options</dt>
 <dd><p>options for the weights optimization. You can pass a call to osqp::osqpSettings, or NULL for defaults.</p></dd>
+
+
 <dt>N</dt>
 <dd><p>The number of bootstrap samples for p_values computations.</p></dd>
+
+
 <dt>force_grid</dt>
 <dd><p>Set to TRUE to force breakpoints to be on the n-checkerboard grid.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An instance of the <code>Cort</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
-Beside returning some inputted parameters, notable slots are :</p><ul><li><p><code>data</code> Your original data</p></li>
+    
+
+<p>An instance of the <code>Cort</code> S4 class. The object represent the fitted copula and can be used through several methods to query classical (r/d/p/v)Copula methods, constraint influence, etc.
+Beside returning some inputted parameters, notable slots are :</p>
+
+
+<ul><li><p><code>data</code> Your original data</p></li>
 <li><p><code>dim</code> The dimension of problem, number of columns of your dataset</p></li>
 <li><p><code>f</code> The empirical frequency in the leaves</p></li>
 <li><p><code>p</code> The fitted probabilities of each leaf</p></li>
@@ -144,11 +168,10 @@ we ran a quadratic solver, which options can be tweaked via the <code>osqp_optio
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1 leaves to split...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      5 leaves to split...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      10 leaves to split...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4 leaves to split...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      3 leaves to split...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Enforcing constraints...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Done !</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cort copula model: 50x3-dataset and 132 leaves.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cort copula model: 50x3-dataset and 112 leaves.</span>
 </code></pre></div>
     </div>
   </div>
@@ -163,7 +186,7 @@ we ran a quadratic solver, which options can be tweaked via the <code>osqp_optio
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
