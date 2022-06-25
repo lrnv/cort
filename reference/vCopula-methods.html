@@ -72,10 +72,10 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vCopula</span><span class="op">(</span><span class="va">u</span>, <span class="va">v</span>, <span class="va">copula</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for matrix,matrix</span>
-<span class="fu">vCopula</span><span class="op">(</span><span class="va">u</span>, <span class="va">v</span>, <span class="va">copula</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vCopula</span><span class="op">(</span><span class="va">u</span>, <span class="va">v</span>, <span class="va">copula</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for matrix,matrix</span></span>
+<span><span class="fu">vCopula</span><span class="op">(</span><span class="va">u</span>, <span class="va">v</span>, <span class="va">copula</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,12 +118,12 @@ ISSN 1350-486X, 1466-4313.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="cbCopula-Class.html">cbCopula</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,m <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">vCopula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>,<span class="va">cop</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="cbCopula-Class.html">cbCopula</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,m <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">vCopula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>,<span class="va">cop</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="fu">vCopula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">5</span><span class="op">)</span>,<span class="va">cop</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">vCopula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">5</span><span class="op">)</span>,<span class="va">cop</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01875</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

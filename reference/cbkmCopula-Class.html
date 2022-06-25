@@ -72,13 +72,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cbkmCopula</span><span class="op">(</span>
-  <span class="va">x</span>,
-  m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,
-  pseudo <span class="op">=</span> <span class="cn">FALSE</span>,
-  margins_numbers <span class="op">=</span> <span class="cn">NULL</span>,
-  known_cop <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cbkmCopula</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  pseudo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  margins_numbers <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  known_cop <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -119,13 +119,13 @@ a conditional pattern where a checkerboard copula is fitted (similar the the <co
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">known_copula</span> <span class="op">&lt;-</span> <span class="fu"><a href="cbCopula-Class.html">cbCopula</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,m<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu">cbkmCopula</span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>,</span>
-<span class="r-in">                  m <span class="op">=</span> <span class="fl">5</span>,</span>
-<span class="r-in">                  pseudo <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">                  margins_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span>
-<span class="r-in">                  known_cop <span class="op">=</span> <span class="va">known_copula</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">known_copula</span> <span class="op">&lt;-</span> <span class="fu"><a href="cbCopula-Class.html">cbCopula</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,m<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu">cbkmCopula</span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>,</span></span>
+<span class="r-in"><span>                  m <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>                  pseudo <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                  margins_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  known_cop <span class="op">=</span> <span class="va">known_copula</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is a cbkmCopula , with : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dim = 5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    n = 50 </span>

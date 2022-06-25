@@ -72,18 +72,18 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CortForest</span><span class="op">(</span>
-  <span class="va">x</span>,
-  p_value_for_dim_red <span class="op">=</span> <span class="fl">0.75</span>,
-  n_trees <span class="op">=</span> <span class="fl">10</span>,
-  compte_loo_weights <span class="op">=</span> <span class="cn">FALSE</span>,
-  min_node_size <span class="op">=</span> <span class="fl">1</span>,
-  pseudo_data <span class="op">=</span> <span class="cn">FALSE</span>,
-  number_max_dim <span class="op">=</span> <span class="cn">NULL</span>,
-  verbose_lvl <span class="op">=</span> <span class="fl">2</span>,
-  force_grid <span class="op">=</span> <span class="cn">FALSE</span>,
-  oob_weighting <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CortForest</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  p_value_for_dim_red <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  n_trees <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  compte_loo_weights <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  min_node_size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  pseudo_data <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  number_max_dim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose_lvl <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  force_grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  oob_weighting <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -160,7 +160,7 @@ Beside returning some inputted parameters, notable slots are :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="op">(</span><span class="fu">CortForest</span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,number_max_dim<span class="op">=</span><span class="fl">2</span>,n_trees<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="op">(</span><span class="fu">CortForest</span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,number_max_dim<span class="op">=</span><span class="fl">2</span>,n_trees<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ======================== Computing trees...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ======================== Computing statistics...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Computing pmf...</span>
@@ -178,12 +178,12 @@ Beside returning some inputted parameters, notable slots are :</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NLopt solver status: 3 ( NLOPT_FTOL_REACHED: Optimization stopped because </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ftol_rel or ftol_abs (above) was reached. )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Termination conditions:  stopval: -Inf	xtol_rel: 1e-10	maxeval: 1e+06	ftol_rel: 1e-10	ftol_abs: 1e-10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of inequality constraints:  0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of equality constraints:    1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of objective function:  0.337686806243517 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of controls: 0.8695131 0.1304869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of objective function:  0.584817596507599 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of controls: 0.7732224 0.2267776</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Computing oob stats...</span>
