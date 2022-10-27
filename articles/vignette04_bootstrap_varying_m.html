@@ -87,10 +87,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>4. Convex mixture of m-randomized checkerboards</h1>
-                        <h4 data-toc-skip class="author">Oskar Laverny</h4>
+      <h1 data-toc-skip>4. Convex mixture of m-randomized
+checkerboards</h1>
+                        <h4 data-toc-skip class="author">Oskar
+Laverny</h4>
             
-            <h4 data-toc-skip class="date">2022-10-26</h4>
+            <h4 data-toc-skip class="date">2022-10-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/HEAD/vignettes/vignette04_bootstrap_varying_m.Rmd" class="external-link"><code>vignettes/vignette04_bootstrap_varying_m.Rmd</code></a></small>
       <div class="hidden name"><code>vignette04_bootstrap_varying_m.Rmd</code></div>
@@ -102,7 +104,14 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>In this vignette, we will demonstrate how the checkerboard parameters <span class="math inline">\(m\)</span> can be used to produce an efficient meta-model. We will construct <span class="math inline">\(m\)</span>-randomized checkerboard copulas, and based on some fit statistics we will then combine them in a convex mixture. Our model here will use all possibles <span class="math inline">\(m_i\)</span>’s values for checkerboard copulas and aggregate all those values by optimizing a quadratic loss under resampling condition. As usual, we will work on the LifeCycleSavings dataset :</p>
+<p>In this vignette, we will demonstrate how the checkerboard parameters
+<span class="math inline">\(m\)</span> can be used to produce an
+efficient meta-model. We will construct <span class="math inline">\(m\)</span>-randomized checkerboard copulas, and
+based on some fit statistics we will then combine them in a convex
+mixture. Our model here will use all possibles <span class="math inline">\(m_i\)</span>’s values for checkerboard copulas and
+aggregate all those values by optimizing a quadratic loss under
+resampling condition. As usual, we will work on the LifeCycleSavings
+dataset :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,<span class="fl">2</span>,<span class="va">rank</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
@@ -162,7 +171,8 @@
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">points</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="va">d</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Now, we also need to calculate the errors that our copulas made compared to the empirical copula (our benchmark).</p>
+<p>Now, we also need to calculate the errors that our copulas made
+compared to the empirical copula (our benchmark).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">error</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cop</span>,<span class="va">i</span>,<span class="va">j</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">samples</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">test</span></span>
@@ -179,7 +189,9 @@
 <span><span class="va">rmse_by_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">errors</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rmse_by_model</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<p>Each point on the graph correspond to the rmse of a model. We recall the values of <span class="math inline">\(m\)</span> used by those models :</p>
+<p>Each point on the graph correspond to the rmse of a model. We recall
+the values of <span class="math inline">\(m\)</span> used by those
+models :</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rand_m</span></span>
 <span><span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5]</span></span>
@@ -238,8 +250,13 @@
 <span><span class="va">simu</span> <span class="op">=</span> <span class="fu"><a href="../reference/rCopula-methods.html">rCopula</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="va">convex_combination</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simu</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette04_bootstrap_varying_m_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
-<p>Which is quite good compared to the dataset we started with. This process is really fast and useful, and can of course be used for high-dimensional datasets.</p>
-<p>The parameters <code>nb_fold</code>, <code>nb_repeats</code>, <code>nb_cop</code> could be further optimized. Furthermore, if some multivariate margins are known, the same thing could be done using <code><a href="../reference/cbkmCopula-Class.html">cbkmCopula()</a></code> instead of <code><a href="../reference/cbCopula-Class.html">cbCopula()</a></code> models.</p>
+<p>Which is quite good compared to the dataset we started with. This
+process is really fast and useful, and can of course be used for
+high-dimensional datasets.</p>
+<p>The parameters <code>nb_fold</code>, <code>nb_repeats</code>,
+<code>nb_cop</code> could be further optimized. Furthermore, if some
+multivariate margins are known, the same thing could be done using
+<code><a href="../reference/cbkmCopula-Class.html">cbkmCopula()</a></code> instead of <code><a href="../reference/cbCopula-Class.html">cbCopula()</a></code> models.</p>
 </div>
   </div>
 

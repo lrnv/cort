@@ -87,10 +87,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>3. Empirical Checkerboard Copula with known margins</h1>
-                        <h4 data-toc-skip class="author">Oskar Laverny</h4>
+      <h1 data-toc-skip>3. Empirical Checkerboard Copula with known
+margins</h1>
+                        <h4 data-toc-skip class="author">Oskar
+Laverny</h4>
             
-            <h4 data-toc-skip class="date">2022-10-26</h4>
+            <h4 data-toc-skip class="date">2022-10-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lrnv/cort/blob/HEAD/vignettes/vignette03_ecbkm.Rmd" class="external-link"><code>vignettes/vignette03_ecbkm.Rmd</code></a></small>
       <div class="hidden name"><code>vignette03_ecbkm.Rmd</code></div>
@@ -99,78 +101,171 @@
 
     
     
-<p>The empirical checkerboard copula with known margins is a model for copula that uses priori information on a multidimensional margins to condition a checkerboard construction on the rest of the copula. This vignette describes the model in the first section, and then discuss current implementation in the second section</p>
+<p>The empirical checkerboard copula with known margins is a model for
+copula that uses priori information on a multidimensional margins to
+condition a checkerboard construction on the rest of the copula. This
+vignette describes the model in the first section, and then discuss
+current implementation in the second section</p>
 <div class="section level2">
 <h2 id="empirical-checkerboard-copula-with-known-margins">Empirical checkerboard copula with known margins<a class="anchor" aria-label="anchor" href="#empirical-checkerboard-copula-with-known-margins"></a>
 </h2>
 <div class="section level3">
 <h3 id="preliminary-notations">Preliminary notations<a class="anchor" aria-label="anchor" href="#preliminary-notations"></a>
 </h3>
-<p>First of all, for a certain dimension of the data at hand <span class="math inline">\(d\)</span> and a certain checkerboard parameter <span class="math inline">\(m\)</span>, let’s consider the ensemble of multi-indexes <span class="math inline">\(\mathcal{I} = \{\mathbf{i} = (i_1,..,i_d) \subset \{1,...,m \}^d\}\)</span> which indexes the boxes :</p>
-<p><span class="math display">\[B_{\mathbf{i}} = \left]\frac{\mathbf{i}-1}{m},\frac{\mathbf{i}}{m}\right]\]</span></p>
-<p>partitioning the space <span class="math inline">\(\mathbb{I}^d = [0,1]^d\)</span>. Denote the set of thoose boxes by <span class="math inline">\(\mathcal{B}_\mathcal{I} = \left\{B_{\mathbf{i}}, \mathbf{i} \in \mathcal{I}\right\}\)</span>. Furthermore, let’s choose <span class="math inline">\(p\)</span> dimensions that would be assigned to a known copula, by setting : <span class="math inline">\(J \subset \{1,...,d\}, |J| = p\)</span> and let’s define proper projections for the boxes :</p>
-<p><span class="math display">\[B^J_{\mathbf{i}} = \{ \mathbf{x} \in [0,1]^p, x_j \in \left]\frac{i_j-1}{m},\frac{i_j}{m}\right] \forall j \in J \}\]</span></p>
-<p><span class="math display">\[B^{-J}_{\mathbf{i}} = \{\mathbf{x} \in [0,1]^p, x_j \in \left]\frac{i_j-1}{m},\frac{i_j}{m}\right] \forall j \notin J \}\]</span></p>
-<p>such that <span class="math inline">\(B_{\mathbf{i}} = B^J_{\mathbf{i}} \times B^{-J}_{\mathbf{i}}\)</span> for all <span class="math inline">\(\mathbf{i} \in \mathcal{I}\)</span>. The tensor product is here understood taking dimensions of <span class="math inline">\(\mathbb{I}^d = [0,1]^d\)</span> in the right order such that <span class="math inline">\(B^J_{\mathbf{i}}\)</span> dimensions end up in place of dimensions indexed by <span class="math inline">\(J\)</span>. Think of dimensions as re-ordered such that <span class="math inline">\(J = \{1,...,p\}\)</span>.</p>
-<p>Let now <span class="math inline">\(\lambda\)</span> be the dimension-unspecified Lebesgue measure on any power of <span class="math inline">\(\mathbb{R}\)</span>, that is :</p>
-<p><span class="math display">\[\forall d \in \mathbb{N}, \forall \mathbf{x},\mathbf{y} \in \mathbb{R}^p, \lambda(\left[\mathbf{x},\mathbf{y}\right]) = \prod\limits_{p=1}^{d} (y_i - x_i)\]</span></p>
-<p>Let furthermore <span class="math inline">\(\mu^J\)</span> be a copula measure of dimension <span class="math inline">\(p\)</span>, corresponding to the known multivariate margin associated to marginals in <span class="math inline">\(J\)</span>. Let also <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\hat{\mu}\)</span> be dimension-unspecific version of the true copula measure of the sample at hand and (respectively) the classical Deheuvels empirical copula, that is :</p>
+<p>First of all, for a certain dimension of the data at hand <span class="math inline">\(d\)</span> and a certain checkerboard parameter
+<span class="math inline">\(m\)</span>, let’s consider the ensemble of
+multi-indexes <span class="math inline">\(\mathcal{I} = \{\mathbf{i} =
+(i_1,..,i_d) \subset \{1,...,m \}^d\}\)</span> which indexes the boxes
+:</p>
+<p><span class="math display">\[B_{\mathbf{i}} =
+\left]\frac{\mathbf{i}-1}{m},\frac{\mathbf{i}}{m}\right]\]</span></p>
+<p>partitioning the space <span class="math inline">\(\mathbb{I}^d =
+[0,1]^d\)</span>. Denote the set of thoose boxes by <span class="math inline">\(\mathcal{B}_\mathcal{I} = \left\{B_{\mathbf{i}},
+\mathbf{i} \in \mathcal{I}\right\}\)</span>. Furthermore, let’s choose
+<span class="math inline">\(p\)</span> dimensions that would be assigned
+to a known copula, by setting : <span class="math inline">\(J \subset
+\{1,...,d\}, |J| = p\)</span> and let’s define proper projections for
+the boxes :</p>
+<p><span class="math display">\[B^J_{\mathbf{i}} = \{ \mathbf{x} \in
+[0,1]^p, x_j \in \left]\frac{i_j-1}{m},\frac{i_j}{m}\right] \forall j
+\in J \}\]</span></p>
+<p><span class="math display">\[B^{-J}_{\mathbf{i}} = \{\mathbf{x} \in
+[0,1]^p, x_j \in \left]\frac{i_j-1}{m},\frac{i_j}{m}\right] \forall j
+\notin J \}\]</span></p>
+<p>such that <span class="math inline">\(B_{\mathbf{i}} =
+B^J_{\mathbf{i}} \times B^{-J}_{\mathbf{i}}\)</span> for all <span class="math inline">\(\mathbf{i} \in \mathcal{I}\)</span>. The tensor
+product is here understood taking dimensions of <span class="math inline">\(\mathbb{I}^d = [0,1]^d\)</span> in the right order
+such that <span class="math inline">\(B^J_{\mathbf{i}}\)</span>
+dimensions end up in place of dimensions indexed by <span class="math inline">\(J\)</span>. Think of dimensions as re-ordered such
+that <span class="math inline">\(J = \{1,...,p\}\)</span>.</p>
+<p>Let now <span class="math inline">\(\lambda\)</span> be the
+dimension-unspecified Lebesgue measure on any power of <span class="math inline">\(\mathbb{R}\)</span>, that is :</p>
+<p><span class="math display">\[\forall d \in \mathbb{N}, \forall
+\mathbf{x},\mathbf{y} \in \mathbb{R}^p,
+\lambda(\left[\mathbf{x},\mathbf{y}\right]) = \prod\limits_{p=1}^{d}
+(y_i - x_i)\]</span></p>
+<p>Let furthermore <span class="math inline">\(\mu^J\)</span> be a
+copula measure of dimension <span class="math inline">\(p\)</span>,
+corresponding to the known multivariate margin associated to marginals
+in <span class="math inline">\(J\)</span>. Let also <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\hat{\mu}\)</span> be dimension-unspecific version
+of the true copula measure of the sample at hand and (respectively) the
+classical Deheuvels empirical copula, that is :</p>
 <ul>
-<li>For <span class="math inline">\(n\)</span> i.i.d observation of the copula of dimension <span class="math inline">\(d\)</span>, let <span class="math inline">\(\forall i \in \{1,...,d\}, \, R_i^1,...,R_i^d\)</span> be the marginal ranks for the variable <span class="math inline">\(i\)</span>.</li>
-<li><span class="math inline">\(\forall \mathbf{x} \in \mathcal{I}^d, \text{ let } \hat{\mu}([0,x]) = \frac{1}{n} \sum\limits_{k=1}^n \mathbb{1}_{R_1^k\le x_1,...,R_d^k\le x_d}\)</span></li>
+<li>For <span class="math inline">\(n\)</span> i.i.d observation of the
+copula of dimension <span class="math inline">\(d\)</span>, let <span class="math inline">\(\forall i \in \{1,...,d\}, \,
+R_i^1,...,R_i^d\)</span> be the marginal ranks for the variable <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\forall \mathbf{x} \in \mathcal{I}^d,
+\text{ let } \hat{\mu}([0,x]) = \frac{1}{n} \sum\limits_{k=1}^n
+\mathbb{1}_{R_1^k\le x_1,...,R_d^k\le x_d}\)</span></li>
 </ul>
-<p>We are now ready to define the empirical checkerboard copula with known margins.</p>
+<p>We are now ready to define the empirical checkerboard copula with
+known margins.</p>
 </div>
 <div class="section level3">
 <h3 id="definition-estimation-and-simulation-procedures">Definition, estimation and simulation procedures<a class="anchor" aria-label="anchor" href="#definition-estimation-and-simulation-procedures"></a>
 </h3>
-<p>The empirical copula with known margins is the copula that correspond to the following simulation procedure.</p>
+<p>The empirical copula with known margins is the copula that correspond
+to the following simulation procedure.</p>
 <ul>
-<li>Simulate a sample from the known sub-copula <span class="math inline">\(\mu^J\)</span>, of dimension <span class="math inline">\(p\)</span>, through any avaliable method (depends on the known copula model). Let <span class="math inline">\(B_{\mathbf{i}}^J\)</span> be the (projected) box containing this sample.</li>
-<li>Sample one box <span class="math inline">\(B_{\mathbf{i}}\)</span> among all boxes with projection <span class="math inline">\(B_{\mathbf{i}}^J\)</span> with probability weights :
+<li>Simulate a sample from the known sub-copula <span class="math inline">\(\mu^J\)</span>, of dimension <span class="math inline">\(p\)</span>, through any avaliable method (depends
+on the known copula model). Let <span class="math inline">\(B_{\mathbf{i}}^J\)</span> be the (projected) box
+containing this sample.</li>
+<li>Sample one box <span class="math inline">\(B_{\mathbf{i}}\)</span>
+among all boxes with projection <span class="math inline">\(B_{\mathbf{i}}^J\)</span> with probability weights
+:
 <ul>
 <li>
-<span class="math inline">\(\frac{\hat{\mu}(B_{\mathbf{i}})}{\hat{\mu}(B_{\mathbf{i}}^J)}\)</span> if the projected box <span class="math inline">\(B_{\mathbf{i}}^J\)</span> contains one or more (empirical) data point, that is <span class="math inline">\(\hat{\mu}(B_{\mathbf{i}}^J) \neq 0\)</span>
+<span class="math inline">\(\frac{\hat{\mu}(B_{\mathbf{i}})}{\hat{\mu}(B_{\mathbf{i}}^J)}\)</span>
+if the projected box <span class="math inline">\(B_{\mathbf{i}}^J\)</span> contains one or more
+(empirical) data point, that is <span class="math inline">\(\hat{\mu}(B_{\mathbf{i}}^J) \neq 0\)</span>
 </li>
 <li>
-<span class="math inline">\(\frac{\lambda(B_{\mathbf{i}})}{\lambda(B_{\mathbf{i}}^J)}\)</span> otherwise.</li>
+<span class="math inline">\(\frac{\lambda(B_{\mathbf{i}})}{\lambda(B_{\mathbf{i}}^J)}\)</span>
+otherwise.</li>
 </ul>
 </li>
 <li>Simulate uniformly from <span class="math inline">\(B_{\mathbf{i}}^{-J}\)</span>
 </li>
 </ul>
-<p>This algorithm simulates first the known part of the model (dimensions in <span class="math inline">\(J\)</span>), and then, conditionally, the checkerboard part, ensuring that the known copula is respected. The downside of this behavior is that the checkerboard part may have points outside standard checkerboard boxes, making this part of the copula less sparse than a true checkerboard. But is does become sparser as soon as the data fits the known margins. On the other hand, this algorithm allows for a lot of flexibility, mainly in the following points :</p>
+<p>This algorithm simulates first the known part of the model
+(dimensions in <span class="math inline">\(J\)</span>), and then,
+conditionally, the checkerboard part, ensuring that the known copula is
+respected. The downside of this behavior is that the checkerboard part
+may have points outside standard checkerboard boxes, making this part of
+the copula less sparse than a true checkerboard. But is does become
+sparser as soon as the data fits the known margins. On the other hand,
+this algorithm allows for a lot of flexibility, mainly in the following
+points :</p>
 <ul>
-<li>The “grid” given by <span class="math inline">\(\mathcal{B}_\mathcal{I}\)</span> can be taken more arbitrarily than <span class="math inline">\(m^d\)</span> boxes of same volume, as soon as it’s a partition of <span class="math inline">\(\mathbb{I}^d\)</span>.</li>
-<li>The known copula is <em>not</em> restricted at all and can be chose among all <span class="math inline">\(p\)</span>-dimensionnal copulas.</li>
-<li>The estimation of the checkerboard part can be turn into a more flexible <em>patchwork</em> construction, by changing the independence copula for an other one inside the boxes. See Durante2013,Durante2015,Durante2015a</li>
+<li>The “grid” given by <span class="math inline">\(\mathcal{B}_\mathcal{I}\)</span> can be taken more
+arbitrarily than <span class="math inline">\(m^d\)</span> boxes of same
+volume, as soon as it’s a partition of <span class="math inline">\(\mathbb{I}^d\)</span>.</li>
+<li>The known copula is <em>not</em> restricted at all and can be chose
+among all <span class="math inline">\(p\)</span>-dimensionnal
+copulas.</li>
+<li>The estimation of the checkerboard part can be turn into a more
+flexible <em>patchwork</em> construction, by changing the independence
+copula for an other one inside the boxes. See
+Durante2013,Durante2015,Durante2015a</li>
 </ul>
-<p>We are now going to define properly the measure associated to this simulation procedure, a.k.a the empirical checkerboard copula with known margins. Let <span class="math inline">\(\nu\)</span> be this measure and let <span class="math inline">\(\mathbf{U}\)</span> be a random vector drawn from it. Then <span class="math inline">\(\forall \mathbf{x} \in \mathbb{I}^d\)</span>, following the above procedure, we have :</p>
-<p><span class="math display">\[\nu([0,\mathbf{x}]) = \sum\limits_{{\mathbf{i}} \in \mathcal{I}} \mathbb{P}(\mathbf{U}^{-J} \in B_{\mathbf{i}}^{-J} \cap [0,\mathbf{x}^{-J}] | \mathbf{U}^{J} \in B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}]) \mathbb{P}(\mathbf{U}^{J} \in B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}])\]</span></p>
-<p>While the unconditional term is easy to handle since it’s the measure associated with the known copula, <span class="math inline">\(\mathbb{P}(\mathbf{U}^{J} \in B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}]) = \mu^J(B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}])\)</span>, the conditional term can be treated according to the algorithm : it will be <span class="math inline">\(\frac{\lambda(B_{\mathbf{i}}^{-J} \cap [0,\mathbf{x}^{-J}])}{\lambda(B_{\mathbf{i}}^{-J})}\)</span> inside a box chosen with probability conditional on <span class="math inline">\(\hat{\mu}(B_{\mathbf{i}}^J) \neq 0\)</span>. We finally get the following definition :</p>
-<p><strong>The empirical checkerboard copula with parameter <span class="math inline">\(m\)</span> and with set of known margins <span class="math inline">\(J\)</span> following the measure <span class="math inline">\(\mu^J\)</span> is the copula corresponding to the measure <span class="math inline">\(\nu\)</span> given by : </strong></p>
+<p>We are now going to define properly the measure associated to this
+simulation procedure, a.k.a the empirical checkerboard copula with known
+margins. Let <span class="math inline">\(\nu\)</span> be this measure
+and let <span class="math inline">\(\mathbf{U}\)</span> be a random
+vector drawn from it. Then <span class="math inline">\(\forall
+\mathbf{x} \in \mathbb{I}^d\)</span>, following the above procedure, we
+have :</p>
+<p><span class="math display">\[\nu([0,\mathbf{x}]) =
+\sum\limits_{{\mathbf{i}} \in \mathcal{I}} \mathbb{P}(\mathbf{U}^{-J}
+\in B_{\mathbf{i}}^{-J} \cap [0,\mathbf{x}^{-J}] | \mathbf{U}^{J} \in
+B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}]) \mathbb{P}(\mathbf{U}^{J}
+\in B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}])\]</span></p>
+<p>While the unconditional term is easy to handle since it’s the measure
+associated with the known copula, <span class="math inline">\(\mathbb{P}(\mathbf{U}^{J} \in B_{\mathbf{i}}^{J}
+\cap [0,\mathbf{x}^{J}]) = \mu^J(B_{\mathbf{i}}^{J} \cap
+[0,\mathbf{x}^{J}])\)</span>, the conditional term can be treated
+according to the algorithm : it will be <span class="math inline">\(\frac{\lambda(B_{\mathbf{i}}^{-J} \cap
+[0,\mathbf{x}^{-J}])}{\lambda(B_{\mathbf{i}}^{-J})}\)</span> inside a
+box chosen with probability conditional on <span class="math inline">\(\hat{\mu}(B_{\mathbf{i}}^J) \neq 0\)</span>. We
+finally get the following definition :</p>
+<p><strong>The empirical checkerboard copula with parameter <span class="math inline">\(m\)</span> and with set of known margins <span class="math inline">\(J\)</span> following the measure <span class="math inline">\(\mu^J\)</span> is the copula corresponding to the
+measure <span class="math inline">\(\nu\)</span> given by :
+</strong></p>
 <p><span class="math display">\[
-\nu([0,x]) = \sum\limits_{{\mathbf{i}} \in \mathcal{I}} \mu^J(B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}]) \frac{\lambda(B_{\mathbf{i}}^{-J} \cap [0,\mathbf{x}^{-J}])}{\lambda(B_{\mathbf{i}}^{-J})} \left[ \frac{\hat{\mu}(B_{\mathbf{i}})}{\hat{\mu}(B_{\mathbf{i}}^J)} \mathbb{1}_{\hat{\mu}(B_{\mathbf{i}}^J) \neq 0} + \frac{\lambda(B_{\mathbf{i}})}{\lambda(B_{\mathbf{i}}^J)} \mathbb{1}_{\hat{\mu}(B_{\mathbf{i}}^J) = 0}   \right]
+\nu([0,x]) = \sum\limits_{{\mathbf{i}} \in \mathcal{I}}
+\mu^J(B_{\mathbf{i}}^{J} \cap [0,\mathbf{x}^{J}])
+\frac{\lambda(B_{\mathbf{i}}^{-J} \cap
+[0,\mathbf{x}^{-J}])}{\lambda(B_{\mathbf{i}}^{-J})} \left[
+\frac{\hat{\mu}(B_{\mathbf{i}})}{\hat{\mu}(B_{\mathbf{i}}^J)}
+\mathbb{1}_{\hat{\mu}(B_{\mathbf{i}}^J) \neq 0} +
+\frac{\lambda(B_{\mathbf{i}})}{\lambda(B_{\mathbf{i}}^J)}
+\mathbb{1}_{\hat{\mu}(B_{\mathbf{i}}^J) = 0}   \right]
 \]</span></p>
-<p>The next section will discuss the current implementation of this copula;</p>
+<p>The next section will discuss the current implementation of this
+copula;</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="current-implementation">Current implementation<a class="anchor" aria-label="anchor" href="#current-implementation"></a>
 </h2>
-<p>The package implements the empirical checkerboard copula with known margins through the <code>cbkmCopula</code> class. The constructor of the class takes several arguments :</p>
+<p>The package implements the empirical checkerboard copula with known
+margins through the <code>cbkmCopula</code> class. The constructor of
+the class takes several arguments :</p>
 <ul>
 <li>
 <code>x</code>, the pseudo_data.</li>
 <li>
 <code>m=nrow(x)</code>, repesenting the checkerboard parameter</li>
 <li>
-<code>pseudo=FALSE</code>, is the pseudo_data already given in a pseudo_observation form ?</li>
+<code>pseudo=FALSE</code>, is the pseudo_data already given in a
+pseudo_observation form ?</li>
 <li>
-<code>margins_numbers=NULL</code>, the margins index that are associated to the known copula, formerly noted <span class="math inline">\(J\)</span>
+<code>margins_numbers=NULL</code>, the margins index that are
+associated to the known copula, formerly noted <span class="math inline">\(J\)</span>
 </li>
 <li>
-<code>known_cop=NULL</code>, the known copula to be applied to thoose margins : a copula object of right dimension.</li>
+<code>known_cop=NULL</code>, the known copula to be applied to
+thoose margins : a copula object of right dimension.</li>
 </ul>
 <p>for example, let’s take the LifeCycleSavings data :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -183,7 +278,9 @@
 Pairs-plot of original peusdo-observations
 </p>
 </div>
-<p>let’s now estimate a checkerboard copula on margins 2 and 3 with a precise <span class="math inline">\(m=25\)</span>, and consider it to be known.</p>
+<p>let’s now estimate a checkerboard copula on margins 2 and 3 with a
+precise <span class="math inline">\(m=25\)</span>, and consider it to be
+known.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">known_margins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span>  <span class="va">known_copula</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbCopula-Class.html">cbCopula</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span><span class="op">[</span>,<span class="va">known_margins</span><span class="op">]</span>,m <span class="op">=</span> <span class="fl">25</span>,pseudo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -207,10 +304,13 @@ Pairs-plot of original peusdo-observations
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">dataset</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,gap<span class="op">=</span><span class="fl">0</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="vignette03_ecbkm_files/figure-html/unnamed-chunk-4-1.png" alt="Pairs-plot of the original data (red) and simulated data from a good model (black)" width="672"><p class="caption">
-Pairs-plot of the original data (red) and simulated data from a good model (black)
+Pairs-plot of the original data (red) and simulated data from a good
+model (black)
 </p>
 </div>
-<p>You can see that the known margins were respected, which is the whole point of this model. Let now see an example with a clearly wrongly-specified copula for the known margins :</p>
+<p>You can see that the known margins were respected, which is the whole
+point of this model. Let now see an example with a clearly
+wrongly-specified copula for the known margins :</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">bad_known_copula</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbCopula-Class.html">cbCopula</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span><span class="op">[</span>,<span class="va">known_margins</span><span class="op">]</span>,m <span class="op">=</span> <span class="fl">2</span>,pseudo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="va">cop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cbkmCopula-Class.html">cbkmCopula</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>,m <span class="op">=</span> <span class="fl">5</span>,pseudo <span class="op">=</span> <span class="cn">TRUE</span>,margins_numbers <span class="op">=</span> <span class="va">known_margins</span>,known_cop <span class="op">=</span> <span class="va">bad_known_copula</span><span class="op">)</span></span>
@@ -219,10 +319,16 @@ Pairs-plot of the original data (red) and simulated data from a good model (blac
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">dataset</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,gap<span class="op">=</span><span class="fl">0</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="vignette03_ecbkm_files/figure-html/unnamed-chunk-5-1.png" alt="Pairs-plot of the original data (red) and simulated data from a wrong model (black)" width="672"><p class="caption">
-Pairs-plot of the original data (red) and simulated data from a wrong model (black)
+Pairs-plot of the original data (red) and simulated data from a wrong
+model (black)
 </p>
 </div>
-<p>This example shows the sensitivity of the estimation on other parts of the model to the good behavior of the prior estimate. The conditioning did suffer for the dependences inside the known multidimensional margin but also for dependencies involving one of the variables from thoose known margins. But the checkerboard construction for the other part of the copula was not harmed.</p>
+<p>This example shows the sensitivity of the estimation on other parts
+of the model to the good behavior of the prior estimate. The
+conditioning did suffer for the dependences inside the known
+multidimensional margin but also for dependencies involving one of the
+variables from thoose known margins. But the checkerboard construction
+for the other part of the copula was not harmed.</p>
 <p>What now if the 2 parts are clearly independent ?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -243,7 +349,8 @@ Pairs-plot of the original data with independance
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">simu</span>,<span class="va">dataset</span><span class="op">)</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">simu</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,gap<span class="op">=</span><span class="fl">0</span>,lower.panel <span class="op">=</span> <span class="cn">NULL</span>,cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="vignette03_ecbkm_files/figure-html/unnamed-chunk-7-1.png" alt="Pairs-plot of the original data (red) and simulated data (black) -- Independance case" width="672"><p class="caption">
-Pairs-plot of the original data (red) and simulated data (black) – Independance case
+Pairs-plot of the original data (red) and simulated data (black) –
+Independance case
 </p>
 </div>
 <p>This fit is quite good.</p>
