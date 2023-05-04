@@ -17,15 +17,12 @@ The `cort` package provides S4 classes and methods to fit several copula models:
 
 ## Installation
 
-`cort` is Now on [CRAN](https://CRAN.R-project.org)! You can install the stable version with:
-
-``` r
-install.packages("cort")
-```
+Edit 2023: Due to issues that I could not reproduce and therefore debug, [CRAN](https://CRAN.R-project.org) removed the package from its archive. If you want to take a look at the issue, [details are there](https://cran-archive.r-project.org/web/checks/2023/2023-01-10_check_results_cort.html). If you understand why, please open an issue to tell me. In the mean time, you can still download older releases from CRAN, or simply use the github version.  
 
 The upstream development version can also be installed with :
 
 ``` r
+# install.packages("cort") # does not work anymore.
 devtools::install_github("lrnv/cort")
 ```
 
